@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface OTMensLogoProps {
   compact?: boolean;
@@ -21,15 +22,14 @@ export default function EonmedsLogo({ compact = false, showLottie = true, inline
       />
       {showLottie && (
         <div className="w-[70px] h-[70px] overflow-hidden">
-          <iframe
-            src="https://lottie.host/embed/e9c07632-2437-45f9-bf1c-56893da9efe6/5iMkBTz13A.lottie"
+          <DotLottieReact
+            src="https://lottie.host/6827dbdb-1080-417f-87b4-13111a99ba80/11Q27L9eyb.lottie"
+            loop
+            autoplay
             style={{
               width: '70px',
               height: '70px',
-              border: 'none',
-              background: 'transparent',
             }}
-            title="OT Men's Health animation"
           />
         </div>
       )}
