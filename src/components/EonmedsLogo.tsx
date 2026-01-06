@@ -18,7 +18,7 @@ export default function EonmedsLogo({ compact = false, showLottie = true, inline
       <img
         src="https://static.wixstatic.com/shapes/c49a9b_5139736743794db7af38c583595f06fb.svg"
         alt="Overtime Men's Health"
-        className="h-7 w-auto"
+        className="h-9 w-auto"
       />
       {showLottie && (
         <div className="w-[70px] h-[70px] overflow-hidden">
