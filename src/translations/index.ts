@@ -4,7 +4,7 @@ export const translations = {
     'landing.title': 'Let\'s evaluate your treatment options.',
     'landing.subtitle': 'Discover personalized solutions based on your goals, habits, and health history.',
     'landing.button.start': 'Start',
-    'landing.disclaimer1': 'By clicking "Continue", you agree that EONMeds may use your responses to personalize your experience and for other purposes in accordance with our ',
+    'landing.disclaimer1': 'By clicking "Continue", you agree that Overtime Men\'s Health may use your responses to personalize your experience and for other purposes in accordance with our ',
     'landing.disclaimer.privacy': 'Privacy Policy',
     'landing.disclaimer1.end': '. The information you provide will be used as part of your medical evaluation.',
     'landing.disclaimer2.start': 'The 3-month weight loss promotion ends on 07/30/2025. Offer valid for new clients only on their first weight loss program order. Savings vary depending on the selected plan. Discount is based on the average monthly program price without insurance. Once the promotion ends, standard rates apply. A prescription is required. ',
@@ -121,7 +121,7 @@ export const translations = {
     
     // BMI calculating page
     'bmi.calculating.greeting': 'One moment',
-    'bmi.calculating.eonpro': 'EONPro is calculating',
+    'bmi.calculating.eonpro': 'Overtime is calculating',
     'bmi.calculating.yourBmi': 'your Body Mass Index',
     'bmi.calculating.bmi': '(BMI)',
     'bmi.calculating.finalizing': 'Finalizing your results...',
@@ -185,7 +185,7 @@ export const translations = {
     'medical.history.subtitle.line3': 'goals.',
     'medical.overview.treatment': 'Treatment',
     'medical.overview.continue': 'Continue',
-    'medical.overview.copyright.line1': '© 2025 EONPro, LLC. All rights reserved.',
+    'medical.overview.copyright.line1': '© 2025 Overtime Men\'s Health. All rights reserved.',
     'medical.overview.copyright.line2': 'Exclusive and protected process. Copying or reproduction',
     'medical.overview.copyright.line3': 'without authorization is prohibited.',
     
@@ -195,13 +195,13 @@ export const translations = {
     'sex.selectPrompt': 'Please select:',
     'sex.man': 'Man',
     'sex.woman': 'Woman',
-    'sex.disclaimer': 'EONPro provides medical care without discrimination. We do not discriminate based on sex, gender, gender identity, sexual orientation, age, race, color, religion, national origin, marital status, disability, or any other characteristic protected by law. Your privacy and dignity are a priority at all times.',
+    'sex.disclaimer': 'Overtime Men\'s Health provides medical care without discrimination. We do not discriminate based on sex, gender, gender identity, sexual orientation, age, race, color, religion, national origin, marital status, disability, or any other characteristic protected by law. Your privacy and dignity are a priority at all times.',
     'sex.continue': 'Continue',
     
     // Contact info page
     'contact.email': 'Email',
     'contact.phone': 'Phone number',
-    'contact.checkbox': 'EONMeds (or parties acting on its behalf) may contact you via email/text regarding your account and services. Message and data rates may apply. Reply STOP to unsubscribe.',
+    'contact.checkbox': 'Overtime Men\'s Health (or parties acting on its behalf) may contact you via email/text regarding your account and services. Message and data rates may apply. Reply STOP to unsubscribe.',
     'contact.continue': 'Continue',
     
     // Common
@@ -217,7 +217,7 @@ export const translations = {
     'landing.title': 'Evaluemos tus opciones de tratamiento.',
     'landing.subtitle': 'Descubre soluciones personalizadas basadas en tus objetivos, hábitos e historial médico.',
     'landing.button.start': 'Comenzar',
-    'landing.disclaimer1': 'Al hacer clic en "Continuar", aceptas que EONMeds puede usar tus respuestas para personalizar tu experiencia y para otros propósitos de acuerdo con nuestra ',
+    'landing.disclaimer1': 'Al hacer clic en "Continuar", aceptas que Overtime Men\'s Health puede usar tus respuestas para personalizar tu experiencia y para otros propósitos de acuerdo con nuestra ',
     'landing.disclaimer.privacy': 'Política de Privacidad',
     'landing.disclaimer1.end': '. La información que proporciones se utilizará como parte de tu evaluación médica.',
     'landing.disclaimer2.start': 'La promoción de pérdida de peso de 3 meses termina el 07/30/2025. Oferta válida solo para clientes nuevos en su primer pedido de programa de pérdida de peso. Los ahorros varían según el plan seleccionado. El descuento se basa en el precio promedio del programa mensual sin seguro. Una vez que termine la promoción, se aplican las tarifas estándar. Se requiere receta médica. Se aplican ',
@@ -334,7 +334,7 @@ export const translations = {
     
     // BMI calculating page
     'bmi.calculating.greeting': 'Un momento',
-    'bmi.calculating.eonpro': 'EONPro está calculando',
+    'bmi.calculating.eonpro': 'Overtime está calculando',
     'bmi.calculating.yourBmi': 'tu Índice de Masa Corporal',
     'bmi.calculating.bmi': '(IMC)',
     'bmi.calculating.finalizing': 'Finalizando tus resultados...',
@@ -398,7 +398,7 @@ export const translations = {
     'medical.history.subtitle.line3': 'objetivos.',
     'medical.overview.treatment': 'Tratamiento',
     'medical.overview.continue': 'Continuar',
-    'medical.overview.copyright.line1': '© 2025 EONPro, LLC. Todos los derechos reservados.',
+    'medical.overview.copyright.line1': '© 2025 Overtime Men\'s Health. Todos los derechos reservados.',
     'medical.overview.copyright.line2': 'Proceso exclusivo y protegido. Copiar o reproducir',
     'medical.overview.copyright.line3': 'sin autorización está prohibido.',
     
@@ -408,13 +408,13 @@ export const translations = {
     'sex.selectPrompt': 'Por favor selecciona:',
     'sex.man': 'Hombre',
     'sex.woman': 'Mujer',
-    'sex.disclaimer': 'EONPro brinda atención médica sin discriminación. No discriminamos por sexo, género, identidad de género, orientación sexual, edad, raza, color, religión, origen nacional, estado civil, discapacidad o cualquier otra característica protegida por la ley. Tu privacidad y dignidad son una prioridad en todo momento.',
+    'sex.disclaimer': 'Overtime Men\'s Health brinda atención médica sin discriminación. No discriminamos por sexo, género, identidad de género, orientación sexual, edad, raza, color, religión, origen nacional, estado civil, discapacidad o cualquier otra característica protegida por la ley. Tu privacidad y dignidad son una prioridad en todo momento.',
     'sex.continue': 'Continuar',
     
     // Contact info page
     'contact.email': 'Correo electrónico',
     'contact.phone': 'Número de teléfono',
-    'contact.checkbox': 'EONMeds (o partes que actúan en su nombre) puede contactarte por correo electrónico/texto sobre tu cuenta y servicios. Pueden aplicarse tarifas de mensajes y datos. Responde STOP para cancelar la suscripción.',
+    'contact.checkbox': 'Overtime Men\'s Health (o partes que actúan en su nombre) puede contactarte por correo electrónico/texto sobre tu cuenta y servicios. Pueden aplicarse tarifas de mensajes y datos. Responde STOP para cancelar la suscripción.',
     'contact.continue': 'Continuar',
     
     // Common
