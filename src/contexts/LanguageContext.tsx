@@ -3,7 +3,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { translations } from '@/translations';
 
-type Language = 'en';
+type Language = 'en' | 'es';
 
 interface LanguageContextType {
   language: Language;
@@ -14,11 +14,11 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // English only - no language switching
+  // English only - always force English
   const language: Language = 'en';
 
   const handleSetLanguage = () => {
-    // No-op - English only
+    // No-op - English only for this brand
   };
 
   const t = (key: string): string => {
