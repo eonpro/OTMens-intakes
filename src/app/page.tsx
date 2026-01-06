@@ -117,7 +117,7 @@ export default function Home() {
       <div className="mb-4">
         <div className="w-32 h-32 rounded-full overflow-hidden relative">
           <Image
-            src="https://static.wixstatic.com/media/c49a9b_3505f05c6c774d748c2e20f178e7c917~mv2.png"
+            src="https://static.wixstatic.com/media/c49a9b_5b9a0976f96044ccbf05c4d90c382f2d~mv2.webp"
             alt="Healthcare professional"
             fill
             sizes="128px"
