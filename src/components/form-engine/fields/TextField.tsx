@@ -1,0 +1,61 @@
+'use client';
+
+import React from 'react';
+
+interface TextFieldProps {
+  id: string;
+  label?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur?: () => void;
+  type?: 'text' | 'email' | 'tel' | 'number';
+  error?: string;
+  disabled?: boolean;
+  autoFocus?: boolean;
+  maxLength?: number;
+}
+
+export default function TextField({
+  id,
+  label,
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  type = 'text',
+  error,
+  disabled = false,
+  autoFocus = false,
+  maxLength,
+}: TextFieldProps) {
+  return (
+    <div className="w-full">
+      {label && (
+        <label htmlFor={id} className="block text-sm text-gray-600 mb-2">
+          {label}
+        </label>
+      )}
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        disabled={disabled}
+        autoFocus={autoFocus}
+        maxLength={maxLength}
+        className={`
+          input-field w-full
+          ${error ? 'border-red-500 focus:border-red-500' : ''}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+        `}
+      />
+      {error && (
+        <p className="mt-2 text-sm text-red-500">{error}</p>
+      )}
+    </div>
+  );
+}
+

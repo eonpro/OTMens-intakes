@@ -1,0 +1,594 @@
+@import "tailwindcss";
+
+/* Desktop container - 920px max width with 100px internal padding */
+.desktop-container {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 100px;
+  padding-right: 100px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .desktop-container {
+    max-width: 100%;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+/* Override Tailwind max-width classes for desktop to use 920px container */
+@media (min-width: 1024px) {
+  .max-w-md.lg\:max-w-2xl,
+  .lg\:max-w-2xl {
+    max-width: 720px !important; /* 920px - 200px padding */
+  }
+  
+  /* Ensure consistent content width on large screens */
+  .intake-content {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+:root {
+  --background-start: #ffffff;
+  --background-end: #ffffff;
+  --foreground: #413d3d;
+  --input-bg: #f5f5f5;
+  
+  /* Dynamic viewport height for mobile browsers */
+  --vh: 1vh;
+  
+  /* Mobile margin - 50px on small screens, 35px on larger mobile */
+  --mobile-margin: 50px;
+  --mobile-margin-lg: 35px;
+  
+  /* Safe area insets for devices with notches/home indicators */
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+  --safe-area-inset-right: env(safe-area-inset-right);
+}
+
+@theme inline {
+  --color-background: var(--background-start);
+  --color-foreground: var(--foreground);
+  --font-sans: "sofia-pro", sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Sofia Pro font utility class */
+.font-sofia {
+  font-family: "sofia-pro", sans-serif;
+  letter-spacing: -0.025em;
+}
+
+/* Checkbox styling - 1.5px border with visible color */
+.checkbox-option {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 1.5px solid #413d3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 0.75rem;
+  background: transparent;
+}
+
+.checkbox-option.checked {
+  background: #ffffff;
+  border-color: #413d3d;
+}
+
+/* Override all border-2 checkboxes to 1.5px */
+button .border-2.rounded {
+  border-width: 1.5px !important;
+}
+
+body {
+  background: #ffffff;
+  color: #413d3d;
+  font-family: "sofia-pro", sans-serif;
+  font-weight: 450; /* Base weight increased by 50 */
+  letter-spacing: -0.025em;
+  min-height: 100vh;
+  
+  /* Prevent scroll bounce on iOS */
+  overscroll-behavior-y: none;
+  
+  /* Prevent double-tap zoom on mobile */
+  touch-action: manipulation;
+}
+
+/* Global text color - all text #413d3d */
+h1, h2, h3, h4, h5, h6, p, span, label, a, div, li, td, th {
+  color: inherit;
+}
+
+/* Override Tailwind text classes to #413d3d - but NOT inside buttons */
+.text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700, .text-black {
+  color: #413d3d !important;
+}
+
+/* text-white should stay white inside buttons */
+.text-white:not(button *):not(.continue-button *):not([class*="bg-black"] *) {
+  color: #413d3d !important;
+}
+
+/* Force white text inside buttons */
+button.continue-button,
+button.continue-button *,
+button[class*="bg-black"],
+button[class*="bg-black"] * {
+  color: #ffffff !important;
+}
+
+/* Lighter text for subtitles */
+.text-white\/70, .text-white\/60, .text-white\/50 {
+  color: rgba(65, 61, 61, 0.7) !important;
+}
+
+/* Page title - consistent styling */
+.page-title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 510; /* Increased by 50 */
+  color: #413d3d;
+  line-height: 1.1;
+}
+
+@media (min-width: 1024px) {
+  .page-title {
+    font-size: 2.25rem; /* 36px */
+  }
+}
+
+/* Page subtitle */
+.page-subtitle {
+  font-size: 15.5px !important; /* Increased by 1.5px from 14px */
+  color: rgba(65, 61, 61, 0.7);
+  font-weight: 350; /* Increased by 50 */
+  line-height: 1.5;
+}
+
+/* Input fields styling */
+.intake-input {
+  background-color: var(--input-bg) !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 9999px;
+  padding: 1rem 1.5rem;
+}
+
+.intake-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Option buttons styling - matches kidney-conditions design */
+.option-button {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #413d3d;
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 1rem;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.option-button.selected {
+  background-color: #f5ecd8;
+  border-color: #cab172;
+  color: #413d3d;
+}
+
+.option-button.selected span,
+.option-button.selected .text-white {
+  color: #413d3d !important;
+}
+
+.option-button:hover:not(.selected) {
+  border-color: #d1d5db;
+}
+
+/* Checkbox styling for options */
+.option-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1.5px solid #413d3d;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.option-checkbox.checked {
+  background: #ffffff;
+  border-color: #413d3d;
+}
+
+.option-button.selected .option-checkbox {
+  background: #ffffff;
+  border-color: #413d3d;
+}
+
+/* Copyright text */
+.copyright-text {
+  font-size: 12px;
+  color: rgba(65, 61, 61, 0.5);
+  line-height: 1.2;
+}
+
+/* Remove all underlines from text elements */
+.no-underline,
+div.text-5xl,
+div.text-6xl {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  border: none !important;
+}
+
+/* Hide number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Remove text decorations on button text */
+button {
+  text-decoration: none !important;
+}
+
+/* Ensure no underlines on any button content */
+button:hover,
+button:focus,
+button:active {
+  text-decoration: none !important;
+}
+
+/* Keyframe animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Google Places Autocomplete styling for legacy API */
+.pac-container {
+  border-radius: 0.5rem !important;
+  margin-top: 0.25rem !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+  border: 1px solid rgb(229 231 235) !important;
+  font-family: inherit !important;
+}
+
+.pac-item {
+  padding: 0.75rem !important;
+  font-size: 0.9rem !important;
+  cursor: pointer;
+}
+
+.pac-item:hover {
+  background-color: rgb(249 250 251) !important;
+}
+
+.pac-item-selected {
+  background-color: rgb(243 244 246) !important;
+}
+
+.pac-matched {
+  font-weight: 600;
+}
+
+/* Viewport-aware utility classes */
+.h-viewport {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.min-h-viewport {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.max-h-viewport {
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
+}
+
+/* Safe area padding for devices with notches/home indicators */
+.safe-area-top {
+  padding-top: var(--safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: var(--safe-area-inset-bottom);
+  padding-bottom: max(var(--safe-area-inset-bottom), 1rem);
+}
+
+.safe-area-left {
+  padding-left: var(--safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: var(--safe-area-inset-right);
+}
+
+/* Prevent text selection on buttons and interactive elements */
+button, .button-like {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile margin utility - 50px on small screens */
+.mobile-margin {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (min-width: 768px) {
+  .mobile-margin {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-margin {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Override default px-6 on mobile to use 50px on small screens */
+@media (max-width: 767px) {
+  .px-6 {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .px-6 {
+    padding-left: 35px !important;
+    padding-right: 35px !important;
+  }
+}
+
+/* Sticky bottom button container - fixed at bottom on all pages */
+.sticky-bottom-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 16px 50px;
+  padding-top: 32px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+  background: linear-gradient(to top, #ffffff 0%, #ffffff 70%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+  .sticky-bottom-button {
+    padding: 16px 35px;
+    padding-top: 32px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .sticky-bottom-button {
+    padding: 16px 32px;
+    padding-top: 32px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+  }
+}
+
+/* Content wrapper when sticky button is used - ensures scrolling works on mobile */
+.has-sticky-button {
+  padding-bottom: 200px !important;
+}
+
+@media (max-width: 767px) {
+  .has-sticky-button {
+    padding-bottom: 220px !important;
+  }
+}
+
+/* Input field styling */
+.input-field {
+  width: 100%;
+  padding: 16px;
+  font-size: 17px !important; /* Increased by 1px */
+  font-weight: 530 !important; /* Reduced by 20 */
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  color: #333;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input-field::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.input-field:focus {
+  border-color: #cab172;
+  background: white;
+}
+
+/* Select field styling */
+.select-field {
+  padding: 16px;
+  padding-right: 48px;
+  font-size: 17px !important; /* Increased by 1px */
+  font-weight: 530 !important; /* Reduced by 20 */
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  color: #333;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.2s;
+}
+
+.select-field:focus {
+  border-color: #cab172;
+  background: white;
+}
+
+.select-field option {
+  background: white;
+  color: #333;
+}
+
+/* Continue button - consistent styling (BLACK with WHITE text) */
+.continue-button {
+  width: 100%;
+  background: #000000;
+  color: #ffffff !important;
+  padding: 16px 32px;
+  border-radius: 9999px;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s;
+  border: none;
+}
+
+.continue-button span,
+.continue-button svg,
+.continue-button * {
+  color: #ffffff !important;
+  fill: none;
+  stroke: #ffffff;
+}
+
+.continue-button:hover {
+  background: #1a1a1a;
+}
+
+.continue-button:disabled {
+  background: #666666;
+  color: rgba(255, 255, 255, 0.5) !important;
+  cursor: not-allowed;
+}
+
+/* Info container - for info boxes that should have beige background */
+.info-container {
+  background: #eae3db;
+  border-radius: 16px;
+  padding: 16px 20px;
+  color: #413d3d;
+}
+
+/* Sticky bottom button container with gradient overlay */
+.sticky-button-container {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px 24px;
+  background: linear-gradient(to top, #ffffff 60%, transparent 100%);
+  z-index: 50;
+}
+
+/* Note: .sticky-bottom-button is defined above at line ~337 */
+
+/* Ensure html/body have proper background for status bar */
+html, body {
+  background-color: #ffffff;
+}
+
+/* Safe area padding for mobile devices with notches */
+.safe-area-top {
+  padding-top: max(env(safe-area-inset-top), 12px);
+}
+
+/* Inline highlight that doesn't overlap other lines */
+.inline-highlight {
+  background-color: #f5ecd8;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0;
+  margin: 0;
+  line-height: inherit;
+}
+
+/* Page fade-in animation for smooth transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Smooth scrolling for better mobile experience */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+  
+  /* Input focus improvements for mobile */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    font-size: 17px !important; /* Prevent zoom on iOS - minimum 16px needed */
+  }
+  
+  /* Ensure consistent font weight for all inputs */
+  input[type="tel"],
+  input[type="email"],
+  input[type="text"],
+  input[type="number"] {
+    font-weight: 530; /* Reduced by 20 */
+  }
+  
+  /* Add more top padding on mobile to avoid overlap with language selector */
+  .pt-6 {
+    padding-top: 2rem !important;
+  }
+}

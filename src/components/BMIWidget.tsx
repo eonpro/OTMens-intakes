@@ -1,0 +1,207 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+
+interface BMIWidgetProps {
+  bmi: number;
+  language: 'en' | 'es';
+}
+
+export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
+  const [indicatorPosition, setIndicatorPosition] = useState(0);
+  const [showIndicator, setShowIndicator] = useState(false);
+  const [showLabel, setShowLabel] = useState(false);
+  const lastBMI = useRef<number | null>(null);
+  const isAnimating = useRef(false);
+
+  // Calculate position on the scale (18.5 to 50 range mapped to 0-100%)
+  const calculatePosition = (bmiValue: number) => {
+    if (bmiValue <= 18.5) return 0;
+    if (bmiValue <= 25) return ((bmiValue - 18.5) / (25 - 18.5)) * 25;      // 0-25%
+    if (bmiValue <= 30) return 25 + ((bmiValue - 25) / (30 - 25)) * 25;     // 25-50%
+    if (bmiValue <= 40) return 50 + ((bmiValue - 30) / (40 - 30)) * 25;     // 50-75%
+    if (bmiValue <= 50) return 75 + ((bmiValue - 40) / (50 - 40)) * 25;     // 75-100%
+    return 100;
+  };
+
+  const getBMICategory = (bmiValue: number) => {
+    if (language === 'es') {
+      if (bmiValue < 18.5) return "Bajo Peso";
+      if (bmiValue < 25) return "Normal";
+      if (bmiValue < 30) return "Sobrepeso";
+      if (bmiValue < 35) return "Obesidad I";
+      if (bmiValue < 40) return "Obesidad II";
+      return "Obesidad III";
+    } else {
+      if (bmiValue < 18.5) return "Underweight";
+      if (bmiValue < 25) return "Normal";
+      if (bmiValue < 30) return "Overweight";
+      if (bmiValue < 35) return "Obesity I";
+      if (bmiValue < 40) return "Obesity II";
+      return "Obesity III";
+    }
+  };
+
+  const isApproved = bmi >= 23;
+
+  useEffect(() => {
+    if (bmi > 0 && !isAnimating.current && bmi !== lastBMI.current) {
+      isAnimating.current = true;
+      lastBMI.current = bmi;
+      
+      const position = calculatePosition(bmi);
+      
+      // Show indicator and start animation
+      setTimeout(() => {
+        setShowIndicator(true);
+        setIndicatorPosition(position);
+        
+        // Show label after dot animation completes
+          setTimeout(() => {
+            setShowLabel(true);
+          isAnimating.current = false;
+          }, 1200);
+      }, 300);
+    }
+  }, [bmi]);
+
+  const categoryLabels = language === 'es' 
+    ? ['Bajo', 'Normal', 'Sobrepeso', 'Obesidad']
+    : ['Under', 'Normal', 'Over', 'Obese'];
+
+  const statusText = language === 'es'
+    ? (isApproved ? 'IMC Aprobado ✓' : 'IMC No Aprobado')
+    : (isApproved ? 'BMI Approved ✓' : 'BMI Not Approved');
+
+  return (
+    <div className="relative w-full max-w-[500px] mx-auto pt-10 pb-5 px-4">
+      {/* Floating Label */}
+      <div 
+        className="absolute top-0 z-20 transition-all duration-400"
+        style={{ 
+          left: `${indicatorPosition}%`,
+          transform: 'translateX(-50%)',
+          opacity: showLabel ? 1 : 0,
+          transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        }}
+      >
+        <div 
+          className="relative text-[11px] font-semibold tracking-wide px-4 py-2 rounded-full whitespace-nowrap"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1)',
+            color: '#ffffff'
+          }}
+        >
+          <span style={{ color: '#ffffff' }}>{statusText} · {getBMICategory(bmi)}</span>
+          {/* Arrow pointing down */}
+          <div 
+            className="absolute left-1/2 -translate-x-1/2"
+            style={{
+              bottom: '-6px',
+              borderLeft: '7px solid transparent',
+              borderRight: '7px solid transparent',
+              borderTop: '7px solid #16213e'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Track */}
+      <div 
+        className="relative h-3 w-full rounded-[20px] overflow-visible"
+        style={{
+          background: '#e8e8e8',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      >
+        {/* Gradient */}
+        <div 
+          className="absolute inset-0 rounded-[20px] opacity-90"
+          style={{
+            background: 'linear-gradient(90deg, #ff6b6b 0%, #feca57 20%, #48dbfb 40%, #1dd1a1 60%, #feca57 80%, #ff6b6b 100%)'
+          }}
+        />
+        
+        {/* Indicator Dot */}
+        {showIndicator && bmi > 0 && (
+          <>
+            {/* Pulse Ring */}
+            <div
+              className="absolute top-1/2 z-[9]"
+              style={{
+                left: `${indicatorPosition}%`,
+                transform: 'translate(-50%, -50%)',
+                width: '22px',
+                height: '22px',
+                border: '2px solid rgba(202, 177, 114, 0.6)',
+                borderRadius: '50%',
+                animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                transition: 'left 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+            />
+            
+            {/* Dot */}
+            <div
+              className="absolute top-1/2 z-10"
+              style={{
+                left: `${indicatorPosition}%`,
+                transform: 'translate(-50%, -50%)',
+                width: '22px',
+                height: '22px',
+                background: 'white',
+                borderRadius: '50%',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.25), 0 0 0 3px rgba(255,255,255,0.5)',
+                transition: 'left 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+            >
+              {/* Inner dot */}
+              <div 
+                className="absolute top-1/2 left-1/2 w-[10px] h-[10px] rounded-full"
+                style={{
+                  transform: 'translate(-50%, -50%)',
+                  background: 'linear-gradient(135deg, #cab172, #b59a5e)'
+                }}
+              />
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Scale Labels */}
+      <div className="flex justify-between mt-2 px-0.5">
+        <span className="text-[8.5px] font-medium text-[#999] tracking-wide">18.5</span>
+        <span className="text-[8.5px] font-medium text-[#999] tracking-wide">25</span>
+        <span className="text-[8.5px] font-medium text-[#999] tracking-wide">30</span>
+        <span className="text-[8.5px] font-medium text-[#999] tracking-wide">40</span>
+        <span className="text-[8.5px] font-medium text-[#999] tracking-wide">50</span>
+      </div>
+
+      {/* Category Labels */}
+      <div className="flex justify-between mt-3 px-1">
+        {categoryLabels.map((label, index) => (
+          <span 
+            key={index} 
+            className="text-[8px] font-medium text-[#bbb] uppercase tracking-wider"
+          >
+            {label}
+          </span>
+        ))}
+      </div>
+
+      {/* Keyframes for pulse animation */}
+      <style jsx>{`
+        @keyframes ping {
+          0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+          75%, 100% {
+            transform: translate(-50%, -50%) scale(2);
+            opacity: 0;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
