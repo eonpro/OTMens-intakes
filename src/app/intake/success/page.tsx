@@ -2,14 +2,28 @@
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function SuccessPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
+      {/* Celebration Lottie Animation */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <DotLottieReact
+          src="https://lottie.host/be2394d8-f0a3-40cd-926c-bda60245935c/bY1TUwYeQK.lottie"
+          loop
+          autoplay
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      </div>
+
       {/* Back button */}
-      <div className="px-6 pt-6">
+      <div className="px-6 pt-6 relative z-10">
         <Link href="/intake/contact-info" className="inline-block p-2 -ml-2 hover:bg-white/10 rounded-lg">
           <svg className="w-6 h-6 text-[#413d3d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -17,7 +31,7 @@ export default function SuccessPage() {
         </Link>
       </div>
       
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
       <div className="max-w-md w-full text-center space-y-8">
         <div className="w-20 h-20 bg-[#cab172] rounded-full flex items-center justify-center mx-auto">
           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 20 20">
