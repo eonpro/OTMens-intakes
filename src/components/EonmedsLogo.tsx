@@ -23,7 +23,7 @@ export default function EonmedsLogo({ compact = false, showLottie = true, inline
       {showLottie && (
         <div className="w-[70px] h-[70px] overflow-hidden">
           <DotLottieReact
-            src="https://lottie.host/6827dbdb-1080-417f-87b4-13111a99ba80/11Q27L9eyb.lottie"
+            src="https://lottie.host/34070443-ae33-4f25-b944-452a94704677/Ol2wOdhexp.lottie"
             loop
             autoplay
             style={{
