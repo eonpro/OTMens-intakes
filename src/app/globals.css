@@ -468,11 +468,11 @@ button, .button-like {
   color: #333;
 }
 
-/* Continue button - consistent styling (BLACK with WHITE text) */
+/* Continue button - consistent styling (GOLD with BLACK text) */
 .continue-button {
   width: 100%;
-  background: #000000;
-  color: #ffffff !important;
+  background: #cab172;
+  color: #000000 !important;
   padding: 16px 32px;
   border-radius: 9999px;
   font-size: 18px;
@@ -488,18 +488,18 @@ button, .button-like {
 .continue-button span,
 .continue-button svg,
 .continue-button * {
-  color: #ffffff !important;
+  color: #000000 !important;
   fill: none;
-  stroke: #ffffff;
+  stroke: #000000;
 }
 
 .continue-button:hover {
-  background: #1a1a1a;
+  background: #b59a5e;
 }
 
 .continue-button:disabled {
-  background: #666666;
-  color: rgba(255, 255, 255, 0.5) !important;
+  background: #e0d4b8;
+  color: rgba(0, 0, 0, 0.4) !important;
   cursor: not-allowed;
 }
 

@@ -70,7 +70,7 @@ export default function SuccessPage() {
         
         <button 
           onClick={() => router.push('/')}
-          className="w-full bg-black text-white py-4 px-8 rounded-full text-lg font-medium hover:bg-gray-900"
+          className="w-full bg-[#cab172] text-black py-4 px-8 rounded-full text-lg font-medium hover:bg-[#b59a5e]"
         >
           Go to Dashboard
         </button>
