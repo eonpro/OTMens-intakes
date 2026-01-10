@@ -198,14 +198,36 @@ interface IntakeRecord {
   floridaConsentAcceptedAt?: string;
 }
 
-// CORS headers for checkout domain (allow both production and dev URLs)
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+// CORS headers - configured via middleware, but kept for direct API responses
+// The middleware handles CORS preflight and origin validation
+function getCorsHeaders(request?: NextRequest): Record<string, string> {
+  const origin = request?.headers.get('origin') || '';
+  const allowedOrigins = [
+    'https://otmens-intake.vercel.app',
+    'https://otmens-intakes.vercel.app',
+    'https://www.otmenshealth.com',
+    'https://otmenshealth.com',
+    'https://checkout.otmenshealth.com',
+    process.env.NEXT_PUBLIC_APP_URL,
+  ].filter(Boolean) as string[];
+  
+  // In development, allow localhost
+  if (process.env.NODE_ENV === 'development') {
+    allowedOrigins.push('http://localhost:3000', 'http://localhost:3001');
+  }
+  
+  const isAllowed = allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin || allowedOrigins[0] : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 export async function POST(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
   log('=== AIRTABLE API CALLED ===');
   log('Timestamp:', new Date().toISOString());
   
@@ -236,9 +258,15 @@ export async function POST(request: NextRequest) {
 
     // Helper to convert any value to string (Airtable text fields)
     const toString = (val: unknown): string => {
-      if (val === null || val === undefined) return '';
-      if (typeof val === 'boolean') return val ? 'Yes' : 'No';
-      if (typeof val === 'number') return String(val);
+      if (val === null || val === undefined) {
+        return '';
+      }
+      if (typeof val === 'boolean') {
+        return val ? 'Yes' : 'No';
+      }
+      if (typeof val === 'number') {
+        return String(val);
+      }
       return String(val);
     };
 
@@ -449,13 +477,14 @@ export async function POST(request: NextRequest) {
 }
 
 // Handle preflight requests
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders });
+export async function OPTIONS(request: NextRequest) {
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 // GET endpoint to fetch patient checkout data by record ID
 // HIPAA Compliant: Returns only non-PHI data needed for checkout pre-fill
 export async function GET(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
   const { searchParams } = new URL(request.url);
   const recordId = searchParams.get('ref');
 

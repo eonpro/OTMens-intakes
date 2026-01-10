@@ -210,6 +210,9 @@ export interface GLP1Profile {
   success?: string;
 }
 
+// Type for form response values
+export type ResponseValue = string | number | boolean | string[] | Record<string, unknown> | null | undefined;
+
 export interface IntakeData {
   sessionId: string;
   currentStep: string;
@@ -225,7 +228,7 @@ export interface IntakeData {
   glp1Profile: GLP1Profile;
   
   // Raw responses by field ID
-  responses: Record<string, any>;
+  responses: Record<string, ResponseValue>;
   
   // Qualification status
   qualified?: boolean;

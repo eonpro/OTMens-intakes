@@ -11,7 +11,8 @@ import type {
   MedicalProfile, 
   MedicalHistory, 
   GLP1Profile,
-  WeightInfo 
+  WeightInfo,
+  ResponseValue 
 } from '@/types/form';
 
 // Generate unique session ID
@@ -49,8 +50,8 @@ interface IntakeStore extends IntakeData {
   goBack: () => string | null;
   
   // Data actions
-  setResponse: (key: string, value: any) => void;
-  setResponses: (responses: Record<string, any>) => void;
+  setResponse: (key: string, value: ResponseValue) => void;
+  setResponses: (responses: Record<string, ResponseValue>) => void;
   setPersonalInfo: (info: Partial<PersonalInfo>) => void;
   setAddress: (address: Partial<AddressInfo>) => void;
   setMedicalProfile: (profile: Partial<MedicalProfile>) => void;
@@ -117,14 +118,14 @@ export const useIntakeStore = create<IntakeStore>()(
 
       // ========== DATA ACTIONS ==========
       
-      setResponse: (key: string, value: any) => {
+      setResponse: (key: string, value: ResponseValue) => {
         set((state) => ({
           responses: { ...state.responses, [key]: value },
           lastUpdatedAt: new Date().toISOString()
         }));
       },
 
-      setResponses: (responses: Record<string, any>) => {
+      setResponses: (responses: Record<string, ResponseValue>) => {
         set((state) => ({
           responses: { ...state.responses, ...responses },
           lastUpdatedAt: new Date().toISOString()

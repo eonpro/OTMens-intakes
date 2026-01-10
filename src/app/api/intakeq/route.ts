@@ -13,12 +13,32 @@ const INTAKEQ_API_BASE = 'https://intakeq.com/api/v1';
 const isDev = process.env.NODE_ENV === 'development';
 const log = (...args: unknown[]) => isDev && console.log('[IntakeQ]', ...args);
 
-// CORS headers
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+// CORS headers - configured via middleware, but kept for direct API responses
+function getCorsHeaders(request?: NextRequest): Record<string, string> {
+  const origin = request?.headers.get('origin') || '';
+  const allowedOrigins = [
+    'https://otmens-intake.vercel.app',
+    'https://otmens-intakes.vercel.app',
+    'https://www.otmenshealth.com',
+    'https://otmenshealth.com',
+    'https://checkout.otmenshealth.com',
+    process.env.NEXT_PUBLIC_APP_URL,
+  ].filter(Boolean) as string[];
+  
+  // In development, allow localhost
+  if (process.env.NODE_ENV === 'development') {
+    allowedOrigins.push('http://localhost:3000', 'http://localhost:3001');
+  }
+  
+  const isAllowed = allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin || allowedOrigins[0] : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 // State code mapping
 const stateMap: Record<string, string> = {
@@ -33,13 +53,17 @@ const stateMap: Record<string, string> = {
 };
 
 function getStateCode(state: string): string {
-  if (!state) return '';
+  if (!state) {
+    return '';
+  }
   const lower = state.toLowerCase().trim();
   return stateMap[lower] || (state.length === 2 ? state.toUpperCase() : state.substring(0, 2).toUpperCase());
 }
 
 function formatPhone(phone: string): string {
-  if (!phone) return '';
+  if (!phone) {
+    return '';
+  }
   const digits = phone.replace(/\D/g, '');
   // Remove country code if present
   const cleanDigits = digits.length === 11 && digits.startsWith('1') ? digits.substring(1) : digits;
@@ -168,7 +192,9 @@ async function createIntakeQClient(data: IntakeData): Promise<string | null> {
 }
 
 async function findExistingClient(email: string): Promise<string | null> {
-  if (!INTAKEQ_API_KEY) return null;
+  if (!INTAKEQ_API_KEY) {
+    return null;
+  }
 
   try {
     const response = await fetch(`${INTAKEQ_API_BASE}/clients?search=${encodeURIComponent(email)}`, {
@@ -540,6 +566,7 @@ async function uploadPdfToIntakeQ(clientId: string, pdfUrl: string, firstName: s
 // MAIN API HANDLER
 // ============================================================================
 export async function POST(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
   log('=== INTAKEQ INTEGRATION CALLED ===');
 
   try {
@@ -617,12 +644,13 @@ export async function POST(request: NextRequest) {
 }
 
 // Handle preflight requests
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders });
+export async function OPTIONS(request: NextRequest) {
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 // GET endpoint to check configuration status
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
   const intakeqConfigured = !!INTAKEQ_API_KEY;
   const pdfcoConfigured = !!PDFCO_API_KEY;
 
