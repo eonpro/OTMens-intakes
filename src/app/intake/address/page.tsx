@@ -8,9 +8,27 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useEnterNavigation } from '@/hooks/useEnterNavigation';
 import EonmedsLogo from '@/components/EonmedsLogo';
 
+// Google Maps types
+interface GoogleMapsPlace {
+  formatted_address?: string;
+  address_components?: Array<{
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }>;
+  geometry?: {
+    location: google.maps.LatLng;
+  };
+}
+
+interface GoogleMapsAutocomplete {
+  getPlace: () => GoogleMapsPlace;
+  addListener: (event: string, callback: () => void) => void;
+}
+
 declare global {
   interface Window {
-    google: any;
+    google: typeof google;
     initGmaps: () => void;
   }
 }
@@ -24,12 +42,16 @@ export default function AddressPage() {
   const [mapError, setMapError] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showApartmentWarning, setShowApartmentWarning] = useState(false);
-  const [addressComponents, setAddressComponents] = useState<any>(null);
+  const [addressComponents, setAddressComponents] = useState<{
+    city?: string;
+    state?: string;
+    zipCode?: string;
+  } | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<any>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markerRef = useRef<any>(null);
+  const autocompleteRef = useRef<GoogleMapsAutocomplete | null>(null);
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const markerRef = useRef<google.maps.Marker | null>(null);
 
   // Function to detect if apartment/suite might be needed
   const shouldSuggestApartment = (addressText: string) => {
@@ -112,10 +134,11 @@ export default function AddressPage() {
       autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: 'us' },
         fields: ['address_components', 'formatted_address', 'geometry']
-      });
+      }) as unknown as GoogleMapsAutocomplete;
 
       autocompleteRef.current.addListener('place_changed', () => {
-        const place = autocompleteRef.current.getPlace();
+        const place = autocompleteRef.current?.getPlace();
+        if (!place) return;
         
         if (place.formatted_address) {
           setAddress(place.formatted_address);
@@ -123,8 +146,8 @@ export default function AddressPage() {
           
           // Parse address components for better storage
           if (place.address_components) {
-            const components: any = {};
-            place.address_components.forEach((component: any) => {
+            const components: { city?: string; state?: string; zipCode?: string } = {};
+            place.address_components.forEach((component) => {
               const types = component.types;
               if (types.includes('locality')) components.city = component.long_name;
               if (types.includes('administrative_area_level_1')) components.state = component.short_name;
@@ -204,7 +227,7 @@ export default function AddressPage() {
     }
   };
 
-  const updateMapLocation = (location: any) => {
+  const updateMapLocation = (location: google.maps.LatLng) => {
     if (!mapInstanceRef.current || !location) return;
 
     // Center map on the location with closer zoom

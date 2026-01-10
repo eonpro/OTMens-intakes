@@ -105,6 +105,31 @@ export interface CheckpointData {
   status: 'partial' | 'complete' | 'qualified';
 }
 
+// DOB can be a string or an object with month/day/year
+interface DOBValue {
+  month?: string;
+  day?: string;
+  year?: string;
+}
+
+// Address information structure
+interface AddressValue {
+  street?: string;
+  unit?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  fullAddress?: string;
+}
+
+// Weight information structure
+interface WeightValue {
+  currentWeight?: number | null;
+  idealWeight?: number | null;
+  heightFeet?: number | null;
+  heightInches?: number | null;
+}
+
 export interface IntakeSubmission {
   sessionId: string;
   personalInfo?: {
@@ -112,14 +137,14 @@ export interface IntakeSubmission {
     lastName?: string;
     email?: string;
     phone?: string;
-    dob?: any;
+    dob?: string | DOBValue;
     sex?: string;
     bloodPressure?: string;
     pregnancyBreastfeeding?: string;
   };
-  address?: any;
+  address?: AddressValue | null;
   medicalProfile?: {
-    weight?: any;
+    weight?: WeightValue;
     bmi?: number;
     goals?: string[];
     activityLevel?: string;
@@ -727,8 +752,6 @@ export async function sendToIntakeQ(): Promise<IntakeQResult> {
       language: sessionStorage.getItem('preferred_language') || 'en',
     };
 
-    console.log('[IntakeQ] Sending data to IntakeQ...');
-
     const response = await fetch('/api/intakeq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -738,7 +761,6 @@ export async function sendToIntakeQ(): Promise<IntakeQResult> {
     const result = await response.json();
 
     if (result.success) {
-      console.log('[IntakeQ] Success:', result.clientId);
       // Store the IntakeQ client ID
       sessionStorage.setItem('intakeq_client_id', result.clientId);
       return {
