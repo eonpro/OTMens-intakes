@@ -1,5 +1,7 @@
 # Weight Loss Intake Platform - Enterprise Upgrade
 
+> **Last Deployment:** January 11, 2026 - Native checkout + CSP fixes + Airtable config
+
 ## Background and Motivation
 
 This is a **medical intake questionnaire web application** for **EONMeds/EONPro**, a telehealth platform specializing in GLP-1 weight loss medications. The application is being upgraded to enterprise-grade architecture.
