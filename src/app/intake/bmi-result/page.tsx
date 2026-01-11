@@ -189,7 +189,7 @@ export default function BMIResultPage() {
       
       <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
-          onClick={() => router.push('/intake/testimonials')}
+          onClick={() => router.push('/intake/medical-history-overview')}
           className="continue-button"
         >
           <span className="text-white">{t('bmi.result.continue')}</span>

@@ -88,12 +88,12 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
         <div 
           className="relative text-[11px] font-semibold tracking-wide px-4 py-2 rounded-full whitespace-nowrap"
           style={{
-            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1)',
+            background: '#cab172',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
             color: '#ffffff'
           }}
         >
-          <span style={{ color: '#ffffff' }}>{statusText} · {getBMICategory(bmi)}</span>
+          <span className="text-white">{statusText} · {getBMICategory(bmi)}</span>
           {/* Arrow pointing down */}
           <div 
             className="absolute left-1/2 -translate-x-1/2"
@@ -101,7 +101,7 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
               bottom: '-6px',
               borderLeft: '7px solid transparent',
               borderRight: '7px solid transparent',
-              borderTop: '7px solid #16213e'
+              borderTop: '7px solid #cab172'
             }}
           />
         </div>
