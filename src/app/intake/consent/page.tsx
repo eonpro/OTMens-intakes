@@ -89,10 +89,10 @@ export default function ConsentPage() {
             </div>
 
             {/* Doctor Review Card */}
-            <div className="bg-[#e4fb74] rounded-2xl overflow-hidden flex h-20">
+            <div className="bg-[#EFECE7] rounded-2xl overflow-hidden flex h-20">
               <div className="flex-shrink-0 relative w-24">
                 <Image
-                  src="https://static.wixstatic.com/media/c49a9b_5e690e4cf43e4e769ef7d4e9f5691a5b~mv2.webp"
+                  src="https://static.wixstatic.com/media/c49a9b_f1ab66e055e34586ac5019808f040ee0~mv2.png"
                   alt="Licensed medical provider"
                   fill
                   sizes="(max-width: 768px) 96px, 96px"
