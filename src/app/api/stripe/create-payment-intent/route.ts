@@ -86,6 +86,8 @@ export async function POST(request: NextRequest) {
 
     if (isSubscription) {
       // Create a Subscription with incomplete payment
+      console.log('Creating subscription for customer:', customer.id, 'with price:', priceId);
+      
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ price: priceId }],
@@ -102,12 +104,39 @@ export async function POST(request: NextRequest) {
         },
       });
 
+      console.log('Subscription created:', subscription.id, 'status:', subscription.status);
+
       // Get the client secret from the invoice's payment intent
-      // When expanded, latest_invoice contains the full Invoice object with payment_intent
-      const invoice = subscription.latest_invoice as Stripe.Invoice & { 
-        payment_intent: Stripe.PaymentIntent 
-      };
-      const paymentIntent = invoice.payment_intent;
+      const invoice = subscription.latest_invoice;
+      
+      if (!invoice || typeof invoice === 'string') {
+        console.error('Invoice not expanded or missing');
+        throw new Error('Failed to retrieve invoice from subscription');
+      }
+
+      // Type assertion for expanded payment_intent
+      const invoiceObj = invoice as Stripe.Invoice & { payment_intent?: Stripe.PaymentIntent | string | null };
+      const paymentIntent = invoiceObj.payment_intent;
+      
+      if (!paymentIntent || typeof paymentIntent === 'string') {
+        console.error('Payment intent not expanded or missing. Invoice ID:', invoiceObj.id);
+        
+        // If payment_intent is a string ID, we need to fetch it
+        if (typeof paymentIntent === 'string') {
+          const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
+          return NextResponse.json({
+            clientSecret: fetchedIntent.client_secret,
+            paymentIntentId: fetchedIntent.id,
+            subscriptionId: subscription.id,
+            customerId: customer.id,
+            type: 'subscription',
+          });
+        }
+        
+        throw new Error('Payment intent not available on subscription invoice');
+      }
+
+      console.log('Payment intent retrieved:', paymentIntent.id);
 
       return NextResponse.json({
         clientSecret: paymentIntent.client_secret,
