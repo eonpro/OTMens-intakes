@@ -444,3 +444,229 @@ When creating new brand:
 3. Test IntakeQ connection before full flow test
 4. Verify Airtable field names match exactly
 5. Keep SOAP PDF provider info same (Dr. Sigle) unless specified
+
+---
+
+## 🚀 Native Checkout Feature (January 11, 2026)
+
+### Background & Motivation
+
+**Problem**: The original EONMeds project uses a separate checkout platform (`eonmeds-checkout` - Vite/Stripe) that requires:
+- Data transfer via URL query params between apps
+- Separate deployments and repositories
+- Potential data loss/security issues during redirect
+
+**Solution for otmens-intake**: Build checkout **natively within this Next.js app** so:
+- All data stays in sessionStorage (no external transfer)
+- Single deployment, single codebase
+- Better user experience (no redirect flash)
+- Easier maintenance
+
+### Architecture Decision
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| ✅ **Native Next.js Checkout** | Single codebase, no data transfer, simpler | Need to build from scratch |
+| ❌ External redirect (EONMeds style) | Already exists | Data transfer risk, two deployments |
+
+**Chosen: Native Next.js Checkout**
+
+### Key Components Needed
+
+```
+src/app/
+├── intake/
+│   ├── qualified/page.tsx          # Existing - needs update (link to /checkout instead of redirect)
+│   └── ...
+├── checkout/                        # NEW - Checkout flow
+│   ├── page.tsx                     # Product selection
+│   ├── payment/page.tsx             # Stripe payment form
+│   ├── confirmation/page.tsx        # Success page
+│   └── layout.tsx                   # Checkout layout
+├── api/
+│   ├── stripe/
+│   │   ├── create-payment-intent/route.ts   # Create Stripe PaymentIntent
+│   │   ├── webhook/route.ts                 # Handle Stripe webhooks
+│   │   └── products/route.ts                # Get product/price info
+│   └── ...
+```
+
+### Data Flow (Native)
+
+```
+Intake Flow → sessionStorage → Checkout Flow → Stripe → Confirmation
+              (all in same app, no external transfer)
+```
+
+### Required Information (Need from Client)
+
+| Item | Status | Notes |
+|------|--------|-------|
+| **Stripe Account** | ✅ Confirmed | Has Stripe account - need API keys |
+| **Product Catalog** | ⏳ Coming | Will upload later (different from EONMeds) |
+| **Pricing Structure** | ✅ Confirmed | BOTH subscription AND one-time (like EON checkout) |
+| **Brand Assets** | ✅ Confirmed | Same styling as intake flow |
+| **Success Flow** | ✅ Confirmed | Update Airtable + Update IntakeQ (not create new) |
+| **Shipping Address** | ✅ Confirmed | Already collected in intake - just show confirmation with edit option |
+
+### Product Assumptions (to confirm)
+
+Based on EONMeds model:
+```
+Semaglutide:
+  - 0.25mg/0.5ml (starter) - $XXX/month
+  - 0.5mg/0.5ml            - $XXX/month
+  - 1.0mg/0.5ml            - $XXX/month
+  - 2.5mg/ml               - $XXX/month
+
+Tirzepatide:
+  - 2.5mg/0.5ml (starter)  - $XXX/month
+  - 5mg/0.5ml              - $XXX/month
+  - 7.5mg/0.5ml            - $XXX/month
+  - 10mg/0.5ml             - $XXX/month
+  - 12.5mg/0.5ml           - $XXX/month
+  - 15mg/0.5ml             - $XXX/month
+```
+
+### Technical Requirements
+
+#### Dependencies to Add
+```json
+{
+  "@stripe/stripe-js": "^2.x.x",        // Stripe.js for frontend
+  "@stripe/react-stripe-js": "^2.x.x",  // React components (Elements, etc.)
+  "stripe": "^14.x.x"                   // Stripe Node SDK for API routes
+}
+```
+
+#### Environment Variables
+```env
+# Stripe
+STRIPE_SECRET_KEY=sk_live_xxx        # Server-side only
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_xxx  # Client-side
+STRIPE_WEBHOOK_SECRET=whsec_xxx      # For webhook verification
+```
+
+### High-Level Task Breakdown
+
+#### Phase 1: Setup & Foundation ✅ COMPLETE
+| ID | Task | Status |
+|----|------|--------|
+| CH-1 | Install Stripe dependencies | ✅ Done |
+| CH-2 | Create Stripe client utilities | ✅ Done |
+| CH-3 | Set up environment variables structure | ✅ Done |
+
+#### Phase 2: API Routes ✅ COMPLETE
+| ID | Task | Status |
+|----|------|--------|
+| CH-4 | Create `/api/stripe/create-payment-intent` endpoint | ✅ Done |
+| CH-5 | Create `/api/stripe/webhook` endpoint | ✅ Done |
+| CH-6 | Create `/api/stripe/payment-success` endpoint | ✅ Done |
+
+#### Phase 3: Checkout UI ✅ COMPLETE
+| ID | Task | Status |
+|----|------|--------|
+| CH-7 | Create checkout layout | ✅ Done |
+| CH-8 | Create product selection page | ✅ Done |
+| CH-9 | Create payment form page (Stripe Elements) | ✅ Done |
+| CH-10 | Create confirmation/success page | ✅ Done |
+
+#### Phase 4: Integration ✅ COMPLETE
+| ID | Task | Status |
+|----|------|--------|
+| CH-11 | Update qualified page to link to /checkout | ✅ Done |
+| CH-12 | Connect checkout to sessionStorage data | ✅ Done |
+| CH-13 | Handle post-payment actions (Airtable update, etc.) | ✅ Done |
+
+#### Phase 5: Testing & Polish
+| ID | Task | Status |
+|----|------|--------|
+| CH-14 | Test with Stripe test mode | ⏳ Ready to test |
+| CH-15 | Test full flow (intake → checkout → confirmation) | ⏳ Ready to test |
+| CH-16 | Mobile responsiveness | ✅ Uses same styling as intake |
+| CH-17 | Error handling & edge cases | ✅ Done |
+
+### Files Created (January 11, 2026)
+
+```
+src/
+├── app/
+│   └── checkout/
+│       ├── layout.tsx              # Stripe Elements provider
+│       ├── page.tsx                # Product selection
+│       ├── payment/
+│       │   └── page.tsx            # Stripe payment form
+│       └── confirmation/
+│           └── page.tsx            # Order confirmation
+│   └── api/
+│       └── stripe/
+│           ├── create-payment-intent/
+│           │   └── route.ts        # Create PaymentIntent API
+│           ├── webhook/
+│           │   └── route.ts        # Stripe webhook handler
+│           └── payment-success/
+│               └── route.ts        # Post-payment Airtable update
+├── lib/
+│   └── stripe.ts                   # Stripe client utility
+├── store/
+│   └── checkoutStore.ts            # Zustand checkout state
+└── types/
+    └── checkout.ts                 # TypeScript types
+```
+
+### Environment Variables Needed
+
+```env
+# Stripe (REQUIRED)
+STRIPE_SECRET_KEY=sk_live_xxx              # Server-side only
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_xxx  # Client-side
+STRIPE_WEBHOOK_SECRET=whsec_xxx            # For webhook verification
+
+# Existing (already configured)
+AIRTABLE_PAT=xxx
+AIRTABLE_BASE_ID=xxx
+AIRTABLE_TABLE_NAME=xxx
+```
+
+### Airtable Fields to Add
+
+Add these columns to your Airtable table:
+- `Payment Status` (Single line text)
+- `Payment Intent ID` (Single line text)
+- `Order Amount` (Number)
+- `Selected Product` (Single line text)
+- `Payment Date` (Single line text)
+
+### UI/UX Considerations
+
+1. **Order Summary Sidebar** - Show patient info, selected medication
+2. **Progress Indicator** - Product → Payment → Confirmation
+3. **Trust Signals** - Secure payment badges, money-back guarantee
+4. **Mobile-First** - Single column layout on mobile
+5. **Bilingual** - EN/ES support (use existing translation system)
+
+### Security Considerations
+
+1. **PCI Compliance** - Use Stripe Elements (never handle raw card data)
+2. **Webhook Verification** - Validate Stripe signature
+3. **HTTPS Only** - Already enforced
+4. **Rate Limiting** - Already in place
+5. **HIPAA** - Don't send PHI to Stripe (only payment data)
+
+### Questions for Client - ANSWERED ✅
+
+1. ✅ **Stripe account?** Yes, has one
+2. ⏳ **Products & prices?** Will upload later (different products)
+3. ✅ **Payment type?** Both subscription AND one-time (like EON checkout)
+4. ✅ **Post-payment actions?** Update Airtable + Update IntakeQ (not create new)
+5. ✅ **Shipping address?** Already collected in intake - show confirmation with edit option
+6. ✅ **Brand styling?** Same as intake flow
+
+### Implementation Notes
+
+- **Address handling**: Reuse `intake_address` from sessionStorage, allow user to confirm or edit
+- **IntakeQ**: Update existing patient record (not create new)
+- **Airtable**: Update existing record with payment status
+- **Products**: Build flexible system - products will be added to Stripe later
+
+---

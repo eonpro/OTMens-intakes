@@ -1,17 +1,15 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CopyrightText from '@/components/CopyrightText';
-import { redirectToCheckout, trackMetaEvent } from '@/lib/meta';
+import { trackMetaEvent } from '@/lib/meta';
 
 export default function QualifiedPage() {
+  const router = useRouter();
   const { language } = useLanguage();
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const confettiRef = useRef<boolean>(false);
 
@@ -19,41 +17,15 @@ export default function QualifiedPage() {
     // Track Lead event when user reaches qualified page
     trackMetaEvent('Lead');
 
-    // Get user data from session
+    // Get user name from session
     const nameData = sessionStorage.getItem('intake_name');
-    const contactData = sessionStorage.getItem('intake_contact');
-    const dobData = sessionStorage.getItem('intake_dob');
 
     if (nameData) {
       try {
         const parsed = JSON.parse(nameData);
         setFirstName(parsed.firstName || '');
-        setLastName(parsed.lastName || '');
       } catch {
         setFirstName('');
-      }
-    }
-
-    if (contactData) {
-      try {
-        const parsed = JSON.parse(contactData);
-        setEmail(parsed.email || '');
-        setPhone(parsed.phone || '');
-      } catch {
-        // ignore
-      }
-    }
-
-    if (dobData) {
-      try {
-        const parsed = JSON.parse(dobData);
-        // Format DOB as string
-        if (parsed.month && parsed.day && parsed.year) {
-          setDob(`${parsed.month}/${parsed.day}/${parsed.year}`);
-        }
-      } catch {
-        // DOB might be stored as string already
-        setDob(dobData);
       }
     }
 
@@ -69,24 +41,35 @@ export default function QualifiedPage() {
     if (confettiRef.current) return;
     confettiRef.current = true;
 
-    // Load confetti library dynamically
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js';
-    script.onload = () => {
+    const runConfetti = () => {
       const confetti = (window as unknown as { confetti: (opts: unknown) => void }).confetti;
       if (confetti) {
+        // Initial burst
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#cab172', '#f5ecd8', '#1dd1a1', '#feca57', '#ff6b6b', '#48dbfb']
+        });
+
+        // Continuous rain effect
         const duration = 3000;
         const end = Date.now() + duration;
 
         const frame = () => {
           confetti({
-            particleCount: 10,
-            angle: 270,
-            spread: 180,
-            origin: { x: 0.5, y: 0 },
-            gravity: 1.5,
-            startVelocity: 30,
-            colors: ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#a55eea', '#fd9644']
+            particleCount: 3,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#cab172', '#f5ecd8', '#1dd1a1']
+          });
+          confetti({
+            particleCount: 3,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#cab172', '#f5ecd8', '#1dd1a1']
           });
 
           if (Date.now() < end) {
@@ -97,23 +80,32 @@ export default function QualifiedPage() {
         frame();
       }
     };
+
+    // Check if confetti is already loaded
+    if ((window as unknown as { confetti: unknown }).confetti) {
+      runConfetti();
+      return;
+    }
+
+    // Check if script is already in the DOM
+    const existingScript = document.querySelector('script[src*="canvas-confetti"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', runConfetti);
+      return;
+    }
+
+    // Load confetti library dynamically
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js';
+    script.async = true;
+    script.onload = runConfetti;
+    script.onerror = () => console.error('Failed to load confetti library');
     document.head.appendChild(script);
   };
 
   const handleCheckout = () => {
-    // Get the intake ID if available
-    const intakeId = sessionStorage.getItem('submitted_intake_id') || undefined;
-
-    // Redirect to checkout with all tracking params including current language
-    redirectToCheckout({
-      firstName,
-      lastName,
-      email,
-      phone,
-      dob,
-      intakeId,
-      lang: language, // Pass the current language from context
-    });
+    // Navigate to native checkout flow
+    router.push('/checkout');
   };
 
   return (

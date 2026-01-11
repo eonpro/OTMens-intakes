@@ -80,6 +80,12 @@ const KNOWN_AIRTABLE_FIELDS = new Set([
   // Status
   'Taking Medications',
   'Personalized Treatment Interest',
+  // Payment fields (from native checkout)
+  'Payment Status',
+  'Payment Intent ID',
+  'Order Amount',
+  'Selected Product',
+  'Payment Date',
   // Consent checkboxes
   'Privacy Policy Accepted',
   'Terms of Use Accepted',
@@ -107,6 +113,7 @@ const NUMBER_FIELDS = new Set([
   'Current Weight (lbs)',
   'Ideal Weight',
   'BMI',
+  'Order Amount',
 ]);
 
 interface IntakeRecord {
