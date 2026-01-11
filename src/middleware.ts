@@ -94,12 +94,18 @@ const securityHeaders = {
 // Content Security Policy (adjust as needed)
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.wixstatic.com https://lottie.host https://use.typekit.net https://connect.facebook.net",
-  "style-src 'self' 'unsafe-inline' https://use.typekit.net https://fonts.googleapis.com",
-  "img-src 'self' data: blob: https://static.wixstatic.com https://*.wixstatic.com https://lottie.host",
+  // Scripts: self, inline, eval, Wix, Lottie, Typekit, Facebook, Google Maps, Stripe, CDN (confetti)
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.wixstatic.com https://lottie.host https://use.typekit.net https://connect.facebook.net https://maps.googleapis.com https://js.stripe.com https://cdn.jsdelivr.net",
+  // Styles: self, inline, Typekit, Google Fonts
+  "style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net https://fonts.googleapis.com",
+  // Images: self, data, blob, Wix, Lottie, Facebook Pixel, Stripe
+  "img-src 'self' data: blob: https://static.wixstatic.com https://*.wixstatic.com https://lottie.host https://www.facebook.com https://*.facebook.com https://files.stripe.com https://*.stripe.com",
+  // Fonts: self, Typekit, Google Fonts
   "font-src 'self' https://use.typekit.net https://fonts.gstatic.com",
-  "frame-src 'self' https://lottie.host",
-  "connect-src 'self' https://api.airtable.com https://intakeq.com https://api.pdf.co https://www.facebook.com https://connect.facebook.net",
+  // Frames: self, Lottie, Stripe (for 3D Secure)
+  "frame-src 'self' https://lottie.host https://js.stripe.com https://*.stripe.com",
+  // Connections: self, Airtable, IntakeQ, PDF.co, Facebook, Google Maps, Stripe, CDN (Lottie WASM), unpkg
+  "connect-src 'self' https://api.airtable.com https://intakeq.com https://api.pdf.co https://www.facebook.com https://connect.facebook.net https://maps.googleapis.com https://api.stripe.com https://cdn.jsdelivr.net https://unpkg.com https://lottie.host",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
