@@ -147,7 +147,7 @@ export default function Home() {
         {/* Patient photos */}
         <div className="flex -space-x-3">
           <Image
-            src="https://static.wixstatic.com/media/c49a9b_db8b1c89bbf14aeaa7c55037b3fd6aec~mv2.webp"
+            src="https://static.wixstatic.com/media/c49a9b_e11bf27141fa4676b7c9d9f2438b334a~mv2.webp"
             alt="Happy patients"
             width={112}
             height={32}
