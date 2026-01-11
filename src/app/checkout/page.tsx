@@ -367,11 +367,14 @@ export default function CheckoutPage() {
                   >
                     {/* Badge */}
                     {(isBestValue || isPopular) && (
-                      <span className={`absolute -top-3 left-4 px-3 py-1 text-xs font-medium rounded-full ${
-                        isBestValue 
-                          ? 'bg-[#cab172] text-white' 
-                          : 'bg-[#413d3d] text-white'
-                      }`}>
+                      <span 
+                        className={`absolute -top-3 left-4 px-3 py-1 text-xs font-medium rounded-full ${
+                          isBestValue 
+                            ? 'bg-[#cab172]' 
+                            : 'bg-[#413d3d]'
+                        }`}
+                        style={{ color: '#ffffff' }}
+                      >
                         {isBestValue ? t.bestValue : t.mostPopular}
                       </span>
                     )}
