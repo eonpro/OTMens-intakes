@@ -82,7 +82,7 @@ export default function Home() {
       <div className="mb-4">
         <p className="text-[11px] lg:text-[13px] leading-tight" style={{ fontWeight: 450, color: 'rgba(65, 61, 61, 0.6)' }}>
           {t('landing.disclaimer1')}
-          <a href="#" className="underline" style={{ color: 'rgba(65, 61, 61, 0.6)' }}>{t('landing.disclaimer.privacy')}</a>
+          <a href="https://www.otmens.com/privacypolicy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: 'rgba(65, 61, 61, 0.6)' }}>{t('landing.disclaimer.privacy')}</a>
           {t('landing.disclaimer1.end')}
         </p>
       </div>
@@ -144,13 +144,13 @@ export default function Home() {
           {language === 'es' ? 'Confiado por más de 20,000 pacientes' : 'Trusted by over 20,000 patients'}
         </p>
 
-        {/* Patient photos */}
+        {/* Patient photos - 20% bigger */}
         <div className="flex -space-x-3">
           <Image
             src="https://static.wixstatic.com/media/c49a9b_e11bf27141fa4676b7c9d9f2438b334a~mv2.webp"
             alt="Happy patients"
-            width={112}
-            height={32}
+            width={134}
+            height={38}
             className="rounded-lg"
             priority
           />

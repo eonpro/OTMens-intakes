@@ -9,37 +9,72 @@ import { useTranslation } from '@/hooks/useTranslation';
 import EonmedsLogo from '@/components/EonmedsLogo';
 import CopyrightText from '@/components/CopyrightText';
 
+// Typewriter component
+function TypewriterText({ text, delay = 0, speed = 30, className = '' }: { 
+  text: string; 
+  delay?: number; 
+  speed?: number;
+  className?: string;
+}) {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  
+  useEffect(() => {
+    const startTyping = setTimeout(() => {
+      setIsTyping(true);
+      let currentIndex = 0;
+      
+      const typeInterval = setInterval(() => {
+        if (currentIndex < text.length) {
+          setDisplayedText(text.slice(0, currentIndex + 1));
+          currentIndex++;
+        } else {
+          clearInterval(typeInterval);
+        }
+      }, speed);
+      
+      return () => clearInterval(typeInterval);
+    }, delay);
+    
+    return () => clearTimeout(startTyping);
+  }, [text, delay, speed]);
+  
+  return (
+    <span className={className}>
+      {displayedText}
+      {isTyping && displayedText.length < text.length && (
+        <span className="inline-block w-[2px] h-[1em] bg-[#cab172] ml-1 animate-pulse" />
+      )}
+    </span>
+  );
+}
+
 export default function ResearchDonePage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [medicationPreference, setMedicationPreference] = useState<string | null>(null);
-  const [showLine1, setShowLine1] = useState(false);
-  const [showLine2, setShowLine2] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const hasNavigated = useRef(false);
 
   useEffect(() => {
     const preference = sessionStorage.getItem('medication_preference');
     setMedicationPreference(preference);
 
-    // Trigger animations with staggered delays
+    // Show content after short delay
     setTimeout(() => {
-      setShowLine1(true);
-    }, 300);
-
-    setTimeout(() => {
-      setShowLine2(true);
-    }, 900);
+      setShowContent(true);
+    }, 200);
   }, []);
 
-  // Auto-advance after 2.5 seconds
+  // Auto-advance after typewriter completes (about 6 seconds for full text)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!hasNavigated.current) {
         hasNavigated.current = true;
         router.push('/intake/consent');
       }
-    }, 2500);
+    }, 7000);
 
     return () => clearTimeout(timer);
   }, [router]);
@@ -73,64 +108,66 @@ export default function ResearchDonePage() {
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-4 lg:py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-4 lg:space-y-8">
-          {medicationPreference === 'recommendation' ? (
-            <>
+          {showContent && (
+            medicationPreference === 'recommendation' ? (
               <div className="space-y-4">
-                {/* Title animated in two parts */}
-                <div>
-                  <h1 
-                    className={`text-[30px] lg:text-[34px] font-[550] leading-tight transition-all duration-800 ease-out ${
-                      showLine1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                    }`}
-                    style={{ color: '#cab172' }}
-                  >
-                    {language === 'es' ? 
-                      'Lo tienes. Comenzaremos con algunas preguntas sobre ti.' : 
-                      'You\'ve got it. We\'ll begin with some questions about you.'}
-                  </h1>
-                </div>
-                
-                {/* Subtitle animated */}
-                <div>
-                  <p 
-                    className={`text-[30px] lg:text-[34px] font-[550] leading-tight transition-all duration-800 ease-out ${
-                      showLine2 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                    }`}
-                    style={{ color: '#cab172' }}
-                  >
-                    {language === 'es' ? 
-                      'Después de eso, profundizaremos en tu historial de salud para encontrar qué opción de tratamiento coincide con tus objetivos e historial de salud.' : 
-                      'After that, we\'ll dive into your health history to find which treatment option matches your goals and health history.'}
-                  </p>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="space-y-4">
+                {/* Title with typewriter effect */}
                 <h1 
-                  className={`text-[30px] lg:text-[34px] font-[550] leading-tight transition-all duration-800 ease-out ${
-                    showLine1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                  }`}
+                  className="text-[30px] lg:text-[34px] font-[550] leading-tight"
                   style={{ color: '#cab172' }}
                 >
-                  {language === 'es' ? 
-                    'Bien, parece que ya has hecho tu investigación.' : 
-                    'Nice, it sounds like you\'ve already done your research.'}
+                  <TypewriterText 
+                    text={language === 'es' 
+                      ? 'Lo tienes. Comenzaremos con algunas preguntas sobre ti.' 
+                      : "You've got it. We'll begin with some questions about you."}
+                    delay={0}
+                    speed={25}
+                  />
+                </h1>
+                
+                {/* Subtitle with typewriter effect (delayed start) */}
+                <p 
+                  className="text-[30px] lg:text-[34px] font-[550] leading-tight"
+                  style={{ color: '#cab172' }}
+                >
+                  <TypewriterText 
+                    text={language === 'es' 
+                      ? 'Después de eso, profundizaremos en tu historial de salud para encontrar qué opción de tratamiento coincide con tus objetivos e historial de salud.' 
+                      : "After that, we'll dive into your health history to find which treatment option matches your goals and health history."}
+                    delay={1800}
+                    speed={20}
+                  />
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <h1 
+                  className="text-[30px] lg:text-[34px] font-[550] leading-tight"
+                  style={{ color: '#cab172' }}
+                >
+                  <TypewriterText 
+                    text={language === 'es' 
+                      ? 'Bien, parece que ya has hecho tu investigación.' 
+                      : "Nice, it sounds like you've already done your research."}
+                    delay={0}
+                    speed={25}
+                  />
                 </h1>
                 
                 <p 
-                  className={`text-[30px] lg:text-[34px] font-[550] leading-tight transition-all duration-800 ease-out ${
-                    showLine2 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                  }`}
+                  className="text-[30px] lg:text-[34px] font-[550] leading-tight"
                   style={{ color: '#cab172' }}
                 >
-                  {language === 'es' ? 
-                    'Sigamos adelante para encontrar qué opción de tratamiento coincide con tus objetivos e historial de salud.' : 
-                    'Let\'s keep going to find which treatment option matches your goals and health history.'}
+                  <TypewriterText 
+                    text={language === 'es' 
+                      ? 'Sigamos adelante para encontrar qué opción de tratamiento coincide con tus objetivos e historial de salud.' 
+                      : "Let's keep going to find which treatment option matches your goals and health history."}
+                    delay={1500}
+                    speed={20}
+                  />
                 </p>
               </div>
-            </>
+            )
           )}
         </div>
       </div>

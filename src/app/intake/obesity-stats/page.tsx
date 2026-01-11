@@ -84,7 +84,7 @@ export default function ObesityStatsPage() {
           <Image
             src={isSpanish 
               ? "https://static.wixstatic.com/media/c49a9b_97794b4b6d264743b5eb4ccd8dc1e7a2~mv2.webp"
-              : "https://static.wixstatic.com/media/c49a9b_a9abfe04c0984333bd15070af7de2a72~mv2.webp"
+              : "https://static.wixstatic.com/media/c49a9b_196af8a69bd94ec08cb8b6462a366159~mv2.webp"
             }
             alt="Obesity statistics"
             width={500}
