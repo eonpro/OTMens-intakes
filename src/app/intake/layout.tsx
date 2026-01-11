@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
+import { logSessionTimeout, logSessionStart } from '@/lib/audit';
 
 interface IntakeLayoutProps {
   children: ReactNode;
@@ -104,8 +106,34 @@ function clearAllIntakeData() {
 export default function IntakeLayout({ children }: IntakeLayoutProps) {
   const { language } = useLanguage();
   const router = useRouter();
+  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
+  const [timeoutRemaining, setTimeoutRemaining] = useState(0);
+
+  // Session timeout for HIPAA compliance (30 minutes inactivity)
+  const { resetTimeout } = useSessionTimeout({
+    timeout: 30 * 60 * 1000, // 30 minutes
+    warningTime: 5 * 60 * 1000, // 5 minutes warning
+    onWarning: (remaining) => {
+      setTimeoutRemaining(Math.ceil(remaining / 1000 / 60)); // Minutes
+      setShowTimeoutWarning(true);
+    },
+    onTimeout: () => {
+      logSessionTimeout();
+      clearAllIntakeData();
+      router.replace('/?session=expired');
+    },
+    enabled: true,
+  });
+
+  // Handle user continuing after warning
+  const handleContinueSession = () => {
+    setShowTimeoutWarning(false);
+    resetTimeout();
+  };
 
   useEffect(() => {
+    // Log session start for audit trail
+    logSessionStart();
     // Check if this is a page refresh using performance API
     const navEntries = performance.getEntriesByType('navigation');
     const navigationType = navEntries.length > 0 ? (navEntries[0] as PerformanceNavigationTiming).type : null;
@@ -169,6 +197,51 @@ export default function IntakeLayout({ children }: IntakeLayoutProps) {
     };
   }, [language, router]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      
+      {/* Session Timeout Warning Modal */}
+      {showTimeoutWarning && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+            <div className="text-center">
+              {/* Warning Icon */}
+              <div className="w-16 h-16 mx-auto bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                {language === 'es' ? 'Sesión por expirar' : 'Session Expiring Soon'}
+              </h2>
+              
+              <p className="text-gray-600 mb-4">
+                {language === 'es' 
+                  ? `Tu sesión expirará en ${timeoutRemaining} minutos debido a inactividad. ¿Deseas continuar?`
+                  : `Your session will expire in ${timeoutRemaining} minutes due to inactivity. Would you like to continue?`
+                }
+              </p>
+              
+              <p className="text-sm text-gray-500 mb-6">
+                {language === 'es'
+                  ? 'Por razones de seguridad, tu información se borrará automáticamente.'
+                  : 'For security reasons, your information will be automatically cleared.'
+                }
+              </p>
+              
+              <button
+                onClick={handleContinueSession}
+                className="w-full py-3 px-6 bg-[#cab172] text-black font-medium rounded-full hover:bg-[#b59a5e] transition-colors"
+              >
+                {language === 'es' ? 'Continuar sesión' : 'Continue Session'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
