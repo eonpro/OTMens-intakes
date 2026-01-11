@@ -15,9 +15,15 @@ import type {
   ResponseValue 
 } from '@/types/form';
 
-// Generate unique session ID
+// Generate unique session ID in format OTMENS-MMDDYY-XXXXXX
 function generateSessionId(): string {
-  return `EON-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const year = String(now.getFullYear()).slice(-2);
+  const dateStr = `${month}${day}${year}`;
+  const randomDigits = String(Math.floor(100000 + Math.random() * 900000)); // 6 random digits
+  return `OTMENS-${dateStr}-${randomDigits}`;
 }
 
 // Initial state factory

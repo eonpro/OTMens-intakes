@@ -174,7 +174,13 @@ export default function ContactInfoPage() {
       // Get or create session ID
       let sessionId = sessionStorage.getItem('intake_session_id');
       if (!sessionId) {
-        sessionId = `EON-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        // Generate OTMENS-MMDDYY-XXXXXX format
+        const now = new Date();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const year = String(now.getFullYear()).slice(-2);
+        const randomDigits = String(Math.floor(100000 + Math.random() * 900000));
+        sessionId = `OTMENS-${month}${day}${year}-${randomDigits}`;
         sessionStorage.setItem('intake_session_id', sessionId);
       }
       

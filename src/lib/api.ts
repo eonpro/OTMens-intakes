@@ -221,7 +221,13 @@ export interface IntakeSubmission {
 export function getSessionId(): string {
   let sessionId = sessionStorage.getItem('intake_session_id');
   if (!sessionId) {
-    sessionId = `EON-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    // Generate OTMENS-MMDDYY-XXXXXX format
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = String(now.getFullYear()).slice(-2);
+    const randomDigits = String(Math.floor(100000 + Math.random() * 900000));
+    sessionId = `OTMENS-${month}${day}${year}-${randomDigits}`;
     sessionStorage.setItem('intake_session_id', sessionId);
   }
   return sessionId;
@@ -701,8 +707,16 @@ export async function sendToIntakeQ(): Promise<IntakeQResult> {
       heightString = `${parsedHeight.feet}'${parsedHeight.inches || 0}"`;
     }
 
-    // Get session ID
-    const sessionId = sessionStorage.getItem('intake_session_id') || `EON-${Date.now()}`;
+    // Get session ID (fallback generates OTMENS-MMDDYY-XXXXXX)
+    let sessionId = sessionStorage.getItem('intake_session_id');
+    if (!sessionId) {
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const year = String(now.getFullYear()).slice(-2);
+      const randomDigits = String(Math.floor(100000 + Math.random() * 900000));
+      sessionId = `OTMENS-${month}${day}${year}-${randomDigits}`;
+    }
 
     // Build payload for IntakeQ API
     const payload = {
