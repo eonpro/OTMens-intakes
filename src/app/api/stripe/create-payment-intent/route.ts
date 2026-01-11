@@ -5,11 +5,10 @@ import Stripe from 'stripe';
 function getStripe() {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) {
+    console.error('STRIPE_SECRET_KEY is missing from environment variables');
     throw new Error('STRIPE_SECRET_KEY is not configured');
   }
-  return new Stripe(secretKey, {
-    apiVersion: '2025-12-15.clover',
-  });
+  return new Stripe(secretKey);
 }
 
 interface PaymentRequest {
@@ -147,15 +146,22 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating payment:', error);
     
+    // Log more details for debugging
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    
     if (error instanceof Stripe.errors.StripeError) {
       return NextResponse.json(
-        { error: error.message },
+        { error: error.message, code: error.code },
         { status: error.statusCode || 500 }
       );
     }
     
     return NextResponse.json(
-      { error: 'Failed to create payment' },
+      { error: error instanceof Error ? error.message : 'Failed to create payment' },
       { status: 500 }
     );
   }

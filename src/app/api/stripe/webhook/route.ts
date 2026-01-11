@@ -5,11 +5,10 @@ import Stripe from 'stripe';
 function getStripe() {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) {
+    console.error('STRIPE_SECRET_KEY is missing from environment variables');
     throw new Error('STRIPE_SECRET_KEY is not configured');
   }
-  return new Stripe(secretKey, {
-    apiVersion: '2025-12-15.clover',
-  });
+  return new Stripe(secretKey);
 }
 
 // Airtable configuration
