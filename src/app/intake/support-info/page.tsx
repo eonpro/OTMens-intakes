@@ -56,7 +56,7 @@ export default function SupportInfoPage() {
         <div className={`bg-[#f5ecd8] rounded-3xl p-6 pb-0 space-y-3 overflow-hidden transition-all duration-1000 ease-out transform ${
           showContainer ? 'opacity-100' : 'opacity-0'
         }`}>
-          <h2 className="text-xl font-medium text-black">{t('support.didYouKnow')}</h2>
+          <h2 className="text-xl font-bold text-black">{t('support.didYouKnow')}</h2>
           
           <div className="flex justify-start">
             <img 
