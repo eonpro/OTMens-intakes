@@ -77,7 +77,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Keep your blood sugar under control'
       },
       bgColor: 'bg-[#f5ecd8]',
-      image: 'https://static.wixstatic.com/media/c49a9b_b3c28fca89d5416a9f47ed2663230647~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_d75d94d455584a6cb15d4faacf8011c7~mv2.webp'
     }
   ];
 
