@@ -66,7 +66,7 @@ export default function SupportInfoPage() {
             />
           </div>
           
-          <h3 className="text-xl font-medium text-black leading-tight">
+          <h3 className="text-xl font-bold text-black leading-tight">
             {t('support.assigns')}
           </h3>
           
