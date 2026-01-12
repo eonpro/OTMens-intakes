@@ -84,7 +84,7 @@ export default function ReviewPage() {
         
         // Navigate after successful submission
         setTimeout(() => {
-          router.push('/intake/qualified');
+          router.push('/intake/finding-provider');
         }, 500);
       } else {
         console.error('❌ FAILED:', result.error);
@@ -94,7 +94,7 @@ export default function ReviewPage() {
         
         // Still navigate after delay
         setTimeout(() => {
-          router.push('/intake/qualified');
+          router.push('/intake/finding-provider');
         }, 2000);
       }
     } catch (error) {
@@ -105,7 +105,7 @@ export default function ReviewPage() {
       
       // Still navigate after delay
       setTimeout(() => {
-        router.push('/intake/qualified');
+        router.push('/intake/finding-provider');
       }, 2000);
     }
   }, [router]);

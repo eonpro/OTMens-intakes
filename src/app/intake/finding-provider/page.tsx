@@ -84,7 +84,7 @@ export default function FindingProviderPage() {
     const navigationTimer = setTimeout(() => {
       if (!hasNavigated.current) {
         hasNavigated.current = true;
-        router.push('/intake/name');
+        router.push('/intake/qualified');
       }
     }, 4000);
 
