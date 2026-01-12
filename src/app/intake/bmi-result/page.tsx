@@ -87,7 +87,7 @@ export default function BMIResultPage() {
       {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
-      <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-6 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-6 pb-6 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-5">
           {/* Header Text */}
           <div className="text-left mb-5">
@@ -187,7 +187,7 @@ export default function BMIResultPage() {
         </div>
       </div>
       
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="px-6 lg:px-8 pt-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={() => router.push('/intake/medical-history-overview')}
           className="continue-button"
