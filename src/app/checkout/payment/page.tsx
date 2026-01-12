@@ -350,7 +350,7 @@ export default function PaymentPage() {
       <OTMensLogo compact={true} />
 
       {/* Main content */}
-      <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="flex-1 px-6 lg:px-8 py-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-5">
           {/* Title */}
           <div className="text-center">
@@ -487,8 +487,8 @@ export default function PaymentPage() {
         </div>
       </div>
 
-      {/* Sticky bottom button */}
-      <div className="sticky-bottom-button max-w-md lg:max-w-lg mx-auto w-full">
+      {/* Bottom button */}
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleSubmit}
           disabled={!stripe || !clientSecret || processing}

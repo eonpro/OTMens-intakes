@@ -42,7 +42,7 @@ export default function CurrentWeightPage() {
       {/* OTMens Logo */}
       <OTMensLogo />
       
-      <div className="flex-1 px-6 lg:px-8 py-8 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="flex-1 px-6 lg:px-8 py-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">
           {/* Current Weight */}
           <div className="space-y-4">
@@ -115,8 +115,8 @@ export default function CurrentWeightPage() {
         </div>
       </div>
       
-      {/* Sticky bottom button */}
-      <div className="sticky-bottom-button max-w-md lg:max-w-lg mx-auto w-full">
+      {/* Bottom button */}
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleContinue}
           disabled={!currentWeight}

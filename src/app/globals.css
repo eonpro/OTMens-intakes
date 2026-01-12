@@ -378,47 +378,6 @@ button, .button-like {
   }
 }
 
-/* Sticky bottom button container - fixed at bottom on all pages */
-.sticky-bottom-button {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 50;
-  padding: 16px 50px;
-  padding-top: 32px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
-  background: linear-gradient(to top, #ffffff 0%, #ffffff 70%, transparent 100%);
-}
-
-@media (min-width: 768px) {
-  .sticky-bottom-button {
-    padding: 16px 35px;
-    padding-top: 32px;
-    padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
-  }
-}
-
-@media (min-width: 1024px) {
-  .sticky-bottom-button {
-    padding: 16px 32px;
-    padding-top: 32px;
-    padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
-  }
-}
-
-/* Content wrapper when sticky button is used - ensures scrolling works on mobile */
-.has-sticky-button {
-  padding-bottom: 200px !important;
-}
-
-@media (max-width: 767px) {
-  .has-sticky-button {
-    padding-bottom: 220px !important;
-  }
-}
-
 /* Input field styling */
 .input-field {
   width: 100%;
@@ -521,8 +480,6 @@ button, .button-like {
   background: linear-gradient(to top, #ffffff 60%, transparent 100%);
   z-index: 50;
 }
-
-/* Note: .sticky-bottom-button is defined above at line ~337 */
 
 /* Ensure html/body have proper background for status bar */
 html, body {
