@@ -137,7 +137,11 @@ export default function Home() {
           )}
         </h1>
         <p className="page-subtitle">
-          {t('landing.subtitle')}
+          {language === 'es' ? (
+            <>Descubre soluciones personalizadas basadas en tus<br/>metas, hábitos e historial de salud.</>
+          ) : (
+            <>Discover personalized solutions based on your<br/>goals, habits, and health history.</>
+          )}
         </p>
       </div>
 

@@ -24,7 +24,7 @@ function IntroLottie() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <div ref={containerRef} className="w-[280px] h-[280px] lg:w-[420px] lg:h-[420px] flex items-center justify-center">
+      <div ref={containerRef} className="w-[210px] h-[210px] lg:w-[315px] lg:h-[315px] flex items-center justify-center">
         <div className="text-gray-400">Loading animation...</div>
       </div>
     </div>
