@@ -20,7 +20,7 @@ export default function MedicationPreferencePage() {
     <div className="min-h-screen bg-white flex flex-col">
       {/* Progress bar */}
       <div className="w-full h-1 bg-gray-200">
-        <div className="h-full w-[6%] bg-[#b8e64a] transition-all duration-300"></div>
+        <div className="h-full w-[6%] bg-[#f5ecd8] transition-all duration-300"></div>
       </div>
       
       {/* Back button */}

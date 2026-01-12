@@ -247,7 +247,7 @@ export default function FormStep({ config, basePath = '/intake' }: FormStepProps
       {/* Progress bar */}
       <div className="w-full h-1 bg-gray-100">
         <div 
-          className="h-full bg-[#b8e64a] transition-all duration-300"
+          className="h-full bg-[#f5ecd8] transition-all duration-300"
           style={{ width: `${config.progressPercent}%` }}
         />
       </div>
