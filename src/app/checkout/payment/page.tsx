@@ -57,6 +57,8 @@ export default function PaymentPage() {
   const { selectedProduct, setPaymentStatus, setPaymentIntentId } = useCheckoutStore();
   
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentType, setPaymentType] = useState<'payment' | 'subscription_setup'>('payment');
+  const [customerId, setCustomerId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,7 +105,11 @@ export default function PaymentPage() {
         }
 
         setClientSecret(data.clientSecret);
-        setPaymentIntentId(data.paymentIntentId);
+        setPaymentType(data.type === 'subscription_setup' ? 'subscription_setup' : 'payment');
+        setCustomerId(data.customerId);
+        if (data.paymentIntentId) {
+          setPaymentIntentId(data.paymentIntentId);
+        }
       } catch (err) {
         console.error('Error creating payment:', err);
         setError(err instanceof Error ? err.message : 'Failed to initialize payment');
@@ -141,47 +147,126 @@ export default function PaymentPage() {
         throw submitError;
       }
 
-      const { error: paymentError, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `${window.location.origin}/checkout/confirmation`,
-          payment_method_data: {
-            billing_details: {
-              name: `${patientInfo.firstName} ${patientInfo.lastName}`,
-              email: patientInfo.email,
+      if (paymentType === 'subscription_setup') {
+        // Handle subscription flow with SetupIntent
+        const { error: setupError, setupIntent } = await stripe.confirmSetup({
+          elements,
+          clientSecret,
+          confirmParams: {
+            return_url: `${window.location.origin}/checkout/confirmation`,
+            payment_method_data: {
+              billing_details: {
+                name: `${patientInfo.firstName} ${patientInfo.lastName}`,
+                email: patientInfo.email,
+              },
             },
           },
-        },
-        redirect: 'if_required',
-      });
+          redirect: 'if_required',
+        });
 
-      if (paymentError) {
-        throw paymentError;
-      }
+        if (setupError) {
+          throw setupError;
+        }
 
-      if (paymentIntent?.status === 'succeeded') {
-        setPaymentStatus('succeeded');
-        
-        // Update Airtable with payment status
-        const intakeId = sessionStorage.getItem('submitted_intake_id');
-        if (intakeId) {
-          await fetch('/api/stripe/payment-success', {
+        if (setupIntent?.status === 'succeeded' && setupIntent.payment_method) {
+          // SetupIntent succeeded, now create the subscription
+          const subscriptionResponse = await fetch('/api/stripe/create-subscription', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              intakeId,
-              paymentIntentId: paymentIntent.id,
+              customerId: customerId,
+              priceId: selectedProduct?.priceId,
+              paymentMethodId: setupIntent.payment_method,
+              productId: selectedProduct?.id,
               productName: selectedProduct?.name,
-              amount: selectedProduct?.price,
+              metadata: {
+                intakeId: sessionStorage.getItem('submitted_intake_id') || '',
+              },
             }),
-          }).catch(console.error); // Don't block on this
+          });
+
+          const subscriptionData = await subscriptionResponse.json();
+          
+          if (subscriptionData.error) {
+            throw new Error(subscriptionData.error);
+          }
+
+          if (subscriptionData.success || subscriptionData.status === 'active') {
+            setPaymentStatus('succeeded');
+            
+            // Update Airtable with payment status
+            const intakeId = sessionStorage.getItem('submitted_intake_id');
+            if (intakeId) {
+              await fetch('/api/stripe/payment-success', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  intakeId,
+                  subscriptionId: subscriptionData.subscriptionId,
+                  productName: selectedProduct?.name,
+                  amount: selectedProduct?.price,
+                }),
+              }).catch(console.error);
+            }
+            
+            router.push('/checkout/confirmation');
+          } else if (subscriptionData.requiresAction && subscriptionData.clientSecret) {
+            // Additional payment confirmation required
+            const { error: confirmError } = await stripe.confirmPayment({
+              clientSecret: subscriptionData.clientSecret,
+              confirmParams: {
+                return_url: `${window.location.origin}/checkout/confirmation`,
+              },
+            });
+            if (confirmError) {
+              throw confirmError;
+            }
+          }
         }
-        
-        router.push('/checkout/confirmation');
-      } else if (paymentIntent?.status === 'requires_action') {
-        // Handle 3D Secure or other required actions
-        // Stripe will handle the redirect automatically
+      } else {
+        // Handle one-time payment flow
+        const { error: paymentError, paymentIntent } = await stripe.confirmPayment({
+          elements,
+          clientSecret,
+          confirmParams: {
+            return_url: `${window.location.origin}/checkout/confirmation`,
+            payment_method_data: {
+              billing_details: {
+                name: `${patientInfo.firstName} ${patientInfo.lastName}`,
+                email: patientInfo.email,
+              },
+            },
+          },
+          redirect: 'if_required',
+        });
+
+        if (paymentError) {
+          throw paymentError;
+        }
+
+        if (paymentIntent?.status === 'succeeded') {
+          setPaymentStatus('succeeded');
+          
+          // Update Airtable with payment status
+          const intakeId = sessionStorage.getItem('submitted_intake_id');
+          if (intakeId) {
+            await fetch('/api/stripe/payment-success', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                intakeId,
+                paymentIntentId: paymentIntent.id,
+                productName: selectedProduct?.name,
+                amount: selectedProduct?.price,
+              }),
+            }).catch(console.error);
+          }
+          
+          router.push('/checkout/confirmation');
+        } else if (paymentIntent?.status === 'requires_action') {
+          // Handle 3D Secure or other required actions
+          // Stripe will handle the redirect automatically
+        }
       }
     } catch (err) {
       console.error('Payment error:', err);

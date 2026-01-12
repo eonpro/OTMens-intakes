@@ -85,108 +85,36 @@ export async function POST(request: NextRequest) {
     }
 
     if (isSubscription) {
-      // Create a Subscription with incomplete payment
+      // For subscriptions, we'll create a SetupIntent first, then create the subscription
+      // This ensures we can always collect the payment method
       console.log('Creating subscription for customer:', customer.id, 'with price:', priceId);
       
-      const subscription = await stripe.subscriptions.create({
+      // First, create a SetupIntent to collect payment method
+      const setupIntent = await stripe.setupIntents.create({
         customer: customer.id,
-        items: [{ price: priceId }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          save_default_payment_method: 'on_subscription',
-          payment_method_types: ['card'],
-        },
-        expand: ['latest_invoice.payment_intent', 'pending_setup_intent'],
+        payment_method_types: ['card'],
+        usage: 'off_session',
         metadata: {
           productId,
           productName,
+          priceId,
           source: 'otmens-intake',
           ...metadata,
         },
       });
 
-      console.log('Subscription created:', subscription.id, 'status:', subscription.status);
+      console.log('SetupIntent created:', setupIntent.id);
 
-      // Get the client secret from the invoice's payment intent
-      const invoice = subscription.latest_invoice;
-      
-      if (!invoice || typeof invoice === 'string') {
-        console.error('Invoice not expanded or missing');
-        throw new Error('Failed to retrieve invoice from subscription');
-      }
-
-      // Type assertion for expanded payment_intent
-      const invoiceObj = invoice as Stripe.Invoice & { payment_intent?: Stripe.PaymentIntent | string | null };
-      let paymentIntent = invoiceObj.payment_intent;
-      
-      // If payment_intent is a string ID, fetch it
-      if (typeof paymentIntent === 'string') {
-        console.log('Payment intent is string ID, fetching:', paymentIntent);
-        const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
-        return NextResponse.json({
-          clientSecret: fetchedIntent.client_secret,
-          paymentIntentId: fetchedIntent.id,
-          subscriptionId: subscription.id,
-          customerId: customer.id,
-          type: 'subscription',
-        });
-      }
-      
-      // If payment_intent is null, try to finalize the invoice to create one
-      if (!paymentIntent) {
-        console.log('Payment intent is null. Invoice status:', invoiceObj.status, 'Invoice ID:', invoiceObj.id);
-        
-        // If invoice is draft, finalize it to create the payment intent
-        if (invoiceObj.status === 'draft') {
-          console.log('Finalizing draft invoice...');
-          const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoiceObj.id, {
-            expand: ['payment_intent'],
-          }) as Stripe.Invoice & { payment_intent?: Stripe.PaymentIntent | string | null };
-          
-          paymentIntent = finalizedInvoice.payment_intent;
-          
-          if (typeof paymentIntent === 'string') {
-            const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
-            return NextResponse.json({
-              clientSecret: fetchedIntent.client_secret,
-              paymentIntentId: fetchedIntent.id,
-              subscriptionId: subscription.id,
-              customerId: customer.id,
-              type: 'subscription',
-            });
-          }
-        }
-        
-        // If still no payment intent, check pending_setup_intent
-        if (!paymentIntent && subscription.pending_setup_intent) {
-          console.log('Using pending_setup_intent instead');
-          const setupIntent = typeof subscription.pending_setup_intent === 'string'
-            ? await stripe.setupIntents.retrieve(subscription.pending_setup_intent)
-            : subscription.pending_setup_intent;
-          
-          return NextResponse.json({
-            clientSecret: setupIntent.client_secret,
-            setupIntentId: setupIntent.id,
-            subscriptionId: subscription.id,
-            customerId: customer.id,
-            type: 'subscription_setup',
-          });
-        }
-        
-        if (!paymentIntent) {
-          console.error('Could not obtain payment intent for subscription');
-          throw new Error('Payment intent not available on subscription invoice');
-        }
-      }
-
-      console.log('Payment intent retrieved:', paymentIntent.id);
-
+      // Return the SetupIntent client secret
+      // The frontend will:
+      // 1. Collect payment method with SetupIntent
+      // 2. On success, call a separate endpoint to create the subscription
       return NextResponse.json({
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id,
-        subscriptionId: subscription.id,
+        clientSecret: setupIntent.client_secret,
+        setupIntentId: setupIntent.id,
         customerId: customer.id,
-        type: 'subscription',
+        priceId: priceId,
+        type: 'subscription_setup',
       });
     } else {
       // One-time payment - create PaymentIntent
