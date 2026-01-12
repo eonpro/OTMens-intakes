@@ -28,7 +28,7 @@ export default function ProgramsIncludePage() {
       title: 'Chequeos Semanales',
       description: 'Un representate asignado estará contigo durante todo tu tratamiento*',
       bgColor: '#EFECE7',
-      image: 'https://static.wixstatic.com/media/c49a9b_2c49b136f5ec49c787b37346cca7f47b~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_9879012a71074e4fb38af2dceae07f7c~mv2.webp'
     },
     {
       title: 'Consultas Médicas',
@@ -47,7 +47,7 @@ export default function ProgramsIncludePage() {
       title: 'Weekly Check-ins',
       description: 'An assigned representative will be with you throughout your treatment*',
       bgColor: '#EFECE7',
-      image: 'https://static.wixstatic.com/media/c49a9b_2c49b136f5ec49c787b37346cca7f47b~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_9879012a71074e4fb38af2dceae07f7c~mv2.webp'
     },
     {
       title: 'Medical Consultations',
