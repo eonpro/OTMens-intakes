@@ -191,7 +191,7 @@ export default function PaymentPage() {
             throw new Error(subscriptionData.error);
           }
 
-          if (subscriptionData.success || subscriptionData.status === 'active') {
+          if (subscriptionData.success || subscriptionData.status === 'active' || subscriptionData.status === 'trialing') {
             setPaymentStatus('succeeded');
             
             // Update Airtable with payment status
@@ -211,16 +211,28 @@ export default function PaymentPage() {
             
             router.push('/checkout/confirmation');
           } else if (subscriptionData.requiresAction && subscriptionData.clientSecret) {
-            // Additional payment confirmation required
-            const { error: confirmError } = await stripe.confirmPayment({
+            // Additional payment confirmation required (3D Secure, etc.)
+            const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
               clientSecret: subscriptionData.clientSecret,
               confirmParams: {
                 return_url: `${window.location.origin}/checkout/confirmation`,
               },
+              redirect: 'if_required',
             });
             if (confirmError) {
               throw confirmError;
             }
+            if (paymentIntent?.status === 'succeeded') {
+              setPaymentStatus('succeeded');
+              router.push('/checkout/confirmation');
+            }
+          } else if (subscriptionData.status === 'incomplete') {
+            // Subscription created but payment failed - show error
+            throw new Error(language === 'es' 
+              ? 'El pago no se pudo procesar. Por favor verifica tu tarjeta e intenta de nuevo.'
+              : 'Payment could not be processed. Please verify your card and try again.');
+          } else {
+            throw new Error(subscriptionData.error || 'Subscription creation failed');
           }
         }
       } else {

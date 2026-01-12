@@ -54,17 +54,15 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('Creating subscription for customer:', customerId, 'with price:', priceId);
+    console.log('Creating subscription for customer:', customerId, 'with price:', priceId, 'paymentMethod:', paymentMethodId);
 
-    // Create the subscription with the payment method
+    // Create the subscription - payment method is already attached and set as default
+    // Use 'allow_incomplete' to handle 3D Secure cases gracefully
     const subscription = await stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: priceId }],
       default_payment_method: paymentMethodId,
-      payment_settings: {
-        payment_method_types: ['card'],
-        save_default_payment_method: 'on_subscription',
-      },
+      payment_behavior: 'allow_incomplete', // Allow 3D Secure or other auth requirements
       expand: ['latest_invoice.payment_intent'],
       metadata: {
         productId: productId || '',
