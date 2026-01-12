@@ -12,32 +12,33 @@ export default function TreatmentBenefitsPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [showContainer, setShowContainer] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const hasNavigated = useRef(false);
 
+  // Staggered animations
   useEffect(() => {
-    const timer = setTimeout(() => setShowContainer(true), 100);
-    return () => clearTimeout(timer);
+    const timers = [
+      setTimeout(() => setShowTitle(true), 100),
+      setTimeout(() => setVisibleCards([0]), 300),
+      setTimeout(() => setVisibleCards([0, 1]), 550),
+      setTimeout(() => setVisibleCards([0, 1, 2]), 800),
+    ];
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Auto-advance after 2.5 seconds
+  // Auto-advance after 3.5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!hasNavigated.current) {
         hasNavigated.current = true;
         router.push('/intake/glp1-history');
       }
-    }, 2500);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, [router]);
-
-  const handleContinue = () => {
-    if (!hasNavigated.current) {
-      hasNavigated.current = true;
-      router.push('/intake/glp1-history');
-    }
-  };
 
   const benefits = [
     {
@@ -51,7 +52,8 @@ export default function TreatmentBenefitsPage() {
         en: 'Say goodbye to hunger and cravings'
       },
       bgColor: 'bg-[#f7d06b]',
-      image: 'https://static.wixstatic.com/media/c49a9b_b620bbcfc38b4eb68d480147dd1f4a65~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_b620bbcfc38b4eb68d480147dd1f4a65~mv2.webp',
+      icon: '🍎'
     },
     {
       id: 'digestion',
@@ -64,7 +66,8 @@ export default function TreatmentBenefitsPage() {
         en: 'Feel fuller faster and for longer'
       },
       bgColor: 'bg-[#EFECE7]',
-      image: 'https://static.wixstatic.com/media/c49a9b_a943a1c0cdc7476496fd819de1171e88~mv2.jpg'
+      image: 'https://static.wixstatic.com/media/c49a9b_a943a1c0cdc7476496fd819de1171e88~mv2.jpg',
+      icon: '✨'
     },
     {
       id: 'levels',
@@ -77,7 +80,8 @@ export default function TreatmentBenefitsPage() {
         en: 'Keep your blood sugar under control'
       },
       bgColor: 'bg-[#f5ecd8]',
-      image: 'https://static.wixstatic.com/media/c49a9b_d75d94d455584a6cb15d4faacf8011c7~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_d75d94d455584a6cb15d4faacf8011c7~mv2.webp',
+      icon: '💪'
     }
   ];
 
@@ -101,25 +105,37 @@ export default function TreatmentBenefitsPage() {
       <OTMensLogo compact={true} />
       
       {/* Main content */}
-      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full transition-all duration-1000 ease-out transform ${
-        showContainer ? 'opacity-100' : 'opacity-0'
-      }`}>
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-6">
-          <h1 className="text-2xl lg:text-3xl font-semibold leading-tight text-black">
-            {language === 'es' 
-              ? 'Nuestros tratamientos te ayudan de la siguiente manera'
-              : 'Our treatments help you in the following ways'}
-          </h1>
+          {/* Animated title */}
+          <div className={`transition-all duration-700 ease-out ${
+            showTitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}>
+            <h1 className="text-2xl lg:text-3xl font-semibold leading-tight text-black">
+              {language === 'es' 
+                ? 'Nuestros tratamientos te ayudan de la siguiente manera'
+                : 'Our treatments help you in the following ways'}
+            </h1>
+          </div>
 
-          {/* Benefit cards */}
+          {/* Benefit cards with staggered animations */}
           <div className="space-y-4 md:space-y-5">
-            {benefits.map((benefit) => (
+            {benefits.map((benefit, index) => (
               <div 
                 key={benefit.id} 
-                className={`${benefit.bgColor} rounded-3xl overflow-hidden`}
+                className={`${benefit.bgColor} rounded-3xl overflow-hidden transition-all duration-700 ease-out ${
+                  visibleCards.includes(index) 
+                    ? 'opacity-100 translate-x-0 scale-100' 
+                    : 'opacity-0 translate-x-8 scale-95'
+                }`}
               >
+                {/* Shine effect overlay */}
+                <div className={`absolute inset-0 overflow-hidden pointer-events-none ${
+                  visibleCards.includes(index) ? 'shine-sweep' : ''
+                }`} style={{ animationDelay: `${index * 200 + 400}ms` }} />
+                
                 {/* Flex container with proper responsive layout */}
-                <div className="flex items-stretch min-h-[100px] lg:min-h-[110px]">
+                <div className="flex items-stretch min-h-[100px] lg:min-h-[110px] relative">
                   {/* Text content - left side on both mobile and desktop */}
                   <div className="flex-1 p-4 lg:p-5 flex flex-col justify-center">
                     <h2 className="text-[18px] lg:text-[20px] font-semibold mb-1 text-black">
@@ -131,15 +147,41 @@ export default function TreatmentBenefitsPage() {
                   </div>
                   
                   {/* Image container - right side */}
-                  <div className="w-28 lg:w-36 flex-shrink-0">
+                  <div className={`w-28 lg:w-36 flex-shrink-0 overflow-hidden transition-all duration-500 ${
+                    visibleCards.includes(index) ? 'scale-100' : 'scale-110'
+                  }`}>
                     <img 
                       src={benefit.image}
                       alt={language === 'es' ? benefit.title.es : benefit.title.en}
                       className="w-full h-full object-cover"
                     />
                   </div>
+                  
+                  {/* Animated check badge */}
+                  <div className={`absolute top-3 left-3 w-6 h-6 rounded-full bg-white/80 flex items-center justify-center transition-all duration-500 ${
+                    visibleCards.includes(index) ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+                  }`} style={{ transitionDelay: `${index * 200 + 300}ms` }}>
+                    <svg className="w-4 h-4 text-[#cab172]" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+
+          {/* Animated dots indicator */}
+          <div className={`flex justify-center gap-2 pt-2 transition-all duration-500 ${
+            visibleCards.length === 3 ? 'opacity-100' : 'opacity-0'
+          }`}>
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-2 h-2 rounded-full bg-[#cab172]"
+                style={{
+                  animation: `pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                }}
+              />
             ))}
           </div>
         </div>
@@ -150,6 +192,32 @@ export default function TreatmentBenefitsPage() {
         {/* Copyright text */}
         <CopyrightText className="mt-4" />
       </div>
+
+      <style jsx>{`
+        .shine-sweep::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 100%
+          );
+          animation: shineSweep 1.5s ease-in-out forwards;
+        }
+        @keyframes shineSweep {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 0.4; }
+          50% { transform: scale(1.3); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }

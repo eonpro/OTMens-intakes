@@ -186,15 +186,29 @@ export default function FindingProviderPage() {
         </div>
 
         {/* Providers found counter */}
-        <div className="text-center">
+        <div className="text-center mb-6">
           <span className="text-3xl font-bold text-[#cab172]">{providersFound}</span>
           <span className="text-gray-500 ml-2">
             {language === 'es' ? 'proveedores disponibles' : 'providers available'}
           </span>
         </div>
 
+        {/* Via MedLink text */}
+        <p className="text-sm text-gray-500 mb-3">
+          {language === 'es' ? 'conectando via' : 'connecting via'}
+        </p>
+
+        {/* MedLink Logo */}
+        <div className="flex justify-center mb-6">
+          <img 
+            src="https://static.wixstatic.com/shapes/c49a9b_f5e1ceda9f1341bc9e97cc0a6b4d19a3.svg"
+            alt="MedLink"
+            className="h-10"
+          />
+        </div>
+
         {/* Bottom dots */}
-        <div className="flex justify-center gap-2 mt-8">
+        <div className="flex justify-center gap-2 mt-4">
           {[0, 1, 2].map((i) => (
             <div
               key={i}
