@@ -89,7 +89,7 @@ export default function Home() {
 
       <button
         onClick={handleContinue}
-        className="continue-button">
+        className="continue-button shine-button">
         <span style={{ color: '#ffffff' }}>{t('landing.button.start')}</span>
         <svg className="w-4 h-4" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>

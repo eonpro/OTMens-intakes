@@ -149,24 +149,24 @@ export default function QualifiedPage() {
             <br />
             <span className="text-[#413d3d]">
               {language === 'es' 
-                ? <>Según tus respuestas, calificas para tratamiento con <mark style={{ backgroundColor: '#EFECE7' }}>Semaglutida</mark> o <mark style={{ backgroundColor: '#EFECE7' }}>Tirzepatida</mark>.</>
-                : <>Based on your answers, you qualify for treatment with either <mark style={{ backgroundColor: '#EFECE7' }}>Semaglutide</mark> or <mark style={{ backgroundColor: '#EFECE7' }}>Tirzepatide</mark>.</>
+                ? <>Según tus respuestas, calificas para tratamiento con <mark style={{ backgroundColor: '#EFECE7' }}>GLP-1 + GIP</mark>.</>
+                : <>Based on your answers, you qualify for <mark style={{ backgroundColor: '#EFECE7' }}>GLP-1 + GIP treatment</mark>.</>
               }
             </span>
           </h1>
 
           <p className="text-base text-[#413d3d]">
             {language === 'es'
-              ? <>Ambos son <mark style={{ backgroundColor: '#EFECE7' }}>medicamentos GLP-1</mark> altamente efectivos clínicamente comprobados para apoyar la pérdida de peso, mejorar la salud metabólica y ayudar a controlar el apetito.</>
-              : <>Both are highly effective <mark style={{ backgroundColor: '#EFECE7' }}>GLP-1 medications</mark> clinically proven to support weight loss, improve metabolic health, and help curb appetite.</>
+              ? <>Estos son <mark style={{ backgroundColor: '#EFECE7' }}>medicamentos GLP-1 + GIP</mark> altamente efectivos clínicamente comprobados para apoyar la pérdida de peso, mejorar la salud metabólica y ayudar a controlar el apetito.</>
+              : <>These are highly effective <mark style={{ backgroundColor: '#EFECE7' }}>GLP-1 + GIP medications</mark> clinically proven to support weight loss, improve metabolic health, and help curb appetite.</>
             }
           </p>
         </div>
 
-        {/* Checkout button */}
+        {/* Checkout button with shine effect */}
         <button
           onClick={handleCheckout}
-          className="w-full max-w-sm bg-[#413d3d] hover:bg-[#2a2727] py-3 px-6 rounded-full flex items-center justify-between transition-colors"
+          className="shine-button w-full max-w-sm bg-[#413d3d] hover:bg-[#2a2727] py-3 px-6 rounded-full flex items-center justify-between transition-colors"
         >
           <div className="text-left leading-tight">
             <div className="font-semibold text-base" style={{ color: '#ffffff' }}>
