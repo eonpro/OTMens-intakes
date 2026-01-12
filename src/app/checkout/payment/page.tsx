@@ -335,7 +335,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Back button */}
-      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="px-[15px] pt-6 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={() => router.back()}
           className="inline-block p-2 -ml-2 hover:bg-gray-100 rounded-lg"
@@ -350,7 +350,7 @@ export default function PaymentPage() {
       <OTMensLogo compact={true} />
 
       {/* Main content */}
-      <div className="flex-1 px-[10px] py-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="flex-1 px-[15px] py-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-5">
           {/* Title */}
           <div className="text-center">
@@ -488,7 +488,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Bottom button */}
-      <div className="px-[10px] pb-8 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="px-[15px] pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleSubmit}
           disabled={!stripe || !clientSecret || processing}
