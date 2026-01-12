@@ -451,7 +451,7 @@ export default function PaymentPage() {
             </div>
           ) : clientSecret ? (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white rounded-2xl border-2 border-gray-100 p-4">
+              <div className="bg-white rounded-2xl border-2 border-gray-100 p-2">
                 <PaymentElement
                   options={{
                     layout: {
