@@ -42,7 +42,7 @@ export default function StatePage() {
         'Virginia': 'VA', 'Washington': 'WA', 'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY'
       };
       sessionStorage.setItem('intake_state', JSON.stringify({ state: stateCode[selectedState] || selectedState }));
-      router.push('/intake/name');
+      router.push('/intake/finding-provider');
     }
   };
   
