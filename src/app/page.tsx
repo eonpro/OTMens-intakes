@@ -130,7 +130,11 @@ export default function Home() {
       {/* Title and subtitle */}
       <div className="text-left">
         <h1 className="page-title" style={{ color: '#cab172' }}>
-          {t('landing.title')}
+          {language === 'es' ? (
+            <>Evaluemos tus<br/>opciones de tratamiento.</>
+          ) : (
+            <>Let's evaluate your<br/>treatment options.</>
+          )}
         </h1>
         <p className="page-subtitle">
           {t('landing.subtitle')}
@@ -141,7 +145,7 @@ export default function Home() {
       <div className="mt-6 space-y-3">
         {/* Trusted by text */}
         <p className="text-[15px] font-medium text-[#413d3d]">
-          {language === 'es' ? 'Confiado por más de 20,000 pacientes' : 'Trusted by over 20,000 patients'}
+          {language === 'es' ? 'Confiado por más de 10,000+ pacientes' : 'Trusted by over 10,000+ patients'}
         </p>
 
         {/* Patient photos - 20% bigger */}

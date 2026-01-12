@@ -174,7 +174,7 @@ export default function BMIResultPage() {
             {/* Doctor Image */}
             <div className="flex items-center space-x-4 bg-[#f5ecd8] rounded-2xl p-4 mt-3">
               <img 
-                src="https://static.wixstatic.com/media/c49a9b_60e51d36e98e4128a6edb7987a3d6b8b~mv2.webp"
+                src="https://static.wixstatic.com/media/c49a9b_5b7eb6087f204fb488efae8b63ec6f5f~mv2.webp"
                 alt="Doctor"
                 className="rounded-full object-cover flex-shrink-0"
                 style={{ width: '100px', height: '100px' }}

@@ -51,7 +51,7 @@ export default function MedicalHistoryOverviewPage() {
           {/* Doctor Image - Left aligned */}
           <div className="flex justify-start">
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_7742352092de4c8e82b9e6e10cc20719~mv2.webp"
+              src="https://static.wixstatic.com/media/c49a9b_5b7eb6087f204fb488efae8b63ec6f5f~mv2.webp"
               alt="Medical Professional"
               className="w-[6.5rem] h-[6.5rem] rounded-full object-cover"
             />

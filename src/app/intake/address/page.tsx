@@ -289,7 +289,7 @@ export default function AddressPage() {
           </div>
           <div className="flex-shrink-0 bg-gray-200 rounded-r-3xl">
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_4d682057194f4e1fa67cf62dd50a1d27~mv2.webp"
+              src="https://static.wixstatic.com/media/c49a9b_a36034deddf94a3e8e22dcd4f70ecc94~mv2.webp"
               alt="Cold Shipping"
               className="h-20 w-20 object-cover rounded-r-3xl"
             />

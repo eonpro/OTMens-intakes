@@ -64,7 +64,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Feel fuller faster and for longer'
       },
       bgColor: 'bg-[#EFECE7]',
-      image: 'https://static.wixstatic.com/media/c49a9b_ea25d461f966422ca6f9a51a72b9e93b~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_b620bbcfc38b4eb68d480147dd1f4a65~mv2.webp'
     },
     {
       id: 'levels',
@@ -77,7 +77,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Keep your blood sugar under control'
       },
       bgColor: 'bg-[#f5ecd8]',
-      image: 'https://static.wixstatic.com/media/c49a9b_d75d94d455584a6cb15d4faacf8011c7~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_a943a1c0cdc7476496fd819de1171e88~mv2.jpg'
     }
   ];
 

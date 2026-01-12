@@ -77,7 +77,7 @@ export default function SupportInfoPage() {
           {/* Customer Service Representative Image */}
           <div className="flex justify-start -ml-6 -mb-6 mt-4">
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_2c49b136f5ec49c787b37346cca7f47b~mv2.webp"
+              src="https://static.wixstatic.com/media/c49a9b_ea825307d7984a3dbfedfad806e49a01~mv2.png"
               alt="Customer Service Representative"
               className="w-80 h-auto object-contain"
             />
