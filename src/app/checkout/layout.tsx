@@ -15,6 +15,8 @@ export default function CheckoutLayout({ children }: CheckoutLayoutProps) {
     <Elements 
       stripe={stripePromise}
       options={{
+        mode: 'setup', // Default mode for collecting payment methods
+        currency: 'usd',
         appearance: {
           theme: 'stripe',
           variables: {

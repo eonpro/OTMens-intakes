@@ -119,19 +119,19 @@ export default function TreatmentBenefitsPage() {
                 className={`${benefit.bgColor} rounded-3xl overflow-hidden`}
               >
                 {/* Flex container with proper responsive layout */}
-                <div className="flex items-stretch min-h-[120px] lg:min-h-[140px]">
+                <div className="flex items-stretch min-h-[100px] lg:min-h-[110px]">
                   {/* Text content - left side on both mobile and desktop */}
-                  <div className="flex-1 p-4 lg:p-6 flex flex-col justify-center">
-                    <h2 className="text-[20px] lg:text-[22px] font-semibold mb-1 text-black">
+                  <div className="flex-1 p-4 lg:p-5 flex flex-col justify-center">
+                    <h2 className="text-[18px] lg:text-[20px] font-semibold mb-1 text-black">
                       {language === 'es' ? benefit.title.es : benefit.title.en}
                     </h2>
-                    <p className="text-[16px] lg:text-[18px] text-gray-700 leading-tight">
+                    <p className="text-[14px] lg:text-[16px] text-gray-700 leading-tight">
                       {language === 'es' ? benefit.description.es : benefit.description.en}
                     </p>
                   </div>
                   
                   {/* Image container - right side */}
-                  <div className="w-32 lg:w-48 flex-shrink-0">
+                  <div className="w-28 lg:w-36 flex-shrink-0">
                     <img 
                       src={benefit.image}
                       alt={language === 'es' ? benefit.title.es : benefit.title.en}

@@ -57,20 +57,42 @@ export function loadShippingFromIntake(): ShippingAddress | null {
   if (typeof window === 'undefined') return null;
   
   const addressData = sessionStorage.getItem('intake_address');
-  if (!addressData) return null;
+  const parsed = safeJsonParse<{
+    street?: string;
+    unit?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    fullAddress?: string;
+  }>(addressData, {});
+  
+  if (!parsed.street && !parsed.fullAddress) return null;
+  
+  return {
+    street: parsed.street || '',
+    unit: parsed.unit || '',
+    city: parsed.city || '',
+    state: parsed.state || '',
+    zipCode: parsed.zipCode || '',
+    fullAddress: parsed.fullAddress || '',
+  };
+}
+
+// Safe JSON parse helper
+function safeJsonParse<T>(data: string | null, fallback: T): T {
+  if (!data) return fallback;
+  
+  // Check if it looks like JSON (starts with { or [)
+  const trimmed = data.trim();
+  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+    return fallback;
+  }
   
   try {
-    const parsed = JSON.parse(addressData);
-    return {
-      street: parsed.street || '',
-      unit: parsed.unit || '',
-      city: parsed.city || '',
-      state: parsed.state || '',
-      zipCode: parsed.zipCode || '',
-      fullAddress: parsed.fullAddress || '',
-    };
-  } catch {
-    return null;
+    return JSON.parse(data) as T;
+  } catch (e) {
+    console.warn('Failed to parse JSON from session storage:', e);
+    return fallback;
   }
 }
 
@@ -94,39 +116,21 @@ export function getPatientInfoFromIntake(): {
   
   // Get name
   const nameData = sessionStorage.getItem('intake_name');
-  if (nameData) {
-    try {
-      const parsed = JSON.parse(nameData);
-      firstName = parsed.firstName || '';
-      lastName = parsed.lastName || '';
-    } catch {
-      // ignore
-    }
-  }
+  const nameParsed = safeJsonParse<{ firstName?: string; lastName?: string }>(nameData, {});
+  firstName = nameParsed.firstName || '';
+  lastName = nameParsed.lastName || '';
   
   // Get contact
   const contactData = sessionStorage.getItem('intake_contact');
-  if (contactData) {
-    try {
-      const parsed = JSON.parse(contactData);
-      email = parsed.email || '';
-      phone = parsed.phone || '';
-    } catch {
-      // ignore
-    }
-  }
+  const contactParsed = safeJsonParse<{ email?: string; phone?: string }>(contactData, {});
+  email = contactParsed.email || '';
+  phone = contactParsed.phone || '';
   
   // Get DOB
   const dobData = sessionStorage.getItem('intake_dob');
-  if (dobData) {
-    try {
-      const parsed = JSON.parse(dobData);
-      if (parsed.month && parsed.day && parsed.year) {
-        dob = `${parsed.month}/${parsed.day}/${parsed.year}`;
-      }
-    } catch {
-      dob = dobData;
-    }
+  const dobParsed = safeJsonParse<{ month?: string; day?: string; year?: string }>(dobData, {});
+  if (dobParsed.month && dobParsed.day && dobParsed.year) {
+    dob = `${dobParsed.month}/${dobParsed.day}/${dobParsed.year}`;
   }
   
   return { firstName, lastName, email, phone, dob };

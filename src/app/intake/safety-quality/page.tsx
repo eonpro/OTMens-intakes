@@ -85,7 +85,7 @@ export default function SafetyQualityPage() {
               <img 
                 src="https://static.wixstatic.com/media/c49a9b_08d4b9a9d0394b3a83c2284def597b09~mv2.webp"
                 alt={language === 'es' ? 'Farmacia de calidad' : 'Quality pharmacy'}
-                className="w-full h-auto"
+                className="w-full h-auto max-h-64 object-cover"
               />
             </div>
           </div>
