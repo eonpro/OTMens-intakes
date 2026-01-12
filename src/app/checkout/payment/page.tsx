@@ -31,8 +31,8 @@ const translations = {
     benefit1Desc: 'Fast processing to get you started quickly',
     benefit2Title: 'Personal Health Advisor',
     benefit2Desc: 'Dedicated support throughout your journey',
-    benefit3Title: 'Money-Back Guarantee',
-    benefit3Desc: 'If you\'re not satisfied within 30 days',
+    benefit3Title: 'FDA-Approved Medications',
+    benefit3Desc: 'Clinically proven, physician-supervised care',
     limitedOffer: 'Limited Time',
     spotsRemaining: 'Only 3 spots left at this price',
   },
@@ -58,8 +58,8 @@ const translations = {
     benefit1Desc: 'Procesamiento rápido para comenzar pronto',
     benefit2Title: 'Asesor Personal de Salud',
     benefit2Desc: 'Apoyo dedicado durante tu proceso',
-    benefit3Title: 'Garantía de Devolución',
-    benefit3Desc: 'Si no estás satisfecho en 30 días',
+    benefit3Title: 'Medicamentos Aprobados por FDA',
+    benefit3Desc: 'Cuidado supervisado por médicos',
     limitedOffer: 'Tiempo Limitado',
     spotsRemaining: 'Solo quedan 3 lugares a este precio',
   },
@@ -422,7 +422,7 @@ export default function PaymentPage() {
               <div className="flex items-start gap-3 bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
                 <div className="w-10 h-10 bg-[#f5ecd8] rounded-full flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 text-[#cab172]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
                 </div>
                 <div>
@@ -492,7 +492,7 @@ export default function PaymentPage() {
         <button 
           onClick={handleSubmit}
           disabled={!stripe || !clientSecret || processing}
-          className="continue-button"
+          className="continue-button shine-button"
         >
           {processing ? (
             <>
