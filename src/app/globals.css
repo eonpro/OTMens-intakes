@@ -560,6 +560,24 @@ html, body {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+/* Premium page transition wrapper */
+.page-transition-wrapper {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Smooth element transitions */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium easing for all transitions */
+.transition-premium {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Smooth scrolling for better mobile experience */
 @media (max-width: 768px) {
   html {
