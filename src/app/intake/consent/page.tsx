@@ -124,7 +124,7 @@ export default function ConsentPage() {
                 )}
               </button>
               <div
-                className="text-[13px] md:text-[14px] text-[#413d3d]/80 leading-tight cursor-pointer"
+                className="text-[12px] md:text-[12px] text-[#413d3d]/80 leading-tight cursor-pointer"
                 onClick={() => setAgreed(!agreed)}
               >
                 {t('consent.agreement.start')}
