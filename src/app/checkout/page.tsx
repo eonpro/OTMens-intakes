@@ -328,9 +328,10 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <div className="text-sm text-[#413d3d]/80">
-                  <p>{patientInfo.firstName} {patientInfo.lastName}</p>
+                  <p className="font-medium">{patientInfo.firstName} {patientInfo.lastName}</p>
                   <p>{shippingAddress.street}{shippingAddress.unit ? `, ${shippingAddress.unit}` : ''}</p>
-                  <p>{shippingAddress.city}, {shippingAddress.state} {shippingAddress.zipCode}</p>
+                  {patientInfo.email && <p>{patientInfo.email}</p>}
+                  {patientInfo.phone && <p>{patientInfo.phone}</p>}
                 </div>
               )}
             </div>
