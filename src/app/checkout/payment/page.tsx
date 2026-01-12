@@ -31,8 +31,8 @@ const translations = {
     benefit1Desc: 'Fast processing to get you started quickly',
     benefit2Title: 'Personal Health Advisor',
     benefit2Desc: 'Dedicated support throughout your journey',
-    benefit3Title: 'FDA-Approved Medications',
-    benefit3Desc: 'Clinically proven, physician-supervised care',
+    benefit3Title: 'Licensed Pharmacy Treatment',
+    benefit3Desc: 'Medications from certified US pharmacies',
     limitedOffer: 'Limited Time',
     spotsRemaining: 'Only 3 spots left at this price',
   },
@@ -58,8 +58,8 @@ const translations = {
     benefit1Desc: 'Procesamiento rápido para comenzar pronto',
     benefit2Title: 'Asesor Personal de Salud',
     benefit2Desc: 'Apoyo dedicado durante tu proceso',
-    benefit3Title: 'Medicamentos Aprobados por FDA',
-    benefit3Desc: 'Cuidado supervisado por médicos',
+    benefit3Title: 'Tratamiento de Farmacia Licenciada',
+    benefit3Desc: 'Medicamentos de farmacias certificadas en EE.UU.',
     limitedOffer: 'Tiempo Limitado',
     spotsRemaining: 'Solo quedan 3 lugares a este precio',
   },
@@ -350,7 +350,7 @@ export default function PaymentPage() {
       <OTMensLogo compact={true} />
 
       {/* Main content */}
-      <div className="flex-1 px-6 lg:px-8 py-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="flex-1 px-[10px] py-4 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-5">
           {/* Title */}
           <div className="text-center">
@@ -488,7 +488,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Bottom button */}
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
+      <div className="px-[10px] pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleSubmit}
           disabled={!stripe || !clientSecret || processing}
