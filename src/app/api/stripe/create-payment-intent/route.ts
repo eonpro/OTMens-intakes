@@ -94,8 +94,9 @@ export async function POST(request: NextRequest) {
         payment_behavior: 'default_incomplete',
         payment_settings: {
           save_default_payment_method: 'on_subscription',
+          payment_method_types: ['card'],
         },
-        expand: ['latest_invoice.payment_intent'],
+        expand: ['latest_invoice.payment_intent', 'pending_setup_intent'],
         metadata: {
           productId,
           productName,
@@ -116,24 +117,66 @@ export async function POST(request: NextRequest) {
 
       // Type assertion for expanded payment_intent
       const invoiceObj = invoice as Stripe.Invoice & { payment_intent?: Stripe.PaymentIntent | string | null };
-      const paymentIntent = invoiceObj.payment_intent;
+      let paymentIntent = invoiceObj.payment_intent;
       
-      if (!paymentIntent || typeof paymentIntent === 'string') {
-        console.error('Payment intent not expanded or missing. Invoice ID:', invoiceObj.id);
+      // If payment_intent is a string ID, fetch it
+      if (typeof paymentIntent === 'string') {
+        console.log('Payment intent is string ID, fetching:', paymentIntent);
+        const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
+        return NextResponse.json({
+          clientSecret: fetchedIntent.client_secret,
+          paymentIntentId: fetchedIntent.id,
+          subscriptionId: subscription.id,
+          customerId: customer.id,
+          type: 'subscription',
+        });
+      }
+      
+      // If payment_intent is null, try to finalize the invoice to create one
+      if (!paymentIntent) {
+        console.log('Payment intent is null. Invoice status:', invoiceObj.status, 'Invoice ID:', invoiceObj.id);
         
-        // If payment_intent is a string ID, we need to fetch it
-        if (typeof paymentIntent === 'string') {
-          const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
+        // If invoice is draft, finalize it to create the payment intent
+        if (invoiceObj.status === 'draft') {
+          console.log('Finalizing draft invoice...');
+          const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoiceObj.id, {
+            expand: ['payment_intent'],
+          }) as Stripe.Invoice & { payment_intent?: Stripe.PaymentIntent | string | null };
+          
+          paymentIntent = finalizedInvoice.payment_intent;
+          
+          if (typeof paymentIntent === 'string') {
+            const fetchedIntent = await stripe.paymentIntents.retrieve(paymentIntent);
+            return NextResponse.json({
+              clientSecret: fetchedIntent.client_secret,
+              paymentIntentId: fetchedIntent.id,
+              subscriptionId: subscription.id,
+              customerId: customer.id,
+              type: 'subscription',
+            });
+          }
+        }
+        
+        // If still no payment intent, check pending_setup_intent
+        if (!paymentIntent && subscription.pending_setup_intent) {
+          console.log('Using pending_setup_intent instead');
+          const setupIntent = typeof subscription.pending_setup_intent === 'string'
+            ? await stripe.setupIntents.retrieve(subscription.pending_setup_intent)
+            : subscription.pending_setup_intent;
+          
           return NextResponse.json({
-            clientSecret: fetchedIntent.client_secret,
-            paymentIntentId: fetchedIntent.id,
+            clientSecret: setupIntent.client_secret,
+            setupIntentId: setupIntent.id,
             subscriptionId: subscription.id,
             customerId: customer.id,
-            type: 'subscription',
+            type: 'subscription_setup',
           });
         }
         
-        throw new Error('Payment intent not available on subscription invoice');
+        if (!paymentIntent) {
+          console.error('Could not obtain payment intent for subscription');
+          throw new Error('Payment intent not available on subscription invoice');
+        }
       }
 
       console.log('Payment intent retrieved:', paymentIntent.id);

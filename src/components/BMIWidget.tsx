@@ -9,6 +9,7 @@ interface BMIWidgetProps {
 
 export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
   const [indicatorPosition, setIndicatorPosition] = useState(0);
+  const [barFillWidth, setBarFillWidth] = useState(0);
   const [showIndicator, setShowIndicator] = useState(false);
   const [showLabel, setShowLabel] = useState(false);
   const lastBMI = useRef<number | null>(null);
@@ -54,13 +55,15 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
       // Show indicator and start animation
       setTimeout(() => {
         setShowIndicator(true);
+        // Animate the bar fill and indicator together
+        setBarFillWidth(position);
         setIndicatorPosition(position);
         
-        // Show label after dot animation completes
-          setTimeout(() => {
-            setShowLabel(true);
+        // Show label after animation completes
+        setTimeout(() => {
+          setShowLabel(true);
           isAnimating.current = false;
-          }, 1200);
+        }, 1200);
       }, 300);
     }
   }, [bmi]);
@@ -107,23 +110,29 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
         </div>
       </div>
 
-      {/* Track */}
-      <div 
-        className="relative h-3 w-full rounded-[20px] overflow-visible"
-        style={{
-          background: '#e8e8e8',
-          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
-        }}
-      >
-        {/* Gradient */}
+      {/* Track Container */}
+      <div className="relative">
+        {/* Track Background */}
         <div 
-          className="absolute inset-0 rounded-[20px] opacity-90"
+          className="relative h-3 w-full rounded-[20px] overflow-hidden"
           style={{
-            background: 'linear-gradient(90deg, #ff6b6b 0%, #feca57 20%, #48dbfb 40%, #1dd1a1 60%, #feca57 80%, #ff6b6b 100%)'
+            background: '#e8e8e8',
+            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
           }}
-        />
+        >
+          {/* Animated Fill Gradient - animates from 0 to BMI position */}
+          <div 
+            className="absolute inset-y-0 left-0 rounded-[20px]"
+            style={{
+              width: `${barFillWidth}%`,
+              background: 'linear-gradient(90deg, #ff6b6b 0%, #feca57 25%, #48dbfb 50%, #1dd1a1 75%, #feca57 100%)',
+              transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              backgroundSize: '400% 100%',
+            }}
+          />
+        </div>
         
-        {/* Indicator Dot */}
+        {/* Indicator Dot - positioned outside track for visibility */}
         {showIndicator && bmi > 0 && (
           <>
             {/* Pulse Ring */}
