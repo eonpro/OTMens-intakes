@@ -52,10 +52,13 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
       
       const position = calculatePosition(bmi);
       
-      // Show indicator and start animation
+      // First, show indicator at position 0
+      setShowIndicator(true);
+      setIndicatorPosition(0);
+      setBarFillWidth(0);
+      
+      // Then animate both to the final position
       setTimeout(() => {
-        setShowIndicator(true);
-        // Animate the bar fill and indicator together
         setBarFillWidth(position);
         setIndicatorPosition(position);
         
@@ -64,7 +67,7 @@ export default function BMIWidget({ bmi, language }: BMIWidgetProps) {
           setShowLabel(true);
           isAnimating.current = false;
         }, 1200);
-      }, 300);
+      }, 100);
     }
   }, [bmi]);
 
