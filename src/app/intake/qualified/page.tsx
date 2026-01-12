@@ -132,7 +132,7 @@ export default function QualifiedPage() {
         {/* Happy couple image */}
         <div className="w-56 h-48 mb-6 rounded-xl overflow-hidden">
           <img
-            src="https://static.wixstatic.com/media/c49a9b_e424b9a0a7264ab3a9f667231c71a57b~mv2.webp"
+            src="https://static.wixstatic.com/media/c49a9b_2b3868400f2a41a798e4ee4aa2b4832c~mv2.webp"
             alt="Happy couple"
             className="w-full h-full object-cover"
           />
