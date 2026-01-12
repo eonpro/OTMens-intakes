@@ -54,7 +54,7 @@ export default function SupportInfoPage() {
       
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className={`bg-[#f5ecd8] rounded-3xl p-6 pb-0 space-y-3 overflow-hidden transition-all duration-1000 ease-out transform ${
-          showContainer ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
+          showContainer ? 'opacity-100' : 'opacity-0'
         }`}>
           <h2 className="text-xl font-medium text-black">{t('support.didYouKnow')}</h2>
           

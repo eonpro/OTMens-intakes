@@ -60,7 +60,7 @@ export default function SafetyQualityPage() {
       
       {/* Main content */}
       <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full transition-all duration-1000 ease-out transform ${
-        showContainer ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        showContainer ? 'opacity-100' : 'opacity-0'
       }`}>
         <div className="bg-[#EFECE7] rounded-3xl p-6 md:p-8">
           {/* Vertical layout - image below text */}

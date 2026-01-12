@@ -9,39 +9,25 @@ interface PageTransitionProps {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
-  const [displayChildren, setDisplayChildren] = useState(children);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Start fade out
+    // Quick fade out then fade in on route change
     setIsVisible(false);
-    
-    // After fade out, update children and fade in
-    const timeout = setTimeout(() => {
-      setDisplayChildren(children);
-      setIsVisible(true);
-    }, 150);
-
+    const timeout = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timeout);
-  }, [pathname, children]);
-
-  // Initial mount - fade in immediately
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
+  }, [pathname]);
 
   return (
     <div
       className="page-transition-wrapper"
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
-        transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'opacity 0.4s ease-in-out',
         minHeight: '100vh',
       }}
     >
-      {displayChildren}
+      {children}
     </div>
   );
 }

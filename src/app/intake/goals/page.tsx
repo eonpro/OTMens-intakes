@@ -58,7 +58,7 @@ export default function GoalsPage() {
       
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className={`space-y-8 transition-all duration-1000 ease-out ${
-          showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          showContent ? 'opacity-100' : 'opacity-0'
         }`}>
           <div className="space-y-4">
             <h1 className="page-title">{t('goals.title')}</h1>
