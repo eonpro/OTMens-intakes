@@ -74,7 +74,7 @@ export default function ConsentPage() {
             <div className="bg-[#f5ecd8] rounded-2xl overflow-hidden flex h-20">
               <div className="flex-shrink-0 relative w-20">
                 <Image
-                  src="https://static.wixstatic.com/media/c49a9b_8d1a5c0e8f6247ba9d79bf0abc49169a~mv2.webp"
+                  src="https://static.wixstatic.com/media/c49a9b_aeb11a69264f4a32b511a915bccec2f6~mv2.webp"
                   alt="Healthcare professional"
                   fill
                   sizes="(max-width: 768px) 80px, 80px"

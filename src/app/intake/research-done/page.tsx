@@ -67,14 +67,14 @@ export default function ResearchDonePage() {
     }, 200);
   }, []);
 
-  // Auto-advance after typewriter completes (about 6 seconds for full text)
+  // Auto-advance shortly after typewriter completes
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!hasNavigated.current) {
         hasNavigated.current = true;
         router.push('/intake/consent');
       }
-    }, 7000);
+    }, 5000); // Reduced for quicker transition after typing
 
     return () => clearTimeout(timer);
   }, [router]);
