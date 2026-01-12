@@ -385,7 +385,7 @@ export default function ContactInfoPage() {
                   </svg>
                 )}
               </button>
-              <div className="ml-3 text-sm text-gray-600 leading-relaxed">
+              <div className="ml-3 text-[13px] text-gray-600 leading-snug">
                 {language === 'es'
                   ? <>Acepto la <a href="https://www.otmens.com/privacypolicy" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline">Política de Privacidad</a> y autorizo recibir comunicaciones importantes por correo electrónico y mensajes de texto (SMS) de Overtime Men&apos;s Health y afiliados con respecto a mi tratamiento.</>
                   : <>I accept the <a href="https://www.otmens.com/privacypolicy" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline">Privacy Policy</a> and I authorize receiving important communications via email and text messages (SMS) from Overtime Men&apos;s Health and affiliates regarding my treatment.</>
