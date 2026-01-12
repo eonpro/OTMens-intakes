@@ -19,10 +19,10 @@ export default function MedicalTeamPage() {
   const hasNavigated = useRef(false);
 
   useEffect(() => {
-    // Staggered animations
+    // Staggered animations - title first, then image, then texts
     const timers = [
-      setTimeout(() => setShowImage(true), 100),
-      setTimeout(() => setShowTitle(true), 400),
+      setTimeout(() => setShowTitle(true), 100),
+      setTimeout(() => setShowImage(true), 400),
       setTimeout(() => setShowText1(true), 700),
       setTimeout(() => setShowText2(true), 1000),
     ];
@@ -63,7 +63,18 @@ export default function MedicalTeamPage() {
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-6">
-          {/* Doctor images - 3 doctors */}
+          {/* Title - now on top */}
+          <div className={`transition-all duration-700 ease-out ${
+            showTitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}>
+            <h1 className="text-[28px] lg:text-[32px] font-bold text-[#413d3d] leading-tight">
+              {language === 'es' 
+                ? (<>A message from our<br />Medical team</>)
+                : (<>A message from our<br />Medical team</>)}
+            </h1>
+          </div>
+
+          {/* Doctor images - now below title */}
           <div className={`flex justify-center transition-all duration-700 ease-out ${
             showImage ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
           }`}>
@@ -74,18 +85,7 @@ export default function MedicalTeamPage() {
             />
           </div>
 
-          {/* Title */}
-          <div className={`transition-all duration-700 ease-out ${
-            showTitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}>
-            <h1 className="text-[28px] lg:text-[32px] font-bold text-[#413d3d] leading-tight">
-              {language === 'es' 
-                ? 'Mensaje de nuestro equipo médico'
-                : 'Message from our medical team'}
-            </h1>
-          </div>
-
-          {/* Text 1 */}
+          {/* Text 1 - now below image */}
           <div className={`transition-all duration-700 ease-out ${
             showText1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}>
