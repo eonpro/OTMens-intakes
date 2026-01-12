@@ -110,7 +110,7 @@ export default function ViewportAwareLayout({
       
       {/* Back button area - aligned with content */}
       {backButton && (
-        <div className={`px-6 lg:px-8 ${dynamicStyles.backButtonPadding} max-w-md lg:max-w-2xl mx-auto w-full`}>
+        <div className={`px-6 lg:px-8 ${dynamicStyles.backButtonPadding} max-w-md lg:max-w-lg mx-auto w-full`}>
           {backButton}
         </div>
       )}
@@ -127,7 +127,7 @@ export default function ViewportAwareLayout({
         className="flex-1 overflow-y-auto px-6 lg:px-8"
         style={{ paddingBottom: `${dynamicStyles.scrollPadding}px` }}
       >
-        <div className={`max-w-md lg:max-w-2xl mx-auto w-full ${dynamicStyles.contentPadding} ${dynamicStyles.elementSpacing}`}>
+        <div className={`max-w-md lg:max-w-lg mx-auto w-full ${dynamicStyles.contentPadding} ${dynamicStyles.elementSpacing}`}>
           {compactMode ? (
             <div className={dynamicStyles.titleSpacing}>
               {children}
@@ -140,7 +140,7 @@ export default function ViewportAwareLayout({
       
       {/* Button area - ALWAYS at bottom on ALL screen sizes */}
       <div className="fixed bottom-0 left-0 right-0 w-full z-10 px-6 lg:px-8 pb-6 pt-12" style={{ background: 'linear-gradient(to top, #ffffff 0%, #ffffff 50%, transparent 100%)' }}>
-        <div className="max-w-md lg:max-w-2xl mx-auto w-full">
+        <div className="max-w-md lg:max-w-lg mx-auto w-full">
           {button}
           {copyright && (
             <div className={dynamicStyles.copyrightMargin}>

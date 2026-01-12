@@ -10,8 +10,8 @@ interface OTMensLogoProps {
 }
 
 export default function EonmedsLogo({ compact = false, showLottie = true, inline = false }: OTMensLogoProps) {
-  // Use same max-width constraint as content to ensure alignment
-  const maxWidthClass = compact ? 'max-w-md lg:max-w-lg' : 'max-w-md lg:max-w-2xl';
+  // Use same max-width constraint as content to ensure alignment - always lg:max-w-lg
+  const maxWidthClass = 'max-w-md lg:max-w-lg';
 
   const logoContent = (
     <div className="flex items-center justify-between">
