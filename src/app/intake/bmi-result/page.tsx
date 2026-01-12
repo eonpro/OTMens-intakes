@@ -120,7 +120,7 @@ export default function BMIResultPage() {
             <BMIWidget bmi={bmi} language={language as 'en' | 'es'} />
             
             {/* Approval Message */}
-            <div className="bg-[#e4fb74] rounded-2xl p-4 flex items-start space-x-3">
+            <div className="bg-[#EFECE7] rounded-2xl p-4 flex items-start space-x-3">
               <div className="w-8 h-8 bg-[#cab172] rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -133,7 +133,7 @@ export default function BMIResultPage() {
           </div>
 
           {/* Goal Card */}
-          <div className="bg-[#d4f084] rounded-3xl p-5 space-y-3">
+          <div className="bg-[#EFECE7] rounded-3xl p-5 space-y-3">
             <h2 className="text-lg font-semibold text-black">{t('bmi.result.yourGoal')}</h2>
             <div className="text-5xl font-bold text-[#cab172]">{weightToLose ? `${Math.abs(weightToLose).toFixed(2)}` : '0.00'} {t('common.lbs')}</div>
             <p className="text-sm text-black font-normal">{t('bmi.result.averageLoss')}</p>
@@ -159,7 +159,7 @@ export default function BMIResultPage() {
               
               {/* Expandable Info Box */}
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showBmiInfo ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="bg-[#f5ffd6] rounded-xl p-3 mt-1 border border-[#cab172]/20">
+                <div className="bg-[#f5ecd8] rounded-xl p-3 mt-1 border border-[#cab172]/20">
                   <p className="text-sm text-gray-700 leading-relaxed">
                     {language === 'es' 
                       ? 'El IMC es una medida de la grasa corporal basada en la altura y el peso. Los médicos lo usan para evaluar riesgos de salud relacionados con el peso y determinar tratamientos apropiados.'

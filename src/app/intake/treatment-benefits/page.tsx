@@ -63,7 +63,7 @@ export default function TreatmentBenefitsPage() {
         es: 'Te llenas más rápido y por más tiempo',
         en: 'Feel fuller faster and for longer'
       },
-      bgColor: 'bg-[#4ea77d]',
+      bgColor: 'bg-[#EFECE7]',
       image: 'https://static.wixstatic.com/media/c49a9b_ea25d461f966422ca6f9a51a72b9e93b~mv2.webp'
     },
     {
@@ -76,7 +76,7 @@ export default function TreatmentBenefitsPage() {
         es: 'Mantén tu nivel de azúcar bajo control',
         en: 'Keep your blood sugar under control'
       },
-      bgColor: 'bg-[#b8e561]',
+      bgColor: 'bg-[#f5ecd8]',
       image: 'https://static.wixstatic.com/media/c49a9b_d75d94d455584a6cb15d4faacf8011c7~mv2.webp'
     }
   ];
@@ -101,7 +101,7 @@ export default function TreatmentBenefitsPage() {
       <EonmedsLogo compact={true} />
       
       {/* Main content */}
-      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-2xl mx-auto w-full transition-all duration-1000 ease-out transform ${
+      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full transition-all duration-1000 ease-out transform ${
         showContainer ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}>
         <div className="space-y-6">
@@ -146,7 +146,7 @@ export default function TreatmentBenefitsPage() {
       </div>
 
       {/* Bottom section */}
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Copyright text */}
         <CopyrightText className="mt-4" />
       </div>

@@ -59,10 +59,10 @@ export default function SafetyQualityPage() {
       <EonmedsLogo compact={true} />
       
       {/* Main content */}
-      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-2xl mx-auto w-full transition-all duration-1000 ease-out transform ${
+      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full transition-all duration-1000 ease-out transform ${
         showContainer ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}>
-        <div className="bg-[#e5fbab] rounded-3xl p-6 md:p-8">
+        <div className="bg-[#EFECE7] rounded-3xl p-6 md:p-8">
           {/* Vertical layout - image below text */}
           <div className="flex flex-col space-y-6">
             {/* Text content */}
@@ -93,7 +93,7 @@ export default function SafetyQualityPage() {
       </div>
 
       {/* Bottom section */}
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Copyright text */}
         <CopyrightText className="mt-4" />
       </div>

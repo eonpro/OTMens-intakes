@@ -61,7 +61,7 @@ export default function WeightLossSupportPage() {
       <EonmedsLogo />
 
       {/* Main Content */}
-      <div className="flex-1 px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">
           {/* Title */}
           <div className="text-left">
@@ -106,7 +106,7 @@ export default function WeightLossSupportPage() {
       </div>
 
       {/* Bottom Section */}
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Continue button */}
         <button
           onClick={handleContinue}

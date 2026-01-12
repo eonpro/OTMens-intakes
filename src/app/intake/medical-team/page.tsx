@@ -67,7 +67,7 @@ export default function MedicalTeamPage() {
 
           {/* Title and content */}
           <div className="space-y-4">
-            <h1 className="page-title text-[#4ea77d]">
+            <h1 className="page-title text-[#cab172]">
               {language === 'es' 
                 ? 'Mensaje de nuestro equipo médico'
                 : 'Message from our medical team'}

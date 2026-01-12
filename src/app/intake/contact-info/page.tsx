@@ -286,7 +286,7 @@ export default function ContactInfoPage() {
       button={continueButton}
       copyright={copyrightText}
     >
-      <div className="max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="max-w-md lg:max-w-lg mx-auto w-full">
         {/* Logo - inside max-w wrapper for proper alignment */}
         <EonmedsLogo inline={true} />
         <div className="space-y-6">

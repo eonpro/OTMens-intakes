@@ -95,7 +95,7 @@ export default function SurgeryDetailsPage() {
       <EonmedsLogo />
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">
           <h1 className="page-title">
             {language === 'es' 
@@ -134,7 +134,7 @@ export default function SurgeryDetailsPage() {
 
       {/* Bottom button - only show if items other than 'none' are selected */}
       {selectedItems.length > 0 && !selectedItems.includes('none') && (
-        <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+        <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
           <button 
             onClick={handleContinue}
             className="w-full py-4 px-8 rounded-full text-lg font-medium flex items-center justify-center space-x-3 transition-all bg-[#413d3d] hover:bg-[#2a2727]"
@@ -153,7 +153,7 @@ export default function SurgeryDetailsPage() {
       
       {/* Copyright when no button shown */}
       {(selectedItems.length === 0 || selectedItems.includes('none')) && (
-        <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+        <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
           <CopyrightText />
         </div>
       )}

@@ -27,38 +27,38 @@ export default function ProgramsIncludePage() {
     {
       title: 'Chequeos Semanales',
       description: 'Un representate asignado estará contigo durante todo tu tratamiento*',
-      bgColor: '#4ea77e',
+      bgColor: '#EFECE7',
       image: 'https://static.wixstatic.com/media/c49a9b_2c49b136f5ec49c787b37346cca7f47b~mv2.webp'
     },
     {
       title: 'Consultas Médicas',
       description: 'Tu proveedor en las palmas de tus manos. Consultas por telemedicina incluidas',
-      bgColor: '#e4fb74',
+      bgColor: '#f5ecd8',
       image: 'https://static.wixstatic.com/media/c49a9b_5683be4d8e5a425a8cae0f35d26eb98b~mv2.webp'
     },
     {
       title: 'Ajuste de Dosis',
       description: 'Ajustamos tu dosis con el tiempo para un tratamiento 100% personalizado.',
-      bgColor: '#edffa8',
+      bgColor: '#EFECE7',
       image: 'https://static.wixstatic.com/media/c49a9b_9b3696821bfc4d84beb17a4266110488~mv2.webp'
     }
   ] : [
     {
       title: 'Weekly Check-ins',
       description: 'An assigned representative will be with you throughout your treatment*',
-      bgColor: '#4ea77e',
+      bgColor: '#EFECE7',
       image: 'https://static.wixstatic.com/media/c49a9b_2c49b136f5ec49c787b37346cca7f47b~mv2.webp'
     },
     {
       title: 'Medical Consultations',
       description: 'Your provider in the palm of your hands. Telemedicine consultations included',
-      bgColor: '#e4fb74',
+      bgColor: '#f5ecd8',
       image: 'https://static.wixstatic.com/media/c49a9b_5683be4d8e5a425a8cae0f35d26eb98b~mv2.webp'
     },
     {
       title: 'Dose Adjustment',
       description: 'We adjust your dose over time for 100% personalized treatment.',
-      bgColor: '#edffa8',
+      bgColor: '#EFECE7',
       image: 'https://static.wixstatic.com/media/c49a9b_9b3696821bfc4d84beb17a4266110488~mv2.webp'
     }
   ];

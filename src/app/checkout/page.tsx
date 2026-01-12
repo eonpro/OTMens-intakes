@@ -232,7 +232,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Back button */}
-      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={() => router.back()}
           className="inline-block p-2 -ml-2 hover:bg-gray-100 rounded-lg"
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
       <EonmedsLogo compact={true} />
 
       {/* Main content */}
-      <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-6">
           {/* Title */}
           <div>
@@ -443,7 +443,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Sticky bottom button */}
-      <div className="sticky-bottom-button max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="sticky-bottom-button max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleContinue}
           disabled={!selectedProduct}

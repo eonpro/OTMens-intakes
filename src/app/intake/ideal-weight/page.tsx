@@ -27,7 +27,7 @@ export default function IdealWeightPage() {
         <div className="h-full w-2/6 bg-[#f5ecd8] transition-all duration-300"></div>
       </div>
       
-      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-lg mx-auto w-full">
         <Link href="/intake/address" className="inline-block p-2 -ml-2 hover:bg-gray-100 rounded-lg">
           <svg className="w-6 h-6 text-[#413d3d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -38,7 +38,7 @@ export default function IdealWeightPage() {
       {/* EONMeds Logo */}
       <EonmedsLogo />
       
-      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-48 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">
           <h1 className="page-title">{t('idealWeight.title')}</h1>
           
@@ -64,7 +64,7 @@ export default function IdealWeightPage() {
       </div>
       
       {/* Sticky bottom button */}
-      <div className="sticky-bottom-button max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="sticky-bottom-button max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={handleContinue}
           disabled={!idealWeight}

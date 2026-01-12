@@ -76,7 +76,7 @@ export default function FamilyConditionsPage() {
       <EonmedsLogo />
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-6">
           <div>
             <h1 className="page-title">

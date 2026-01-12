@@ -54,7 +54,7 @@ export default function ContactPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">
           {/* Heading */}
           <div className="space-y-4">

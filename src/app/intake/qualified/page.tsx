@@ -116,7 +116,7 @@ export default function QualifiedPage() {
       </div>
 
       {/* Back button */}
-      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-lg mx-auto w-full">
         <button 
           onClick={() => window.history.back()}
           className="inline-block p-2 -ml-2 hover:bg-gray-100 rounded-lg"
@@ -128,7 +128,7 @@ export default function QualifiedPage() {
       </div>
 
       {/* Main content - LEFT ALIGNED */}
-      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Happy couple image */}
         <div className="w-56 h-48 mb-6 rounded-xl overflow-hidden">
           <img
@@ -188,7 +188,7 @@ export default function QualifiedPage() {
       )}
 
       {/* Copyright footer */}
-      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <CopyrightText />
       </div>
     </div>

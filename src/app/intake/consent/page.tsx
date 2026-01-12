@@ -50,7 +50,7 @@ export default function ConsentPage() {
         <div className="h-full w-[8%] bg-[#f5ecd8] transition-all duration-300"></div>
       </div>
 
-      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="px-6 lg:px-8 pt-6 max-w-md lg:max-w-lg mx-auto w-full">
         <Link href="/intake/research-done" className="inline-block p-2 -ml-2 hover:bg-gray-100 rounded-lg">
           <svg className="w-6 h-6 text-[#413d3d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -61,7 +61,7 @@ export default function ConsentPage() {
       {/* EONMeds Logo */}
       <EonmedsLogo />
 
-      <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-4">
           <div>
             <h1 className="page-title mb-2">{t('consent.title')}</h1>
@@ -128,12 +128,12 @@ export default function ConsentPage() {
                 onClick={() => setAgreed(!agreed)}
               >
                 {t('consent.agreement.start')}
-                <a href="#" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.terms')}</a>
+                <a href="https://www.otmens.com/termsandconditions" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.terms')}</a>
                 {t('consent.agreement.and')}
-                <a href="#" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.privacy')}</a>,{' '}
-                <a href="#" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.telehealth')}</a>{' '}
+                <a href="https://www.otmens.com/privacypolicy" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.privacy')}</a>,{' '}
+                <a href="https://www.otmens.com/telehealthconsent" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.telehealth')}</a>{' '}
                 {language === 'es' ? 'y' : 'and'}{' '}
-                <a href="#" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.cancellation')}</a>.
+                <a href="https://www.otmens.com/cancellationpolicy" target="_blank" rel="noopener noreferrer" className="text-[#cab172] underline font-medium" onClick={(e) => e.stopPropagation()}>{t('consent.agreement.cancellation')}</a>.
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default function ConsentPage() {
       </div>
 
       {/* Sticky bottom button */}
-      <div className="sticky-bottom-button max-w-md lg:max-w-2xl mx-auto w-full">
+      <div className="sticky-bottom-button max-w-md lg:max-w-lg mx-auto w-full">
         <button
           onClick={handleContinue}
           disabled={!agreed}
