@@ -60,7 +60,7 @@ export default function SupportInfoPage() {
           
           <div className="flex justify-start">
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_60568a55413d471ba85d995d7da0d0f2~mv2.png"
+              src="https://static.wixstatic.com/shapes/c49a9b_5139736743794db7af38c583595f06fb.svg"
               alt="Overtime Men's Health"
               className="h-10 w-auto"
             />
@@ -77,7 +77,7 @@ export default function SupportInfoPage() {
           {/* Customer Service Representative Image */}
           <div className="flex justify-start -ml-6 -mb-6 mt-4">
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_ea825307d7984a3dbfedfad806e49a01~mv2.png"
+              src="https://static.wixstatic.com/media/c49a9b_9879012a71074e4fb38af2dceae07f7c~mv2.webp"
               alt="Customer Service Representative"
               className="w-80 h-auto object-contain"
             />
