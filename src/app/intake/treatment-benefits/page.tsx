@@ -51,7 +51,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Say goodbye to hunger and cravings'
       },
       bgColor: 'bg-[#f7d06b]',
-      image: 'https://static.wixstatic.com/media/c49a9b_b3c28fca89d5416a9f47ed2663230647~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_b620bbcfc38b4eb68d480147dd1f4a65~mv2.webp'
     },
     {
       id: 'digestion',
@@ -64,7 +64,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Feel fuller faster and for longer'
       },
       bgColor: 'bg-[#EFECE7]',
-      image: 'https://static.wixstatic.com/media/c49a9b_b620bbcfc38b4eb68d480147dd1f4a65~mv2.webp'
+      image: 'https://static.wixstatic.com/media/c49a9b_a943a1c0cdc7476496fd819de1171e88~mv2.jpg'
     },
     {
       id: 'levels',
@@ -77,7 +77,7 @@ export default function TreatmentBenefitsPage() {
         en: 'Keep your blood sugar under control'
       },
       bgColor: 'bg-[#f5ecd8]',
-      image: 'https://static.wixstatic.com/media/c49a9b_a943a1c0cdc7476496fd819de1171e88~mv2.jpg'
+      image: 'https://static.wixstatic.com/media/c49a9b_b3c28fca89d5416a9f47ed2663230647~mv2.webp'
     }
   ];
 
