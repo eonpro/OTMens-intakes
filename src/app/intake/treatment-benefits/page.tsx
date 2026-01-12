@@ -157,8 +157,8 @@ export default function TreatmentBenefitsPage() {
                     />
                   </div>
                   
-                  {/* Animated check badge */}
-                  <div className={`absolute top-3 left-3 w-6 h-6 rounded-full bg-white/80 flex items-center justify-center transition-all duration-500 ${
+                  {/* Animated check badge - positioned to the right of text, before image */}
+                  <div className={`absolute top-3 right-[7.5rem] lg:right-[9.5rem] w-6 h-6 rounded-full bg-white/80 flex items-center justify-center transition-all duration-500 ${
                     visibleCards.includes(index) ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
                   }`} style={{ transitionDelay: `${index * 200 + 300}ms` }}>
                     <svg className="w-4 h-4 text-[#cab172]" fill="currentColor" viewBox="0 0 20 20">
