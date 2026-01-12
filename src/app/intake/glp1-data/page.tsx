@@ -28,7 +28,7 @@ export default function GLP1DataPage() {
   }, []);
 
   const handleNext = () => {
-    router.push('/intake/review');
+    router.push('/intake/finding-provider');
   };
 
   return (

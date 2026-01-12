@@ -39,7 +39,7 @@ export default function ConditionsPage() {
   };
 
   const handleContinue = () => {
-    router.push('/intake/review');
+    router.push('/intake/finding-provider');
   };
 
   return (

@@ -67,7 +67,7 @@ export default function HealthImprovementsPage() {
     setSelected(improvementId);
     sessionStorage.setItem('health_improvements', JSON.stringify([improvementId]));
     setTimeout(() => {
-      router.push('/intake/review');
+      router.push('/intake/finding-provider');
     }, 150);
   };
 

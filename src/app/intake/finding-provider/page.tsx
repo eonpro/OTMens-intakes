@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { submitIntake, collectIntakeData, markCheckpointCompleted } from '@/lib/api';
 
 export default function FindingProviderPage() {
   const router = useRouter();
@@ -12,18 +13,41 @@ export default function FindingProviderPage() {
   const [stateName, setStateName] = useState('your area');
   const [providersFound, setProvidersFound] = useState(0);
   const hasNavigated = useRef(false);
+  const hasSubmitted = useRef(false);
 
   const steps = language === 'es' 
-    ? ['Verificando disponibilidad...', 'Buscando proveedores...', 'Validando credenciales...', '¡Proveedor encontrado!']
-    : ['Checking availability...', 'Searching providers...', 'Validating credentials...', 'Provider found!'];
+    ? ['Enviando información...', 'Buscando proveedores...', 'Validando credenciales...', '¡Proveedor encontrado!']
+    : ['Submitting information...', 'Searching providers...', 'Validating credentials...', 'Provider found!'];
 
-  // Get state on mount
+  // Submit data to Airtable
+  const submitToAirtable = useCallback(async () => {
+    if (hasSubmitted.current) return;
+    hasSubmitted.current = true;
+
+    try {
+      const intakeData = collectIntakeData();
+      markCheckpointCompleted('qualification-complete');
+      const result = await submitIntake(intakeData);
+
+      if (result.success && result.intakeId) {
+        sessionStorage.setItem('submitted_intake_id', result.intakeId);
+        sessionStorage.setItem('submission_status', 'success');
+      } else {
+        console.error('Submission failed:', result.error);
+        sessionStorage.setItem('submission_status', 'failed');
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      sessionStorage.setItem('submission_status', 'error');
+    }
+  }, []);
+
+  // Get state on mount and submit data
   useEffect(() => {
     const stateData = sessionStorage.getItem('intake_state');
     if (stateData) {
       try {
         const parsed = JSON.parse(stateData);
-        // Map state codes back to full names for display
         const stateNames: { [key: string]: string } = {
           'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
           'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
@@ -41,7 +65,10 @@ export default function FindingProviderPage() {
         setStateName('your area');
       }
     }
-  }, []);
+
+    // Submit to Airtable immediately
+    submitToAirtable();
+  }, [submitToAirtable]);
 
   // Animate progress bar
   useEffect(() => {
