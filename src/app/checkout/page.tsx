@@ -400,19 +400,25 @@ export default function CheckoutPage() {
                           <div className="font-semibold text-[#413d3d]">
                             {price.label}
                           </div>
-                          {monthlyEquiv && (
-                            <div className="text-xs text-[#413d3d]/60">
-                              {monthlyEquiv}{t.monthlyEquivalent}
-                            </div>
-                          )}
                         </div>
                       </div>
 
                       {/* Right side - Amount & savings */}
                       <div className="text-right">
-                        <div className="text-xl font-bold text-[#413d3d]">
-                          {formatPrice(price.unitAmount, price.currency)}
-                        </div>
+                        {price.intervalCount > 1 ? (
+                          <>
+                            <div className="text-xl font-bold text-[#413d3d]">
+                              {monthlyEquiv}<span className="text-sm font-normal">/mo</span>
+                            </div>
+                            <div className="text-xs text-[#413d3d]/60">
+                              {formatPrice(price.unitAmount, price.currency)} total
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-xl font-bold text-[#413d3d]">
+                            {formatPrice(price.unitAmount, price.currency)}
+                          </div>
+                        )}
                         {savings && (
                           <div className="text-xs text-green-600 font-medium">
                             {t.savings} {savings}%
