@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import CopyrightText from '@/components/CopyrightText';
 import { useCheckoutStore, loadShippingFromIntake, getPatientInfoFromIntake } from '@/store/checkoutStore';
 import type { Product, ShippingAddress } from '@/types/checkout';
@@ -244,7 +244,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
 
       {/* Main content */}
       <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-lg mx-auto w-full">

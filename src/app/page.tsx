@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useEnterNavigation } from '@/hooks/useEnterNavigation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import ViewportAwareLayout from '@/components/ViewportAwareLayout';
 
 // Dynamic import to avoid SSR issues
@@ -73,7 +73,7 @@ export default function Home() {
   const progressBar = <div className="w-full h-1 bg-[#f5ecd8]"></div>;
 
   // Logo component
-  const logo = <EonmedsLogo />;
+  const logo = <OTMensLogo />;
 
   // Button with disclaimers
   const buttonWithDisclaimer = (

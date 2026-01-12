@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function DosageInterestPage() {
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function DosageInterestPage() {
       </div>
       
       {/* Logo */}
-      <EonmedsLogo />
+      <OTMensLogo />
 
       {/* Main Content */}
       <div className="flex-1 px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">

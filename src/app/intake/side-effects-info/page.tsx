@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function SideEffectsInfoPage() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function SideEffectsInfoPage() {
       </div>
       
       {/* Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 lg:px-8 py-8">

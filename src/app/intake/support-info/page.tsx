@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function SupportInfoPage() {
   const router = useRouter();
@@ -50,7 +50,7 @@ export default function SupportInfoPage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
       
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className={`bg-[#f5ecd8] rounded-3xl p-6 pb-0 space-y-3 overflow-hidden transition-all duration-1000 ease-out transform ${

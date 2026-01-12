@@ -9,7 +9,7 @@ interface OTMensLogoProps {
   inline?: boolean; // When true, renders without outer wrapper (for use inside content wrappers)
 }
 
-export default function EonmedsLogo({ compact = false, showLottie = true, inline = false }: OTMensLogoProps) {
+export default function OTMensLogo({ compact = false, showLottie = true, inline = false }: OTMensLogoProps) {
   // Use same max-width constraint as content to ensure alignment - always lg:max-w-lg
   const maxWidthClass = 'max-w-md lg:max-w-lg';
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useEnterNavigation } from '@/hooks/useEnterNavigation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function ObesityStatsPage() {
   const router = useRouter();
@@ -74,7 +74,7 @@ export default function ObesityStatsPage() {
       </div>
 
       {/* EONMeds Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
 
       {/* Image and Reference - matching support-info page structure */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 max-w-md lg:max-w-lg mx-auto w-full">

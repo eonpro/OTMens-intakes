@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import CopyrightText from '@/components/CopyrightText';
 
 // Typewriter component
@@ -103,7 +103,7 @@ export default function ResearchDonePage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
       
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-4 lg:py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">

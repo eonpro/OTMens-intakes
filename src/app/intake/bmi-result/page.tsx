@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import BMIWidget from '@/components/BMIWidget';
 import { submitCheckpoint, markCheckpointCompleted } from '@/lib/api';
 
@@ -85,7 +85,7 @@ export default function BMIResultPage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
       
       <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-6 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-5">

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useIntakeStore, useIntakeActions } from '@/store/intakeStore';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 /**
  * V2 LANDING PAGE
@@ -42,7 +42,7 @@ export default function V2LandingPage() {
     <div className="min-h-screen bg-white flex flex-col">
       {/* Logo */}
       <div className="pt-8">
-        <EonmedsLogo />
+        <OTMensLogo />
       </div>
       
       {/* Main content */}

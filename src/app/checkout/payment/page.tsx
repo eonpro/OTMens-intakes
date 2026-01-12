@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import CopyrightText from '@/components/CopyrightText';
 import { useCheckoutStore, getPatientInfoFromIntake } from '@/store/checkoutStore';
 
@@ -232,7 +232,7 @@ export default function PaymentPage() {
       </div>
 
       {/* Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
 
       {/* Main content */}
       <div className="flex-1 px-6 lg:px-8 py-4 pb-48 max-w-md lg:max-w-lg mx-auto w-full">

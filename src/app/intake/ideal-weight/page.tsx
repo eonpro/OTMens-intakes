@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function IdealWeightPage() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function IdealWeightPage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo />
+      <OTMensLogo />
       
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-8">

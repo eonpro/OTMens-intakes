@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import CopyrightText from '@/components/CopyrightText';
 import { useCheckoutStore, getPatientInfoFromIntake } from '@/store/checkoutStore';
 import { trackMetaEvent } from '@/lib/meta';
@@ -196,7 +196,7 @@ function ConfirmationContent() {
 
       {/* Logo */}
       <div className="pt-6">
-        <EonmedsLogo compact={true} showLottie={false} />
+        <OTMensLogo compact={true} showLottie={false} />
       </div>
 
       {/* Main content */}

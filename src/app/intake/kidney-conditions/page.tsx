@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import CopyrightText from '@/components/CopyrightText';
 
 export default function KidneyConditionsPage() {
@@ -77,7 +77,7 @@ export default function KidneyConditionsPage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo />
+      <OTMensLogo />
       
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">

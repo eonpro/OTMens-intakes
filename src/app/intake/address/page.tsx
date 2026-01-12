@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useEnterNavigation } from '@/hooks/useEnterNavigation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 // Google Maps types
 interface GoogleMapsPlace {
@@ -278,7 +278,7 @@ export default function AddressPage() {
       </div>
 
       {/* EONMeds Logo */}
-      <EonmedsLogo compact={true} />
+      <OTMensLogo compact={true} />
 
       {/* Cold Shipping Banner */}
       <div className="px-6 mt-3 max-w-md lg:max-w-lg mx-auto w-full">

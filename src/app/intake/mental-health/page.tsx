@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 
 export default function MentalHealthPage() {
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function MentalHealthPage() {
       </div>
       
       {/* EONMeds Logo */}
-      <EonmedsLogo />
+      <OTMensLogo />
       
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 max-w-md lg:max-w-lg mx-auto w-full">

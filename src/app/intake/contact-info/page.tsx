@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import IntakePageLayout from '@/components/IntakePageLayout';
 import CopyrightText from '@/components/CopyrightText';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -288,7 +288,7 @@ export default function ContactInfoPage() {
     >
       <div className="max-w-md lg:max-w-lg mx-auto w-full">
         {/* Logo - inside max-w wrapper for proper alignment */}
-        <EonmedsLogo inline={true} />
+        <OTMensLogo inline={true} />
         <div className="space-y-6">
           <div className="space-y-3">
             <h1 className="page-title">

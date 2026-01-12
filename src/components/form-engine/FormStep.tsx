@@ -7,7 +7,7 @@ import type { FormStep as FormStepType, Language, FieldOption } from '@/types/fo
 import { useIntakeStore, useIntakeActions } from '@/store/intakeStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { OptionButton, TextField, SelectField, CheckboxField } from './fields';
-import EonmedsLogo from '@/components/EonmedsLogo';
+import OTMensLogo from '@/components/OTMensLogo';
 import { getNextStep, getPreviousStep } from '@/config/forms/weightloss-intake';
 
 interface FormStepProps {
@@ -267,7 +267,7 @@ export default function FormStep({ config, basePath = '/intake' }: FormStepProps
       )}
       
       {/* Logo */}
-      <EonmedsLogo />
+      <OTMensLogo />
       
       {/* Main content */}
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 max-w-md lg:max-w-2xl mx-auto w-full">
