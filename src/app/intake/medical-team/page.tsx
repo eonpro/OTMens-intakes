@@ -12,28 +12,37 @@ export default function MedicalTeamPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [showContainer, setShowContainer] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showText1, setShowText1] = useState(false);
+  const [showText2, setShowText2] = useState(false);
   const hasNavigated = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowContainer(true), 100);
+    // Staggered animations
+    const timers = [
+      setTimeout(() => setShowImage(true), 100),
+      setTimeout(() => setShowTitle(true), 400),
+      setTimeout(() => setShowText1(true), 700),
+      setTimeout(() => setShowText2(true), 1000),
+    ];
 
-    // Auto-advance after 3 seconds
+    // Auto-advance after 4 seconds
     const navigationTimer = setTimeout(() => {
       if (!hasNavigated.current) {
         hasNavigated.current = true;
         router.push('/intake/common-side-effects');
       }
-    }, 3000);
+    }, 4000);
 
     return () => {
-      clearTimeout(timer);
+      timers.forEach(clearTimeout);
       clearTimeout(navigationTimer);
     };
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col page-fade-in">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Progress bar */}
       <div className="w-full h-1 bg-gray-200">
         <div className="h-full w-[90%] bg-[#f5ecd8] transition-all duration-300"></div>
@@ -52,46 +61,70 @@ export default function MedicalTeamPage() {
       <OTMensLogo compact={true} />
       
       {/* Main content */}
-      <div className={`flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full transition-all duration-1000 ease-out transform ${
-        showContainer ? 'opacity-100' : 'opacity-0'
-      }`}>
+      <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
         <div className="space-y-6">
-          {/* Doctor images */}
-          <div className="flex justify-center">
+          {/* Doctor images - 3 doctors */}
+          <div className={`flex justify-center transition-all duration-700 ease-out ${
+            showImage ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+          }`}>
             <img 
-              src="https://static.wixstatic.com/media/c49a9b_e3b5b1388aab4fb4b005bf6f54a54df4~mv2.webp"
+              src="https://static.wixstatic.com/media/c49a9b_5cf2a61d62d74615a17f3324ee0248f2~mv2.webp"
               alt={language === 'es' ? 'Equipo médico' : 'Medical team'}
-              className="w-full max-w-md h-auto rounded-2xl"
+              className="w-full max-w-sm h-auto"
             />
           </div>
 
-          {/* Title and content */}
-          <div className="space-y-4">
-            <h1 className="page-title text-[#cab172]">
+          {/* Title */}
+          <div className={`transition-all duration-700 ease-out ${
+            showTitle ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}>
+            <h1 className="text-[28px] lg:text-[32px] font-bold text-[#413d3d] leading-tight">
               {language === 'es' 
                 ? 'Mensaje de nuestro equipo médico'
                 : 'Message from our medical team'}
             </h1>
+          </div>
 
-            <div className="space-y-4 text-gray-700">
-              <p className="text-lg">
-                {language === 'es'
-                  ? 'Si bien los medicamentos para perder peso son altamente efectivos, es común experimentar efectos secundarios como náuseas.'
-                  : 'While weight loss medications are highly effective, it\'s common to experience side effects like nausea.'}
-              </p>
+          {/* Text 1 */}
+          <div className={`transition-all duration-700 ease-out ${
+            showText1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              {language === 'es'
+                ? 'Es común experimentar efectos secundarios. Nuestros médicos pueden personalizar tu plan para minimizarlos.'
+                : 'Side effects are common. Our physicians can customize your plan to minimize them.'}
+            </p>
+          </div>
 
-              <p>
+          {/* Text 2 with highlight */}
+          <div className={`transition-all duration-700 ease-out ${
+            showText2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              {language === 'es'
+                ? 'Las siguientes preguntas ayudarán a encontrar '
+                : 'The next questions will help find '}
+              <span className="text-[#cab172] font-semibold">
                 {language === 'es'
-                  ? 'En Overtime, un médico licenciado puede personalizar tu plan de tratamiento para ayudarte a alcanzar tus objetivos sin tener que lidiar con esos efectos.'
-                  : 'At Overtime, a licensed physician can customize your treatment plan to help you achieve your goals without having to deal with those effects.'}
-              </p>
+                  ? 'el mejor enfoque para ti.'
+                  : 'the best approach for you.'}
+              </span>
+            </p>
+          </div>
 
-              <p>
-                {language === 'es'
-                  ? 'Las siguientes preguntas permitirán a tu proveedor determinar el mejor enfoque clínico para ti.'
-                  : 'The following questions will allow your provider to determine the best clinical approach for you.'}
-              </p>
-            </div>
+          {/* Animated dots */}
+          <div className={`flex justify-center gap-2 pt-4 transition-all duration-500 ${
+            showText2 ? 'opacity-100' : 'opacity-0'
+          }`}>
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-2 h-2 rounded-full bg-[#cab172]"
+                style={{
+                  animation: `pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -100,6 +133,13 @@ export default function MedicalTeamPage() {
       <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         <CopyrightText />
       </div>
+
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 0.4; }
+          50% { transform: scale(1.3); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }
