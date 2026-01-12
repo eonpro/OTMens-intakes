@@ -15,7 +15,7 @@ export default function ReferralNamePage() {
   const [referrerName, setReferrerName] = useState('');
   const [referralType, setReferralType] = useState<'friend_family' | 'eonmeds_rep' | null>(null);
 
-  // Check if user came from referral source with friend/family or EONMeds rep selected
+  // Check if user came from referral source with friend/family or Overtime Men's Health rep selected
   useEffect(() => {
     const sources = sessionStorage.getItem('referral_sources');
     if (sources) {
@@ -74,8 +74,8 @@ export default function ReferralNamePage() {
                   : 'Great! What\'s the name of your friend or family member who referred you?'
               ) : (
                 language === 'es'
-                  ? '¡Excelente! ¿Cómo se llama el representante de EONMeds que te ayudó?'
-                  : 'Excellent! What\'s the name of the EONMeds representative who helped you?'
+                  ? '¡Excelente! ¿Cómo se llama el representante de Overtime que te ayudó?'
+                  : "Excellent! What's the name of the Overtime representative who helped you?"
               )}
             </h1>
             <p className="page-subtitle">

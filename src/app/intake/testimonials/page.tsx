@@ -141,8 +141,8 @@ export default function TestimonialsPage() {
         {/* Disclaimer */}
         <p className="text-[11px] text-[#413d3d]/50 text-center leading-relaxed">
           {language === 'es'
-            ? 'Los medicamentos son solo una parte del programa de pérdida de peso de EONMeds, que también incluye una dieta baja en calorías y mayor actividad física. Los clientes no fueron compensados por compartir sus opiniones. Los resultados provienen de personas que compraron varios productos, incluidos tratamientos con receta. Estos resultados no han sido verificados de forma independiente y los resultados individuales pueden variar.'
-            : 'Medications are just one part of the EONMeds weight loss program, which also includes a low-calorie diet and increased physical activity. Clients were not compensated for sharing their opinions. The results come from individuals who purchased various products, including prescription treatments. These results have not been independently verified, and individual results may vary.'}
+            ? 'Los medicamentos son solo una parte del programa de pérdida de peso de Overtime, que también incluye una dieta baja en calorías y mayor actividad física. Los clientes no fueron compensados por compartir sus opiniones. Los resultados provienen de personas que compraron varios productos, incluidos tratamientos con receta. Estos resultados no han sido verificados de forma independiente y los resultados individuales pueden variar.'
+            : 'Medications are just one part of the Overtime weight loss program, which also includes a low-calorie diet and increased physical activity. Clients were not compensated for sharing their opinions. The results come from individuals who purchased various products, including prescription treatments. These results have not been independently verified, and individual results may vary.'}
         </p>
 
         <CopyrightText className="mt-4" />

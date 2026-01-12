@@ -84,7 +84,7 @@ export default function BMIResultPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
       <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-6 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
@@ -200,7 +200,7 @@ export default function BMIResultPage() {
         
         {/* Copyright text */}
         <p className="copyright-text text-center mt-4">
-          © 2025 EONPro, LLC. All rights reserved.
+          © 2025 Overtime Men's Health. All rights reserved.
           Exclusive and protected process.
         </p>
       </div>

@@ -24,7 +24,7 @@ export default function IntakePageLayout({
       
       {/* Back button area - aligned with content max-width */}
       {backButton && (
-        <div className="px-6 lg:px-8 pt-8 lg:pt-6 max-w-md lg:max-w-2xl mx-auto w-full">
+        <div className="px-6 lg:px-8 pt-8 lg:pt-6 max-w-md lg:max-w-lg mx-auto w-full">
           {backButton}
         </div>
       )}
@@ -54,7 +54,7 @@ export default function IntakePageLayout({
       {/* Desktop Layout */}
       <div className="hidden lg:flex lg:flex-col lg:flex-1">
         <div className="flex-1 overflow-y-auto px-8 py-8">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-lg mx-auto">
             {children}
             <div className="mt-8">
               {button}

@@ -76,7 +76,7 @@ export default function KidneyConditionsPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo />
       
       {/* Main content */}

@@ -49,7 +49,7 @@ export default function SupportInfoPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
       <div className="flex-1 flex flex-col px-6 lg:px-8 py-8 pb-40 max-w-md lg:max-w-lg mx-auto w-full">
@@ -61,7 +61,7 @@ export default function SupportInfoPage() {
           <div className="flex justify-start">
             <img 
               src="https://static.wixstatic.com/media/c49a9b_60568a55413d471ba85d995d7da0d0f2~mv2.png"
-              alt="EONMeds"
+              alt="Overtime Men's Health"
               className="h-10 w-auto"
             />
           </div>
@@ -88,7 +88,7 @@ export default function SupportInfoPage() {
       <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Copyright text */}
         <p className="copyright-text text-center mt-4">
-          © 2025 EONPro, LLC. All rights reserved.
+          © 2025 Overtime Men's Health. All rights reserved.
           Exclusive and protected process. Copying or reproduction
           without authorization is prohibited.
         </p>

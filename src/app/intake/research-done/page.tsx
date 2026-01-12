@@ -102,7 +102,7 @@ export default function ResearchDonePage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
       {/* Main content */}

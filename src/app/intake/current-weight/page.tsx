@@ -39,7 +39,7 @@ export default function CurrentWeightPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo />
       
       <div className="flex-1 px-6 lg:px-8 py-8 pb-48 max-w-md lg:max-w-lg mx-auto w-full">
@@ -131,7 +131,7 @@ export default function CurrentWeightPage() {
         {/* Copyright footer */}
         <div className="mt-6 text-center">
           <p className="copyright-text">
-            © 2025 EONPro, LLC. All rights reserved.<br/>
+            © 2025 Overtime Men's Health. All rights reserved.<br/>
             Exclusive and protected process. Copying or reproduction without authorization is prohibited.
           </p>
         </div>

@@ -72,7 +72,7 @@ export default function FamilyConditionsPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo />
       
       {/* Main content */}

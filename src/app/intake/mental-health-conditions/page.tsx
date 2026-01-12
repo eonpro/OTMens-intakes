@@ -56,7 +56,7 @@ export default function MentalHealthConditionsPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo />
       
       {/* Main content */}

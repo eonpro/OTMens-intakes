@@ -52,8 +52,8 @@ export default function ReferralSourcePage() {
     },
     {
       id: 'eonmeds_rep',
-      es: 'Representante de EONMeds',
-      en: 'EONMeds Representative'
+      es: 'Representante de Overtime',
+      en: 'Overtime Representative'
     }
   ];
 
@@ -63,7 +63,7 @@ export default function ReferralSourcePage() {
     sessionStorage.setItem('referral_sources', JSON.stringify([sourceId]));
     
     setTimeout(() => {
-      // If friend/family or EONMeds rep is selected, go to name page
+      // If friend/family or Overtime Men's Health rep is selected, go to name page
       if (sourceId === 'friend_family' || sourceId === 'eonmeds_rep') {
         router.push('/intake/referral-name');
       } else {
@@ -97,8 +97,8 @@ export default function ReferralSourcePage() {
           <div>
             <h1 className="page-title mb-3">
               {language === 'es' 
-                ? 'Como escuchaste sobre EONMeds?'
-                : 'How did you hear about EONMeds?'}
+                ? '¿Cómo escuchaste sobre Overtime?'
+                : 'How did you hear about Overtime?'}
             </h1>
             <p className="page-subtitle">
               {language === 'es'

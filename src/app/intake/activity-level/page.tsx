@@ -65,7 +65,7 @@ export default function ActivityLevelPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo />
       
       {/* Main content */}

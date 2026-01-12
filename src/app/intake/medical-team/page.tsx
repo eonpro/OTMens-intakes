@@ -82,8 +82,8 @@ export default function MedicalTeamPage() {
 
               <p>
                 {language === 'es'
-                  ? 'En EONMeds, un médico licenciado puede personalizar tu plan de tratamiento para ayudarte a alcanzar tus objetivos sin tener que lidiar con esos efectos.'
-                  : 'At EONMeds, a licensed physician can customize your treatment plan to help you achieve your goals without having to deal with those effects.'}
+                  ? 'En Overtime, un médico licenciado puede personalizar tu plan de tratamiento para ayudarte a alcanzar tus objetivos sin tener que lidiar con esos efectos.'
+                  : 'At Overtime, a licensed physician can customize your treatment plan to help you achieve your goals without having to deal with those effects.'}
               </p>
 
               <p>

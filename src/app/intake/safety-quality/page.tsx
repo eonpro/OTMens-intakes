@@ -75,8 +75,8 @@ export default function SafetyQualityPage() {
               
               <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
                 {language === 'es'
-                  ? 'EONMeds colabora con algunas de las mejores farmacias 503A licenciadas del país para elaborar tratamientos personalizados y seguros para ti.'
-                  : 'EONMeds collaborates with some of the best 503A licensed pharmacies in the country to develop personalized and safe treatments for you.'}
+                  ? 'Overtime colabora con algunas de las mejores farmacias 503A licenciadas del país para elaborar tratamientos personalizados y seguros para ti.'
+                  : 'Overtime collaborates with some of the best 503A licensed pharmacies in the country to develop personalized and safe treatments for you.'}
               </p>
             </div>
 

@@ -84,7 +84,7 @@ export default function ProgramsIncludePage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
       {/* Main content */}
@@ -134,7 +134,7 @@ export default function ProgramsIncludePage() {
       <div className="px-6 lg:px-8 pb-8 max-w-md lg:max-w-lg mx-auto w-full">
         {/* Copyright text */}
         <p className="copyright-text text-center">
-          © 2025 EONPro, LLC. All rights reserved.
+          © 2025 Overtime Men's Health. All rights reserved.
         </p>
       </div>
     </div>

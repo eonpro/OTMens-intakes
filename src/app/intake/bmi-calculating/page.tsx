@@ -68,7 +68,7 @@ export default function BMICalculatingPage() {
         {/* BMI Text - Matching screenshot styling */}
         <div className="space-y-0">
           <p className="text-[24px] lg:text-[28px] leading-tight text-gray-400">
-            {language === 'es' ? 'EONPro está calculando' : 'EONPro is calculating'}
+            {language === 'es' ? 'Overtime está calculando' : 'Overtime is calculating'}
           </p>
           <p className="text-[24px] lg:text-[28px] leading-tight">
             <span className="text-gray-400">

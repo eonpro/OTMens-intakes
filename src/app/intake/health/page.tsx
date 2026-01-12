@@ -145,7 +145,7 @@ export default function HealthPage() {
       {/* Footer */}
       <div className="px-6 py-4 text-center">
         <p className="text-xs text-gray-400">
-          © 2025 EONPro, LLC. All rights reserved.
+          © 2025 Overtime Men's Health. All rights reserved.
         </p>
       </div>
     </div>

@@ -120,12 +120,12 @@ export default function V2LandingPage() {
           <p className="copyright-text">
             {isSpanish ? (
               <>
-                © 2025 EONPro, LLC. Todos los derechos reservados.<br/>
+                © 2025 Overtime Men's Health. Todos los derechos reservados.<br/>
                 Proceso exclusivo y protegido.
               </>
             ) : (
               <>
-                © 2025 EONPro, LLC. All rights reserved.<br/>
+                © 2025 Overtime Men's Health. All rights reserved.<br/>
                 Exclusive and protected process.
               </>
             )}

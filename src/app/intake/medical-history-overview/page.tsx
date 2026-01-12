@@ -42,7 +42,7 @@ export default function MedicalHistoryOverviewPage() {
         </Link>
       </div>
       
-      {/* EONMeds Logo */}
+      {/* OTMens Logo */}
       <OTMensLogo compact={true} />
       
       {/* Main content */}
