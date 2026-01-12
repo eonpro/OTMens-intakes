@@ -49,7 +49,7 @@ export default function QualifiedPage() {
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ['#cab172', '#f5ecd8', '#1dd1a1', '#feca57', '#ff6b6b', '#48dbfb']
+          colors: ['#cab172', '#f5ecd8', '#EFECE7', '#feca57', '#f7d06b']
         });
 
         // Continuous rain effect
@@ -62,14 +62,14 @@ export default function QualifiedPage() {
             angle: 60,
             spread: 55,
             origin: { x: 0 },
-            colors: ['#cab172', '#f5ecd8', '#1dd1a1']
+            colors: ['#cab172', '#EFECE7', '#feca57']
           });
           confetti({
             particleCount: 3,
             angle: 120,
             spread: 55,
             origin: { x: 1 },
-            colors: ['#cab172', '#f5ecd8', '#1dd1a1']
+            colors: ['#cab172', '#EFECE7', '#feca57']
           });
 
           if (Date.now() < end) {
@@ -141,7 +141,7 @@ export default function QualifiedPage() {
         {/* Title with emoji - LEFT ALIGNED */}
         <div className="space-y-4 mb-8">
           <h1 className="text-2xl lg:text-3xl font-bold leading-tight">
-            <mark style={{ backgroundColor: '#f2fdb4' }}>
+            <mark style={{ backgroundColor: '#EFECE7' }}>
               {language === 'es' ? '¡Excelentes noticias' : 'Great news'} {firstName}
             </mark>{' '}
             <span>🥳</span>{' '}
@@ -149,16 +149,16 @@ export default function QualifiedPage() {
             <br />
             <span className="text-[#413d3d]">
               {language === 'es' 
-                ? <>Según tus respuestas, calificas para tratamiento con <mark style={{ backgroundColor: '#f2fdb4' }}>Semaglutida</mark> o <mark style={{ backgroundColor: '#f2fdb4' }}>Tirzepatida</mark>.</>
-                : <>Based on your answers, you qualify for treatment with either <mark style={{ backgroundColor: '#f2fdb4' }}>Semaglutide</mark> or <mark style={{ backgroundColor: '#f2fdb4' }}>Tirzepatide</mark>.</>
+                ? <>Según tus respuestas, calificas para tratamiento con <mark style={{ backgroundColor: '#EFECE7' }}>Semaglutida</mark> o <mark style={{ backgroundColor: '#EFECE7' }}>Tirzepatida</mark>.</>
+                : <>Based on your answers, you qualify for treatment with either <mark style={{ backgroundColor: '#EFECE7' }}>Semaglutide</mark> or <mark style={{ backgroundColor: '#EFECE7' }}>Tirzepatide</mark>.</>
               }
             </span>
           </h1>
 
           <p className="text-base text-[#413d3d]">
             {language === 'es'
-              ? <>Ambos son <mark style={{ backgroundColor: '#f2fdb4' }}>medicamentos GLP-1</mark> altamente efectivos clínicamente comprobados para apoyar la pérdida de peso, mejorar la salud metabólica y ayudar a controlar el apetito.</>
-              : <>Both are highly effective <mark style={{ backgroundColor: '#f2fdb4' }}>GLP-1 medications</mark> clinically proven to support weight loss, improve metabolic health, and help curb appetite.</>
+              ? <>Ambos son <mark style={{ backgroundColor: '#EFECE7' }}>medicamentos GLP-1</mark> altamente efectivos clínicamente comprobados para apoyar la pérdida de peso, mejorar la salud metabólica y ayudar a controlar el apetito.</>
+              : <>Both are highly effective <mark style={{ backgroundColor: '#EFECE7' }}>GLP-1 medications</mark> clinically proven to support weight loss, improve metabolic health, and help curb appetite.</>
             }
           </p>
         </div>
