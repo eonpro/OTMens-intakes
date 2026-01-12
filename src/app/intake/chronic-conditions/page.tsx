@@ -60,7 +60,7 @@ export default function ChronicConditionsPage() {
           <div className="space-y-3">
             <button
               onClick={() => handleSelect('yes')}
-              className="option-button w-full text-left p-4 rounded-2xl transition-all"
+              className="option-button w-full text-left p-4 rounded-2xl transition-all sequential-shine-1"
             >
                 <span className="text-[16px] lg:text-lg font-medium leading-tight">
                   {language === 'es' ? 'Sí' : 'Yes'}
@@ -69,13 +69,54 @@ export default function ChronicConditionsPage() {
             
             <button
               onClick={() => handleSelect('no')}
-              className="option-button w-full text-left p-4 rounded-2xl transition-all"
+              className="option-button w-full text-left p-4 rounded-2xl transition-all sequential-shine-2"
             >
                 <span className="text-[16px] lg:text-lg font-medium leading-tight">
                   {language === 'es' ? 'No' : 'No'}
                 </span>
             </button>
           </div>
+          
+          <style jsx>{`
+            .sequential-shine-1,
+            .sequential-shine-2 {
+              position: relative;
+              overflow: hidden;
+            }
+            .sequential-shine-1::before,
+            .sequential-shine-2::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                transparent 100%
+              );
+              animation: sequentialShine 4s ease-in-out infinite;
+            }
+            .sequential-shine-1::before {
+              animation-delay: 0s;
+            }
+            .sequential-shine-2::before {
+              animation-delay: 2s;
+            }
+            @keyframes sequentialShine {
+              0%, 25% {
+                left: -100%;
+              }
+              35%, 40% {
+                left: 100%;
+              }
+              100% {
+                left: 100%;
+              }
+            }
+          `}</style>
         </div>
       </div>
         
