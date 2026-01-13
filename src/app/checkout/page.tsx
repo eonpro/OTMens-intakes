@@ -26,6 +26,60 @@ interface StripeProduct {
   prices: StripePrice[];
 }
 
+// Upsell products based on health improvement selections
+const upsellProducts = {
+  sexual_health: {
+    id: 'tadalafil',
+    name: 'Tadalafil 5mg',
+    description: 'Daily ED treatment',
+    price: 9900, // $99
+    priceId: 'price_1SAG16DQIH4O9Fhrj2A9RBSJ',
+    image: 'https://static.wixstatic.com/media/c49a9b_45dbc9caf94447b587c2e999b7a8027c~mv2.png',
+  },
+  muscle_fat: {
+    id: 'sermorelin',
+    name: 'Sermorelin Peptide',
+    description: 'Muscle growth & fat loss',
+    price: 24900, // $249/month
+    priceId: 'price_1SAG5MDQIH4O9FhrBbxlrTqu',
+    image: 'https://static.wixstatic.com/media/c49a9b_87a5fa7b71ea4594939f319dcbaefd49~mv2.webp',
+  },
+  longevity: {
+    id: 'nad',
+    name: 'NAD+',
+    description: 'Anti-aging & energy',
+    price: 39900, // $399
+    priceId: 'price_1SAGkUDQIH4O9FhrAkXZFSB3',
+    image: 'https://static.wixstatic.com/media/c49a9b_7b4f8183a2d448af835cc73702cb8c55~mv2.png',
+  },
+  testosterone_support: {
+    id: 'enclomiphene',
+    name: 'Enclomiphene',
+    description: 'Natural testosterone boost',
+    price: 24900, // $249
+    priceId: 'price_1SoxpXDQIH4O9FhrYKLmN8qW', // Placeholder - update with real ID
+    image: 'https://static.wixstatic.com/media/c49a9b_c2c02de112724603822a8c82f0357772~mv2.png',
+  },
+  hair_regrowth: {
+    id: 'finasteride',
+    name: 'Finasteride & Minoxidil',
+    description: 'Hair regrowth treatment',
+    price: 19900, // $199
+    priceId: 'price_1SoxoDDQIH4O9FhrqvmXo79I',
+    image: 'https://static.wixstatic.com/media/c49a9b_45dbc9caf94447b587c2e999b7a8027c~mv2.png',
+  },
+};
+
+// Blood work is always shown as an upsell option
+const bloodWorkUpsell = {
+  id: 'bloodwork',
+  name: 'Complete Blood Panel',
+  description: 'Full health screening',
+  price: 20000, // $200
+  priceId: 'price_1RguQfDQIH4O9FhrA5BGU90R',
+  image: 'https://static.wixstatic.com/media/c49a9b_da24dc2db32f416eae0151d634c28126~mv2.webp',
+};
+
 const translations = {
   en: {
     title: 'Select Your Plan',
@@ -52,6 +106,10 @@ const translations = {
     ],
     savings: 'Save',
     monthlyEquivalent: '/mo equivalent',
+    enhanceResults: 'Enhance Your Results',
+    addToOrder: 'Add to order',
+    added: 'Added',
+    recommended: 'Recommended for you',
   },
   es: {
     title: 'Selecciona Tu Plan',
@@ -78,6 +136,10 @@ const translations = {
     ],
     savings: 'Ahorra',
     monthlyEquivalent: '/mes equivalente',
+    enhanceResults: 'Mejora Tus Resultados',
+    addToOrder: 'Agregar al pedido',
+    added: 'Agregado',
+    recommended: 'Recomendado para ti',
   },
 };
 
@@ -99,6 +161,8 @@ export default function CheckoutPage() {
   const [patientInfo, setPatientInfo] = useState({ firstName: '', lastName: '', email: '', phone: '', dob: '' });
   const [editingAddress, setEditingAddress] = useState(false);
   const [editedAddress, setEditedAddress] = useState<ShippingAddress | null>(null);
+  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
+  const [healthSelection, setHealthSelection] = useState<string | null>(null);
 
   // Load patient info and address from intake
   useEffect(() => {
@@ -110,6 +174,19 @@ export default function CheckoutPage() {
     if (address) {
       setShippingAddress(address);
       setEditedAddress(address);
+    }
+
+    // Load health improvement selection for upsells
+    try {
+      const healthData = sessionStorage.getItem('health_improvements');
+      if (healthData) {
+        const parsed = JSON.parse(healthData);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setHealthSelection(parsed[0]);
+        }
+      }
+    } catch (e) {
+      console.error('Error loading health improvements:', e);
     }
   }, [shippingAddress, setShippingAddress]);
 
@@ -207,8 +284,40 @@ export default function CheckoutPage() {
 
   const handleContinue = () => {
     if (selectedProduct) {
+      // Save selected upsells to session storage
+      sessionStorage.setItem('selected_upsells', JSON.stringify(selectedUpsells));
       router.push('/checkout/payment');
     }
+  };
+
+  const toggleUpsell = (upsellId: string) => {
+    setSelectedUpsells(prev => 
+      prev.includes(upsellId) 
+        ? prev.filter(id => id !== upsellId)
+        : [...prev, upsellId]
+    );
+  };
+
+  // Get relevant upsell based on health selection
+  const getRelevantUpsell = () => {
+    if (healthSelection && healthSelection !== 'none') {
+      return upsellProducts[healthSelection as keyof typeof upsellProducts];
+    }
+    return null;
+  };
+
+  const relevantUpsell = getRelevantUpsell();
+
+  // Calculate total with upsells
+  const calculateUpsellTotal = () => {
+    let total = 0;
+    if (relevantUpsell && selectedUpsells.includes(relevantUpsell.id)) {
+      total += relevantUpsell.price;
+    }
+    if (selectedUpsells.includes(bloodWorkUpsell.id)) {
+      total += bloodWorkUpsell.price;
+    }
+    return total;
   };
 
   const handleSaveAddress = () => {
@@ -432,6 +541,70 @@ export default function CheckoutPage() {
             </div>
           )}
 
+          {/* Upsell Section */}
+          {(relevantUpsell || true) && (
+            <div className="space-y-3">
+              <h3 className="font-semibold text-[#413d3d] flex items-center gap-2">
+                {t.enhanceResults}
+                <span className="text-xs bg-[#cab172] text-white px-2 py-0.5 rounded-full">{t.recommended}</span>
+              </h3>
+              
+              {/* Relevant upsell based on health selection */}
+              {relevantUpsell && (
+                <button
+                  onClick={() => toggleUpsell(relevantUpsell.id)}
+                  className={`w-full p-3 rounded-2xl border-2 transition-all flex items-center gap-3 ${
+                    selectedUpsells.includes(relevantUpsell.id)
+                      ? 'border-[#cab172] bg-[#f5ecd8]'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <img 
+                    src={relevantUpsell.image} 
+                    alt={relevantUpsell.name}
+                    className="w-14 h-14 object-contain rounded-lg bg-white"
+                  />
+                  <div className="flex-1 text-left">
+                    <div className="font-semibold text-[#413d3d] text-sm">{relevantUpsell.name}</div>
+                    <div className="text-xs text-[#413d3d]/60">{relevantUpsell.description}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-[#413d3d]">{formatPrice(relevantUpsell.price, 'usd')}</div>
+                    <div className={`text-xs font-medium ${selectedUpsells.includes(relevantUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
+                      {selectedUpsells.includes(relevantUpsell.id) ? t.added : t.addToOrder}
+                    </div>
+                  </div>
+                </button>
+              )}
+
+              {/* Blood work - always shown */}
+              <button
+                onClick={() => toggleUpsell(bloodWorkUpsell.id)}
+                className={`w-full p-3 rounded-2xl border-2 transition-all flex items-center gap-3 ${
+                  selectedUpsells.includes(bloodWorkUpsell.id)
+                    ? 'border-[#cab172] bg-[#f5ecd8]'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <img 
+                  src={bloodWorkUpsell.image} 
+                  alt={bloodWorkUpsell.name}
+                  className="w-14 h-14 object-contain rounded-lg bg-white"
+                />
+                <div className="flex-1 text-left">
+                  <div className="font-semibold text-[#413d3d] text-sm">{bloodWorkUpsell.name}</div>
+                  <div className="text-xs text-[#413d3d]/60">{bloodWorkUpsell.description}</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-[#413d3d]">{formatPrice(bloodWorkUpsell.price, 'usd')}</div>
+                  <div className={`text-xs font-medium ${selectedUpsells.includes(bloodWorkUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
+                    {selectedUpsells.includes(bloodWorkUpsell.id) ? t.added : t.addToOrder}
+                  </div>
+                </div>
+              </button>
+            </div>
+          )}
+
           {/* What's Included */}
           <div className="bg-gray-50 rounded-2xl p-4">
             <h3 className="font-semibold text-[#413d3d] mb-3">{t.included}</h3>
@@ -464,11 +637,33 @@ export default function CheckoutPage() {
         
         {/* Order summary when product selected */}
         {selectedProduct && (
-          <div className="mt-4 p-3 bg-[#f5ecd8] rounded-xl">
+          <div className="mt-4 p-3 bg-[#f5ecd8] rounded-xl space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-[#413d3d]/70">{t.orderSummary}</span>
-              <span className="font-semibold text-[#413d3d]">
+              <span className="text-[#413d3d]/70">GLP-1 Treatment</span>
+              <span className="text-[#413d3d]">
                 {formatPrice(selectedProduct.price, selectedProduct.currency)}
+              </span>
+            </div>
+            {selectedUpsells.length > 0 && (
+              <>
+                {relevantUpsell && selectedUpsells.includes(relevantUpsell.id) && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#413d3d]/70">{relevantUpsell.name}</span>
+                    <span className="text-[#413d3d]">{formatPrice(relevantUpsell.price, 'usd')}</span>
+                  </div>
+                )}
+                {selectedUpsells.includes(bloodWorkUpsell.id) && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#413d3d]/70">{bloodWorkUpsell.name}</span>
+                    <span className="text-[#413d3d]">{formatPrice(bloodWorkUpsell.price, 'usd')}</span>
+                  </div>
+                )}
+              </>
+            )}
+            <div className="border-t border-[#cab172]/30 pt-2 flex items-center justify-between">
+              <span className="font-semibold text-[#413d3d]">{t.orderSummary}</span>
+              <span className="font-bold text-[#413d3d]">
+                {formatPrice(selectedProduct.price + calculateUpsellTotal(), selectedProduct.currency)}
               </span>
             </div>
           </div>

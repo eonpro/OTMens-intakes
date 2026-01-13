@@ -81,7 +81,7 @@ export default function MedicalTeamPage() {
             <img 
               src="https://static.wixstatic.com/media/c49a9b_5cf2a61d62d74615a17f3324ee0248f2~mv2.webp"
               alt={language === 'es' ? 'Equipo médico' : 'Medical team'}
-              className="w-full max-w-sm h-auto"
+              className="w-full max-w-[280px] md:max-w-sm h-auto"
             />
           </div>
 
