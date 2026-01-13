@@ -57,7 +57,7 @@ const upsellProducts = {
     name: 'Enclomiphene',
     description: 'Natural testosterone boost',
     price: 24900, // $249
-    priceId: 'price_1SoxpXDQIH4O9FhrYKLmN8qW', // Placeholder - update with real ID
+    priceId: 'price_1SoxkDDQIH4O9FhrhCIh3S47',
     image: 'https://static.wixstatic.com/media/c49a9b_c2c02de112724603822a8c82f0357772~mv2.png',
   },
   hair_regrowth: {
