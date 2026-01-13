@@ -54,7 +54,8 @@ function IntroLottie() {
         <img
           src="https://static.wixstatic.com/media/c49a9b_5cf2a61d62d74615a17f3324ee0248f2~mv2.webp"
           alt="OT Mens Health"
-          className="w-full max-h-[70vh] object-contain"
+          className="w-[300%] max-w-none object-contain"
+          style={{ maxHeight: 'none' }}
         />
       </div>
 
