@@ -35,6 +35,10 @@ const translations = {
     benefit3Desc: 'Medications from certified US pharmacies',
     limitedOffer: 'Limited Time',
     spotsRemaining: 'Only 3 spots left at this price',
+    expeditedShipping: 'Expedited Shipping',
+    expeditedShippingDesc: 'Priority processing & faster delivery',
+    expeditedShippingPrice: '+$20',
+    standardShipping: 'Standard shipping included',
   },
   es: {
     title: 'Paso Final',
@@ -62,8 +66,14 @@ const translations = {
     benefit3Desc: 'Medicamentos de farmacias certificadas en EE.UU.',
     limitedOffer: 'Tiempo Limitado',
     spotsRemaining: 'Solo quedan 3 lugares a este precio',
+    expeditedShipping: 'Envío Expedito',
+    expeditedShippingDesc: 'Procesamiento prioritario y entrega más rápida',
+    expeditedShippingPrice: '+$20',
+    standardShipping: 'Envío estándar incluido',
   },
 };
+
+const EXPEDITED_SHIPPING_PRICE = 2000; // $20 in cents
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -81,6 +91,7 @@ export default function PaymentPage() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [patientInfo, setPatientInfo] = useState({ firstName: '', lastName: '', email: '', phone: '', dob: '' });
+  const [expeditedShipping, setExpeditedShipping] = useState(false);
 
   // Load patient info
   useEffect(() => {
@@ -88,7 +99,7 @@ export default function PaymentPage() {
     setPatientInfo(info);
   }, []);
 
-  // Create PaymentIntent when component loads
+  // Create PaymentIntent when component loads or expedited shipping changes
   useEffect(() => {
     if (!selectedProduct) {
       setLoading(false);
@@ -97,21 +108,26 @@ export default function PaymentPage() {
 
     async function createPaymentIntent() {
       try {
+        setLoading(true);
+        const totalAmount = selectedProduct!.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0);
+        
         const response = await fetch('/api/stripe/create-payment-intent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            amount: selectedProduct!.price,
+            amount: totalAmount,
             currency: selectedProduct!.currency,
             productId: selectedProduct!.id,
             productName: selectedProduct!.name,
             priceId: selectedProduct!.priceId, // Stripe Price ID for subscription handling
             customerEmail: patientInfo.email,
             customerName: `${patientInfo.firstName} ${patientInfo.lastName}`,
+            expeditedShipping: expeditedShipping,
             metadata: {
               intakeId: sessionStorage.getItem('submitted_intake_id') || '',
               medication: selectedProduct!.metadata?.medication || '',
               intervalCount: selectedProduct!.metadata?.intervalCount || '1',
+              expeditedShipping: expeditedShipping ? 'true' : 'false',
             },
           }),
         });
@@ -139,7 +155,7 @@ export default function PaymentPage() {
     if (patientInfo.email) {
       createPaymentIntent();
     }
-  }, [selectedProduct, patientInfo.email, setPaymentIntentId]);
+  }, [selectedProduct, patientInfo.email, setPaymentIntentId, expeditedShipping]);
 
   const formatPrice = (price: number, currency: string) => {
     return new Intl.NumberFormat(language === 'es' ? 'es-US' : 'en-US', {
@@ -197,8 +213,10 @@ export default function PaymentPage() {
               paymentMethodId: setupIntent.payment_method,
               productId: selectedProduct?.id,
               productName: selectedProduct?.name,
+              expeditedShipping: expeditedShipping,
               metadata: {
                 intakeId: sessionStorage.getItem('submitted_intake_id') || '',
+                expeditedShipping: expeditedShipping ? 'true' : 'false',
               },
             }),
           });
@@ -375,11 +393,46 @@ export default function PaymentPage() {
                   <span className="text-[#413d3d]/70">{t.product}</span>
                   <span className="text-[#413d3d] font-medium">{selectedProduct.name}</span>
                 </div>
+                
+                {/* Expedited Shipping Option */}
+                <button
+                  type="button"
+                  onClick={() => setExpeditedShipping(!expeditedShipping)}
+                  className={`w-full mt-3 p-3 rounded-xl border-2 transition-all flex items-center gap-3 ${
+                    expeditedShipping
+                      ? 'border-[#cab172] bg-white'
+                      : 'border-gray-200 bg-white/50 hover:border-gray-300'
+                  }`}
+                >
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                    expeditedShipping ? 'border-[#cab172] bg-[#cab172]' : 'border-gray-300'
+                  }`}>
+                    {expeditedShipping && (
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-[#cab172]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <span className="font-semibold text-[#413d3d] text-sm">{t.expeditedShipping}</span>
+                    </div>
+                    <p className="text-xs text-[#413d3d]/60">{t.expeditedShippingDesc}</p>
+                  </div>
+                  <span className="font-bold text-[#cab172] text-sm">{t.expeditedShippingPrice}</span>
+                </button>
+                {!expeditedShipping && (
+                  <p className="text-xs text-[#413d3d]/50 text-center">{t.standardShipping}</p>
+                )}
+                
                 <div className="border-t border-[#cab172]/30 pt-2 mt-2">
                   <div className="flex justify-between font-bold text-lg">
                     <span className="text-[#413d3d]">{t.total}</span>
                     <span className="text-[#cab172]">
-                      {formatPrice(selectedProduct.price, selectedProduct.currency)}
+                      {formatPrice(selectedProduct.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0), selectedProduct.currency)}
                       <span className="text-xs text-[#413d3d]/60 font-normal ml-1">
                         {selectedProduct.interval === 'one_time' ? t.oneTime : t.perMonth}
                       </span>
@@ -504,7 +557,7 @@ export default function PaymentPage() {
               <span>{t.payNow}</span>
               {selectedProduct && (
                 <span className="ml-2">
-                  ({formatPrice(selectedProduct.price, selectedProduct.currency)})
+                  ({formatPrice(selectedProduct.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0), selectedProduct.currency)})
                 </span>
               )}
             </>

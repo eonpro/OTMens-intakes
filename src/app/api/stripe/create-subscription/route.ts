@@ -17,14 +17,17 @@ interface SubscriptionRequest {
   paymentMethodId: string;
   productId?: string;
   productName?: string;
+  expeditedShipping?: boolean;
   metadata?: Record<string, string>;
 }
+
+const EXPEDITED_SHIPPING_PRICE = 2000; // $20 in cents
 
 export async function POST(request: NextRequest) {
   try {
     const body: SubscriptionRequest = await request.json();
     
-    const { customerId, priceId, paymentMethodId, productId, productName, metadata } = body;
+    const { customerId, priceId, paymentMethodId, productId, productName, expeditedShipping, metadata } = body;
 
     // Validate required fields
     if (!customerId || !priceId || !paymentMethodId) {
@@ -54,7 +57,18 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('Creating subscription for customer:', customerId, 'with price:', priceId, 'paymentMethod:', paymentMethodId);
+    console.log('Creating subscription for customer:', customerId, 'with price:', priceId, 'paymentMethod:', paymentMethodId, 'expeditedShipping:', expeditedShipping);
+
+    // Add expedited shipping as a one-time invoice item if selected
+    if (expeditedShipping) {
+      await stripe.invoiceItems.create({
+        customer: customerId,
+        amount: EXPEDITED_SHIPPING_PRICE,
+        currency: 'usd',
+        description: 'Expedited Shipping - Priority processing & faster delivery',
+      });
+      console.log('Added expedited shipping invoice item');
+    }
 
     // Create the subscription - payment method is already attached and set as default
     // Use 'allow_incomplete' to handle 3D Secure cases gracefully
