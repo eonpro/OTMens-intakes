@@ -35,6 +35,8 @@ const upsellProducts = {
     price: 9900, // $99
     priceId: 'price_1SAG16DQIH4O9Fhrj2A9RBSJ',
     image: 'https://static.wixstatic.com/media/c49a9b_45dbc9caf94447b587c2e999b7a8027c~mv2.png',
+    benefits: ['Improved performance', 'Daily low-dose formula', 'No timing needed'],
+    triggerText: 'better sexual health',
   },
   muscle_fat: {
     id: 'sermorelin',
@@ -43,6 +45,8 @@ const upsellProducts = {
     price: 24900, // $249/month
     priceId: 'price_1SAG5MDQIH4O9FhrBbxlrTqu',
     image: 'https://static.wixstatic.com/media/c49a9b_87a5fa7b71ea4594939f319dcbaefd49~mv2.webp',
+    benefits: ['Increases lean muscle mass', 'Accelerates fat burning', 'Boosts natural HGH levels'],
+    triggerText: 'more muscle, less fat',
   },
   longevity: {
     id: 'nad',
@@ -51,6 +55,8 @@ const upsellProducts = {
     price: 39900, // $399
     priceId: 'price_1SAGkUDQIH4O9FhrAkXZFSB3',
     image: 'https://static.wixstatic.com/media/c49a9b_7b4f8183a2d448af835cc73702cb8c55~mv2.png',
+    benefits: ['Cellular regeneration', 'Increased energy levels', 'Supports healthy aging'],
+    triggerText: 'longevity',
   },
   testosterone_support: {
     id: 'enclomiphene',
@@ -59,6 +65,8 @@ const upsellProducts = {
     price: 24900, // $249
     priceId: 'price_1SoxkDDQIH4O9FhrhCIh3S47',
     image: 'https://static.wixstatic.com/media/c49a9b_c2c02de112724603822a8c82f0357772~mv2.png',
+    benefits: ['Boosts natural testosterone', 'Preserves fertility', 'No injections needed'],
+    triggerText: 'testosterone support',
   },
   hair_regrowth: {
     id: 'finasteride',
@@ -67,6 +75,8 @@ const upsellProducts = {
     price: 19900, // $199
     priceId: 'price_1SoxoDDQIH4O9FhrqvmXo79I',
     image: 'https://static.wixstatic.com/media/c49a9b_45dbc9caf94447b587c2e999b7a8027c~mv2.png',
+    benefits: ['Stops hair loss', 'Promotes regrowth', 'FDA-approved ingredients'],
+    triggerText: 'hair regrowth',
   },
 };
 
@@ -74,10 +84,12 @@ const upsellProducts = {
 const bloodWorkUpsell = {
   id: 'bloodwork',
   name: 'Complete Blood Panel',
-  description: 'Full health screening',
+  description: 'Know your baseline levels',
+  tagline: "You can't optimize what you can't see",
   price: 20000, // $200
   priceId: 'price_1RguQfDQIH4O9FhrA5BGU90R',
   image: 'https://static.wixstatic.com/media/c49a9b_da24dc2db32f416eae0151d634c28126~mv2.webp',
+  benefits: ['Full hormone panel', 'Metabolic markers', 'Personalized insights'],
 };
 
 const translations = {
@@ -543,7 +555,7 @@ export default function CheckoutPage() {
 
           {/* Upsell Section */}
           {(relevantUpsell || true) && (
-            <div className="space-y-3">
+            <div className="space-y-4">
               <h3 className="font-semibold text-[#413d3d] flex items-center gap-2">
                 {t.enhanceResults}
                 <span className="text-xs bg-[#cab172] text-white px-2 py-0.5 rounded-full">{t.recommended}</span>
@@ -551,57 +563,93 @@ export default function CheckoutPage() {
               
               {/* Relevant upsell based on health selection */}
               {relevantUpsell && (
+                <div className="space-y-2">
+                  <p className="text-sm text-[#413d3d]/80 italic">
+                    Since you mentioned you wanted <span className="font-semibold text-[#413d3d]">{relevantUpsell.triggerText}</span>...
+                  </p>
+                  <button
+                    onClick={() => toggleUpsell(relevantUpsell.id)}
+                    className={`w-full p-4 rounded-2xl border-2 transition-all ${
+                      selectedUpsells.includes(relevantUpsell.id)
+                        ? 'border-[#cab172] bg-[#f5ecd8]'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={relevantUpsell.image} 
+                        alt={relevantUpsell.name}
+                        className="w-16 h-16 object-contain rounded-lg bg-white"
+                      />
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-[#413d3d]">{relevantUpsell.name}</div>
+                        <div className="text-xs text-[#413d3d]/60">{relevantUpsell.description}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-[#413d3d] text-lg">{formatPrice(relevantUpsell.price, 'usd')}</div>
+                        <div className={`text-xs font-medium ${selectedUpsells.includes(relevantUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
+                          {selectedUpsells.includes(relevantUpsell.id) ? '✓ ' + t.added : t.addToOrder}
+                        </div>
+                      </div>
+                    </div>
+                    {/* Benefits list */}
+                    <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 gap-1">
+                      {relevantUpsell.benefits.map((benefit: string, idx: number) => (
+                        <div key={idx} className="flex items-center gap-2 text-left">
+                          <svg className="w-4 h-4 text-[#cab172] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          <span className="text-xs text-[#413d3d]/70">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Blood work - always shown */}
+              <div className="space-y-2">
+                <p className="text-sm text-[#413d3d]/80 italic">
+                  {bloodWorkUpsell.tagline}
+                </p>
                 <button
-                  onClick={() => toggleUpsell(relevantUpsell.id)}
-                  className={`w-full p-3 rounded-2xl border-2 transition-all flex items-center gap-3 ${
-                    selectedUpsells.includes(relevantUpsell.id)
+                  onClick={() => toggleUpsell(bloodWorkUpsell.id)}
+                  className={`w-full p-4 rounded-2xl border-2 transition-all ${
+                    selectedUpsells.includes(bloodWorkUpsell.id)
                       ? 'border-[#cab172] bg-[#f5ecd8]'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <img 
-                    src={relevantUpsell.image} 
-                    alt={relevantUpsell.name}
-                    className="w-14 h-14 object-contain rounded-lg bg-white"
-                  />
-                  <div className="flex-1 text-left">
-                    <div className="font-semibold text-[#413d3d] text-sm">{relevantUpsell.name}</div>
-                    <div className="text-xs text-[#413d3d]/60">{relevantUpsell.description}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-[#413d3d]">{formatPrice(relevantUpsell.price, 'usd')}</div>
-                    <div className={`text-xs font-medium ${selectedUpsells.includes(relevantUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
-                      {selectedUpsells.includes(relevantUpsell.id) ? t.added : t.addToOrder}
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src={bloodWorkUpsell.image} 
+                      alt={bloodWorkUpsell.name}
+                      className="w-16 h-16 object-contain rounded-lg bg-white"
+                    />
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-[#413d3d]">{bloodWorkUpsell.name}</div>
+                      <div className="text-xs text-[#413d3d]/60">{bloodWorkUpsell.description}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-[#413d3d] text-lg">{formatPrice(bloodWorkUpsell.price, 'usd')}</div>
+                      <div className={`text-xs font-medium ${selectedUpsells.includes(bloodWorkUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
+                        {selectedUpsells.includes(bloodWorkUpsell.id) ? '✓ ' + t.added : t.addToOrder}
+                      </div>
                     </div>
                   </div>
-                </button>
-              )}
-
-              {/* Blood work - always shown */}
-              <button
-                onClick={() => toggleUpsell(bloodWorkUpsell.id)}
-                className={`w-full p-3 rounded-2xl border-2 transition-all flex items-center gap-3 ${
-                  selectedUpsells.includes(bloodWorkUpsell.id)
-                    ? 'border-[#cab172] bg-[#f5ecd8]'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <img 
-                  src={bloodWorkUpsell.image} 
-                  alt={bloodWorkUpsell.name}
-                  className="w-14 h-14 object-contain rounded-lg bg-white"
-                />
-                <div className="flex-1 text-left">
-                  <div className="font-semibold text-[#413d3d] text-sm">{bloodWorkUpsell.name}</div>
-                  <div className="text-xs text-[#413d3d]/60">{bloodWorkUpsell.description}</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-[#413d3d]">{formatPrice(bloodWorkUpsell.price, 'usd')}</div>
-                  <div className={`text-xs font-medium ${selectedUpsells.includes(bloodWorkUpsell.id) ? 'text-[#cab172]' : 'text-gray-400'}`}>
-                    {selectedUpsells.includes(bloodWorkUpsell.id) ? t.added : t.addToOrder}
+                  {/* Benefits list */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 grid grid-cols-1 gap-1">
+                    {bloodWorkUpsell.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-left">
+                        <svg className="w-4 h-4 text-[#cab172] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-xs text-[#413d3d]/70">{benefit}</span>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </button>
+                </button>
+              </div>
             </div>
           )}
 
