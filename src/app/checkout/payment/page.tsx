@@ -39,6 +39,13 @@ const translations = {
     expeditedShippingDesc: 'Priority processing & faster delivery',
     expeditedShippingPrice: '+$20',
     standardShipping: 'Standard shipping included',
+    promoCode: 'Promo Code',
+    promoCodePlaceholder: 'Enter code',
+    applyCode: 'Apply',
+    promoApplied: 'applied',
+    promoInvalid: 'Invalid or expired code',
+    promoChecking: 'Checking...',
+    discount: 'Discount',
   },
   es: {
     title: 'Paso Final',
@@ -70,10 +77,18 @@ const translations = {
     expeditedShippingDesc: 'Procesamiento prioritario y entrega más rápida',
     expeditedShippingPrice: '+$20',
     standardShipping: 'Envío estándar incluido',
+    promoCode: 'Código Promocional',
+    promoCodePlaceholder: 'Ingresa el código',
+    applyCode: 'Aplicar',
+    promoApplied: 'aplicado',
+    promoInvalid: 'Código inválido o expirado',
+    promoChecking: 'Verificando...',
+    discount: 'Descuento',
   },
 };
 
 const EXPEDITED_SHIPPING_PRICE = 2000; // $20 in cents
+const EXPEDITED_SHIPPING_PRICE_ID = 'price_1Soy4xDQIH4O9FhrigXFjklK';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -92,6 +107,9 @@ export default function PaymentPage() {
   const [error, setError] = useState<string | null>(null);
   const [patientInfo, setPatientInfo] = useState({ firstName: '', lastName: '', email: '', phone: '', dob: '' });
   const [expeditedShipping, setExpeditedShipping] = useState(false);
+  const [promoCode, setPromoCode] = useState('');
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle');
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; couponId: string; percentOff?: number; amountOff?: number } | null>(null);
 
   // Load patient info
   useEffect(() => {
@@ -109,7 +127,7 @@ export default function PaymentPage() {
     async function createPaymentIntent() {
       try {
         setLoading(true);
-        const totalAmount = selectedProduct!.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0);
+        const totalAmount = calculateTotal();
         
         const response = await fetch('/api/stripe/create-payment-intent', {
           method: 'POST',
@@ -123,11 +141,14 @@ export default function PaymentPage() {
             customerEmail: patientInfo.email,
             customerName: `${patientInfo.firstName} ${patientInfo.lastName}`,
             expeditedShipping: expeditedShipping,
+            expeditedShippingPriceId: expeditedShipping ? EXPEDITED_SHIPPING_PRICE_ID : undefined,
+            couponId: appliedPromo?.couponId,
             metadata: {
               intakeId: sessionStorage.getItem('submitted_intake_id') || '',
               medication: selectedProduct!.metadata?.medication || '',
               intervalCount: selectedProduct!.metadata?.intervalCount || '1',
               expeditedShipping: expeditedShipping ? 'true' : 'false',
+              promoCode: appliedPromo?.code || '',
             },
           }),
         });
@@ -155,13 +176,72 @@ export default function PaymentPage() {
     if (patientInfo.email) {
       createPaymentIntent();
     }
-  }, [selectedProduct, patientInfo.email, setPaymentIntentId, expeditedShipping]);
+  }, [selectedProduct, patientInfo.email, setPaymentIntentId, expeditedShipping, appliedPromo]);
 
   const formatPrice = (price: number, currency: string) => {
     return new Intl.NumberFormat(language === 'es' ? 'es-US' : 'en-US', {
       style: 'currency',
       currency: currency.toUpperCase(),
     }).format(price / 100);
+  };
+
+  // Calculate discount amount
+  const calculateDiscount = (subtotal: number) => {
+    if (!appliedPromo) return 0;
+    if (appliedPromo.percentOff) {
+      return Math.round(subtotal * (appliedPromo.percentOff / 100));
+    }
+    if (appliedPromo.amountOff) {
+      return appliedPromo.amountOff;
+    }
+    return 0;
+  };
+
+  // Calculate total with discount
+  const calculateTotal = () => {
+    const subtotal = (selectedProduct?.price || 0) + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0);
+    const discount = calculateDiscount(subtotal);
+    return Math.max(0, subtotal - discount);
+  };
+
+  // Validate promo code
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
+    
+    setPromoStatus('checking');
+    
+    try {
+      const response = await fetch('/api/stripe/validate-promo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promoCode.trim().toUpperCase() }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.valid) {
+        setAppliedPromo({
+          code: promoCode.trim().toUpperCase(),
+          couponId: data.couponId,
+          percentOff: data.percentOff,
+          amountOff: data.amountOff,
+        });
+        setPromoStatus('valid');
+      } else {
+        setPromoStatus('invalid');
+        setTimeout(() => setPromoStatus('idle'), 3000);
+      }
+    } catch (err) {
+      console.error('Error validating promo:', err);
+      setPromoStatus('invalid');
+      setTimeout(() => setPromoStatus('idle'), 3000);
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode('');
+    setPromoStatus('idle');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -214,9 +294,12 @@ export default function PaymentPage() {
               productId: selectedProduct?.id,
               productName: selectedProduct?.name,
               expeditedShipping: expeditedShipping,
+              expeditedShippingPriceId: expeditedShipping ? EXPEDITED_SHIPPING_PRICE_ID : undefined,
+              couponId: appliedPromo?.couponId,
               metadata: {
                 intakeId: sessionStorage.getItem('submitted_intake_id') || '',
                 expeditedShipping: expeditedShipping ? 'true' : 'false',
+                promoCode: appliedPromo?.code || '',
               },
             }),
           });
@@ -427,12 +510,64 @@ export default function PaymentPage() {
                 {!expeditedShipping && (
                   <p className="text-xs text-[#413d3d]/50 text-center">{t.standardShipping}</p>
                 )}
+
+                {/* Promo Code Section */}
+                <div className="mt-3 pt-3 border-t border-[#cab172]/30">
+                  {appliedPromo ? (
+                    <div className="flex items-center justify-between bg-white rounded-lg p-2">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-sm font-medium text-[#413d3d]">{appliedPromo.code}</span>
+                        <span className="text-xs text-green-600">{t.promoApplied}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemovePromo}
+                        className="text-xs text-red-500 hover:text-red-600"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                        placeholder={t.promoCodePlaceholder}
+                        className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#cab172] uppercase"
+                        disabled={promoStatus === 'checking'}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyPromo}
+                        disabled={!promoCode.trim() || promoStatus === 'checking'}
+                        className="px-4 py-2 text-sm font-medium text-white bg-[#cab172] rounded-lg hover:bg-[#b9a065] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {promoStatus === 'checking' ? t.promoChecking : t.applyCode}
+                      </button>
+                    </div>
+                  )}
+                  {promoStatus === 'invalid' && (
+                    <p className="text-xs text-red-500 mt-1">{t.promoInvalid}</p>
+                  )}
+                </div>
+                
+                {/* Discount line */}
+                {appliedPromo && (
+                  <div className="flex justify-between text-sm text-green-600 mt-2">
+                    <span>{t.discount} ({appliedPromo.percentOff ? `${appliedPromo.percentOff}%` : formatPrice(appliedPromo.amountOff || 0, selectedProduct.currency)})</span>
+                    <span>-{formatPrice(calculateDiscount(selectedProduct.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0)), selectedProduct.currency)}</span>
+                  </div>
+                )}
                 
                 <div className="border-t border-[#cab172]/30 pt-2 mt-2">
                   <div className="flex justify-between font-bold text-lg">
                     <span className="text-[#413d3d]">{t.total}</span>
                     <span className="text-[#cab172]">
-                      {formatPrice(selectedProduct.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0), selectedProduct.currency)}
+                      {formatPrice(calculateTotal(), selectedProduct.currency)}
                       <span className="text-xs text-[#413d3d]/60 font-normal ml-1">
                         {selectedProduct.interval === 'one_time' ? t.oneTime : t.perMonth}
                       </span>
@@ -557,7 +692,7 @@ export default function PaymentPage() {
               <span>{t.payNow}</span>
               {selectedProduct && (
                 <span className="ml-2">
-                  ({formatPrice(selectedProduct.price + (expeditedShipping ? EXPEDITED_SHIPPING_PRICE : 0), selectedProduct.currency)})
+                  ({formatPrice(calculateTotal(), selectedProduct.currency)})
                 </span>
               )}
             </>

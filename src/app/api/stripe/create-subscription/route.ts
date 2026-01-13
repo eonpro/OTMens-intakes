@@ -18,6 +18,8 @@ interface SubscriptionRequest {
   productId?: string;
   productName?: string;
   expeditedShipping?: boolean;
+  expeditedShippingPriceId?: string;
+  couponId?: string;
   metadata?: Record<string, string>;
 }
 
@@ -27,7 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     const body: SubscriptionRequest = await request.json();
     
-    const { customerId, priceId, paymentMethodId, productId, productName, expeditedShipping, metadata } = body;
+    const { customerId, priceId, paymentMethodId, productId, productName, expeditedShipping, expeditedShippingPriceId, couponId, metadata } = body;
 
     // Validate required fields
     if (!customerId || !priceId || !paymentMethodId) {
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('Creating subscription for customer:', customerId, 'with price:', priceId, 'paymentMethod:', paymentMethodId, 'expeditedShipping:', expeditedShipping);
+    console.log('Creating subscription for customer:', customerId, 'with price:', priceId, 'paymentMethod:', paymentMethodId, 'expeditedShipping:', expeditedShipping, 'couponId:', couponId);
 
     // Add expedited shipping as a one-time invoice item if selected
     if (expeditedShipping) {
@@ -70,9 +72,9 @@ export async function POST(request: NextRequest) {
       console.log('Added expedited shipping invoice item');
     }
 
-    // Create the subscription - payment method is already attached and set as default
-    // Use 'allow_incomplete' to handle 3D Secure cases gracefully
-    const subscription = await stripe.subscriptions.create({
+    // Build subscription create params
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const subscriptionParams: any = {
       customer: customerId,
       items: [{ price: priceId }],
       default_payment_method: paymentMethodId,
@@ -84,7 +86,16 @@ export async function POST(request: NextRequest) {
         source: 'otmens-intake',
         ...metadata,
       },
-    });
+    };
+
+    // Add coupon if provided
+    if (couponId) {
+      subscriptionParams.coupon = couponId;
+      console.log('Applied coupon:', couponId);
+    }
+
+    // Create the subscription - payment method is already attached and set as default
+    const subscription = await stripe.subscriptions.create(subscriptionParams);
 
     console.log('Subscription created:', subscription.id, 'status:', subscription.status);
 
