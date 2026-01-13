@@ -4,10 +4,29 @@ import React, { useEffect, useRef, useState } from 'react';
 
 function IntroLottie() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const [showLottie, setShowLottie] = useState(false);
+
+  // Sequence: Wait -> Fade in image -> Show Lottie on top
+  useEffect(() => {
+    // Step 1: After 200ms, start fading in the image
+    const imageTimer = setTimeout(() => {
+      setShowImage(true);
+    }, 200);
+
+    // Step 2: After image has faded in (1s), show lottie
+    const lottieTimer = setTimeout(() => {
+      setShowLottie(true);
+    }, 800);
+
+    return () => {
+      clearTimeout(imageTimer);
+      clearTimeout(lottieTimer);
+    };
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !showLottie) return;
 
     // OT Men's Health intro Lottie animation
     containerRef.current.innerHTML = `
@@ -20,38 +39,34 @@ function IntroLottie() {
         loading="eager"
       ></iframe>
     `;
-  }, []);
-
-  // Trigger image fade in after a short delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setImageLoaded(true);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
+  }, [showLottie]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden relative bg-white">
-      {/* Background composition image - fades in */}
+      {/* Background composition image - fades in with scale */}
       <div 
-        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${
-          imageLoaded ? 'opacity-100' : 'opacity-0'
-        }`}
+        className="absolute inset-0 flex items-center justify-center px-[20px] transition-all duration-1000 ease-out"
+        style={{
+          opacity: showImage ? 1 : 0,
+          transform: showImage ? 'scale(1)' : 'scale(0.9)',
+        }}
       >
         <img
           src="https://static.wixstatic.com/media/c49a9b_5cf2a61d62d74615a17f3324ee0248f2~mv2.webp"
           alt="OT Mens Health"
-          className="max-w-[90%] max-h-[80%] object-contain"
-          onLoad={() => setImageLoaded(true)}
+          className="w-full max-h-[70vh] object-contain"
         />
       </div>
 
-      {/* Lottie logo on top */}
+      {/* Lottie logo on top - fades in after image */}
       <div 
         ref={containerRef} 
-        className="w-[180px] h-[180px] lg:w-[240px] lg:h-[240px] flex items-center justify-center relative z-10"
+        className="w-[200px] h-[200px] lg:w-[280px] lg:h-[280px] flex items-center justify-center relative z-10 transition-opacity duration-500"
+        style={{
+          opacity: showLottie ? 1 : 0,
+        }}
       >
-        <div className="text-gray-400">Loading...</div>
+        {!showLottie && <div className="text-gray-400"></div>}
       </div>
     </div>
   );
