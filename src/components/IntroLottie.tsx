@@ -42,10 +42,10 @@ function IntroLottie() {
   }, [showLottie]);
 
   return (
-    <div className="w-full h-screen flex items-center justify-center overflow-hidden relative bg-white">
+    <div className="w-full h-screen flex items-center justify-center relative bg-white">
       {/* Background composition image - fades in with scale */}
       <div 
-        className="absolute inset-0 flex items-center justify-center px-[20px] transition-all duration-1000 ease-out"
+        className="absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-out"
         style={{
           opacity: showImage ? 1 : 0,
           transform: showImage ? 'scale(1)' : 'scale(0.9)',
@@ -54,8 +54,8 @@ function IntroLottie() {
         <img
           src="https://static.wixstatic.com/media/c49a9b_5cf2a61d62d74615a17f3324ee0248f2~mv2.webp"
           alt="OT Mens Health"
-          className="w-[300%] max-w-none object-contain"
-          style={{ maxHeight: 'none' }}
+          className="w-full h-auto object-cover"
+          style={{ minWidth: '100vw' }}
         />
       </div>
 
