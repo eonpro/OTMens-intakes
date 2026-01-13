@@ -66,9 +66,21 @@ const finalPositions = [
   { x: 60, y: 150, scale: 1 },      // Vial - bottom center-right
 ];
 
+// Starting positions (scattered around)
+const startPositions = [
+  { x: -200, y: -150 },  // Doctor
+  { x: -250, y: -100 },  // Man
+  { x: 200, y: -200 },   // Pills
+  { x: 250, y: 0 },      // Woman
+  { x: 200, y: 150 },    // real doctors badge
+  { x: -200, y: 200 },   // personalized badge
+  { x: 0, y: 250 },      // Vial
+];
+
 function IntroLottie() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [animationPhase, setAnimationPhase] = useState<'floating' | 'settled'>('floating');
+  const [floatOffset, setFloatOffset] = useState(0);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -86,11 +98,25 @@ function IntroLottie() {
     `;
   }, []);
 
-  // After 1.5 seconds, settle into final positions
+  // Floating animation using requestAnimationFrame
+  useEffect(() => {
+    if (animationPhase === 'settled') return;
+
+    let animationId: number;
+    const animate = () => {
+      setFloatOffset(prev => prev + 0.05);
+      animationId = requestAnimationFrame(animate);
+    };
+    animationId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationId);
+  }, [animationPhase]);
+
+  // After 1.8 seconds, settle into final positions
   useEffect(() => {
     const settleTimer = setTimeout(() => {
       setAnimationPhase('settled');
-    }, 1500);
+    }, 1800);
 
     return () => clearTimeout(settleTimer);
   }, []);
@@ -106,22 +132,22 @@ function IntroLottie() {
     }
   };
 
-  // Starting positions (scattered around)
-  const startPositions = [
-    { x: -200, y: -150 },  // Doctor
-    { x: -250, y: -100 },  // Man
-    { x: 200, y: -200 },   // Pills
-    { x: 250, y: 0 },      // Woman
-    { x: 200, y: 150 },    // real doctors badge
-    { x: -200, y: 200 },   // personalized badge
-    { x: 0, y: 250 },      // Vial
-  ];
+  // Calculate floating position with gentle bobbing
+  const getFloatingPosition = (index: number) => {
+    const start = startPositions[index];
+    const offsetX = Math.sin(floatOffset + index * 0.8) * 15;
+    const offsetY = Math.cos(floatOffset + index * 0.6) * 12;
+    return {
+      x: start.x + offsetX,
+      y: start.y + offsetY,
+    };
+  };
 
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden relative bg-white">
       {/* Floating/settling elements */}
       {floatingElements.map((element, index) => {
-        const startPos = startPositions[index];
+        const floatPos = getFloatingPosition(index);
         const endPos = finalPositions[index];
         const isSettled = animationPhase === 'settled';
         
@@ -130,11 +156,10 @@ function IntroLottie() {
             key={index}
             className="absolute"
             style={{
-              transform: `translate(${isSettled ? endPos.x : startPos.x}px, ${isSettled ? endPos.y : startPos.y}px) scale(${isSettled ? endPos.scale : 0.6})`,
-              opacity: isSettled ? 1 : 0.9,
+              transform: `translate(${isSettled ? endPos.x : floatPos.x}px, ${isSettled ? endPos.y : floatPos.y}px) scale(${isSettled ? endPos.scale : 0.7})`,
+              opacity: isSettled ? 1 : 0.85,
               zIndex: index === 0 ? 15 : 20 + index,
-              transition: `all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 0.1}s`,
-              animation: !isSettled ? `float-${index} 3s ease-in-out infinite` : 'none',
+              transition: isSettled ? `all 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 0.08}s` : 'none',
             }}
           >
             {element.type === 'image' || element.type === 'vial' ? (
@@ -179,38 +204,6 @@ function IntroLottie() {
       >
         <div className="text-gray-400">Loading...</div>
       </div>
-
-      {/* CSS Keyframes for floating animation */}
-      <style jsx>{`
-        @keyframes float-0 {
-          0%, 100% { transform: translate(-200px, -150px) scale(0.6); }
-          50% { transform: translate(-190px, -160px) scale(0.65); }
-        }
-        @keyframes float-1 {
-          0%, 100% { transform: translate(-250px, -100px) scale(0.6); }
-          50% { transform: translate(-240px, -110px) scale(0.65); }
-        }
-        @keyframes float-2 {
-          0%, 100% { transform: translate(200px, -200px) scale(0.6); }
-          50% { transform: translate(210px, -190px) scale(0.65); }
-        }
-        @keyframes float-3 {
-          0%, 100% { transform: translate(250px, 0px) scale(0.6); }
-          50% { transform: translate(240px, 10px) scale(0.65); }
-        }
-        @keyframes float-4 {
-          0%, 100% { transform: translate(200px, 150px) scale(0.6); }
-          50% { transform: translate(210px, 140px) scale(0.65); }
-        }
-        @keyframes float-5 {
-          0%, 100% { transform: translate(-200px, 200px) scale(0.6); }
-          50% { transform: translate(-190px, 190px) scale(0.65); }
-        }
-        @keyframes float-6 {
-          0%, 100% { transform: translate(0px, 250px) scale(0.6); }
-          50% { transform: translate(10px, 240px) scale(0.65); }
-        }
-      `}</style>
     </div>
   );
 }
